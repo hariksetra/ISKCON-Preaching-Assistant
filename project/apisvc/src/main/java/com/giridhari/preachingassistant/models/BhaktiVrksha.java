@@ -16,12 +16,15 @@ public class BhaktiVrksha {
 	
 	@Parent
 	private String sectorId;
+	
+	private String leaderId;
 
-	public BhaktiVrksha(String id, String name, String sectorId) {
+	public BhaktiVrksha(String id, String name, String sectorId, String leaderId) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.sectorId = sectorId;
+		this.leaderId = leaderId;
 	}
 
 	public String getId() {
@@ -34,6 +37,10 @@ public class BhaktiVrksha {
 
 	public String getSectorId() {
 		return sectorId;
+	}
+	
+	public String getLeaderId() {
+		return leaderId;
 	}
 
 }

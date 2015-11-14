@@ -16,12 +16,15 @@ public class Circle {
 	
 	@Parent
 	private String mahaCircleId;
+	
+	private String leaderId;
 
-	public Circle(String id, String name, String mahaCircleId) {
+	public Circle(String id, String name, String mahaCircleId, String leaderId) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.mahaCircleId = mahaCircleId;
+		this.leaderId = leaderId;
 	}
 
 	public String getId() {
@@ -34,6 +37,10 @@ public class Circle {
 
 	public String getMahaCircleId() {
 		return mahaCircleId;
+	}
+	
+	public String getLeaderId() {
+		return leaderId;
 	}
 	
 }
