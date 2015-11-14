@@ -3,6 +3,7 @@ package com.giridhari.preachingassistant.models;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.Parent;
 
 @Entity
 public class Devotee {
@@ -26,10 +27,14 @@ public class Devotee {
 	
 	@Index
 	private AuthenticationLevel higestAuthenticationLevel;
+	
+	@Parent
+	private String relatedParentElementId;
 
 	public Devotee(String id, String primaryEmailId, String legalName,
 			String initiatedName, String primaryPhone, String address,
-			String otherInfo, AuthenticationLevel higestAuthenticationLevel) {
+			String otherInfo, AuthenticationLevel higestAuthenticationLevel,
+			String relatedParentElementId) {
 		super();
 		this.id = id;
 		this.primaryEmailId = primaryEmailId;
@@ -39,6 +44,8 @@ public class Devotee {
 		this.address = address;
 		this.otherInfo = otherInfo;
 		this.higestAuthenticationLevel = higestAuthenticationLevel;
+		this.relatedParentElementId = relatedParentElementId;
+		
 	}
 
 	public String getId() {
