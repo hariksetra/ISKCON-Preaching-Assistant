@@ -1,0 +1,42 @@
+Actors
+--------
+
+Admin
+Mentor
+Mentee
+
+Actions
+----------
+
+Creations/Update
+----------------------
+L0 Program (Admin)
+Mentor (Admin)
+Mentee (Mentor)
+Login (Auto - if the they are Mentor or Mentee)
+Participants (Mentor/Mentee) - 
+Attendance (Mentor)
+Call Log (Mentor/Mentee)
+Followup Log (Mentor/Mentee)
+Assign/Release Participants from unassigned pool to/from program (Mentor)
+Assign/Release Participants to/from Mentee (Mentee)
+Program Migration
+
+Delete
+--------
+Program
+Mentor
+Mentee
+Participants
+Log
+
+Report
+--------
+Unassigned contacts in the program (Mentor)
+List of Programs (Mentor/Admin)
+Participant Search (Mentor/Mentee)
+Regularity and perfromance of Participants in program (Mentor/Mentee)
+Performance of Program (Mentor)
+Regularity of Calls made to Participants (Mentor/Mentee)
+Mentee Performance (Call convertion report) (Mentor)
+Program Migration report (Mentor)
