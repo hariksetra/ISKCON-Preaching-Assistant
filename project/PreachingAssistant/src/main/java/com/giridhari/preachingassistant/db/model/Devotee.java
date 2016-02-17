@@ -1,4 +1,4 @@
-package com.giridhari.preachingassistant.model;
+package com.giridhari.preachingassistant.db.model;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -22,7 +22,7 @@ public class Devotee implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="DIDevoteeID")
-	private int id;
+	private Long id;
 	
 	@Column(name="DILegalName", length=50, nullable=false)
 	private String legalName;
@@ -99,11 +99,11 @@ public class Devotee implements Serializable {
 	@Column(name="DIUpdate_ts", columnDefinition="timestamp")
 	private Date updateTimeStamp;
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

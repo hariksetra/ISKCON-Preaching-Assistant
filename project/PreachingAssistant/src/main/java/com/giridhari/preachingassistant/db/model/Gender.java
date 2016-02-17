@@ -1,4 +1,4 @@
-package com.giridhari.preachingassistant.model;
+package com.giridhari.preachingassistant.db.model;
 
 public enum Gender {
 	MALE("MALE"),
