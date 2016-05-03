@@ -2,103 +2,50 @@ package com.giridhari.preachingassistant.db.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="DevoteeInfo")
+@Table(name = "devotee", catalog = "praeching_assistant")
 public class Devotee implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8385723388391634838L;
+	
+	private Long id;
+	private String legalName;
+	private String initiatedName;
+	private Date dob;
+	private Gender gender;
+	private MaritalStatus maritalStatus;
+	private String familyInfo;
+	private String education;
+	private String occupation;
+	private String organization;
+	private String designation;
+	private IncomeScale incomeScale;
+	private String smsPhone; //TODO: Create a seperate table for phone numbers, whcih contains number, type of number eg:whatsapp or work, status eg: working or not working
+	private Date introDate;
+	private String area; //TODO: create a table for area later
+	private String address;
+	private String email;
+	private String capturedFor;
+	private String booksRead; //TODO: create a seperate table to maintain the list of books read
+	private Integer monthlyContribution;
+	private String sikshaLevel; //TODO: create an enum for siksha level
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="DIDevoteeID")
-	private Long id;
-	
-	@Column(name="DILegalName", length=50, nullable=false)
-	private String legalName;
-	
-	@Column(name="DIInitiatedName", length=50)
-	private String initiatedName;
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name="DIDOB", columnDefinition="date")
-	private Date dob;
-	
-	@Column(name="DIGender")
-	private Gender gender;
-	
-	@Column(name="DIMaritalStatus")
-	private MaritalStatus maritalStatus;
-	
-	@Column(name="DIFamilyInfo", columnDefinition="text")
-	private String familyInfo;
-	
-	@Column(name="DIEducation", length=50)
-	private String education;
-	
-	@Column(name="DIOccupation", length=50)
-	private String occupation;
-	
-	@Column(name="DIOrganization", length=50)
-	private String organization;
-	
-	@Column(name="DIDesignation", length=50)
-	private String designation;
-	
-	@Column(name="DIIncomeScale")
-	private String incomeScale; //TODO: Convert to enum later
-	
-	@Column(name="DISmsPhone")
-	private String smsPhone; //TODO: Create a seperate table for phone numbers, whcih contains number, type of number eg:whatsapp or work, status eg: working or not working
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name="DIIntroDate", columnDefinition="date")
-	private Date introDate;
-	
-	@Column(name="DIArea")
-	private String area; //TODO: create a table for area later
-	
-	@Column(name="DIAddress", columnDefinition="text")
-	private String address;
-	
-	@Column(name="DIEmail")
-	private String email;
-	
-	@Column(name="DICapturedFor")
-	private String capturedFor;
-	
-	@ManyToOne
-	private Devotee capturedBy;
-	
-	@OneToMany(mappedBy="capturedBy")
-	private Set<Devotee> capturedDevotees;
-	
-	@Column(name="DIBooksRead")
-	private String booksRead; //TODO: create a seperate table to maintain the list of books read
-	
-	@Column(name="DIMonthlyContribution")
-	private int monthlyContribution;
-	
-	@Column(name="DISikshaLevel")
-	private String sikshaLevel; //TODO: create an enum for siksha level
-	
-	//TODO: move rating to devotee history
-	//TODO: maintain seperate login table
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="DIUpdate_ts", columnDefinition="timestamp")
-	private Date updateTimeStamp;
-
+	@Column(name="id", nullable = false)
 	public Long getId() {
 		return id;
 	}
@@ -107,6 +54,7 @@ public class Devotee implements Serializable {
 		this.id = id;
 	}
 
+	@Column(name="legal_name", length=50, nullable=false)
 	public String getLegalName() {
 		return legalName;
 	}
@@ -115,6 +63,7 @@ public class Devotee implements Serializable {
 		this.legalName = legalName;
 	}
 
+	@Column(name="initiated_name", length=50, nullable = true)
 	public String getInitiatedName() {
 		return initiatedName;
 	}
@@ -123,6 +72,8 @@ public class Devotee implements Serializable {
 		this.initiatedName = initiatedName;
 	}
 
+	@Temporal(TemporalType.DATE)
+	@Column(name="dob", columnDefinition="date", nullable = true)
 	public Date getDob() {
 		return dob;
 	}
@@ -131,6 +82,7 @@ public class Devotee implements Serializable {
 		this.dob = dob;
 	}
 
+	@Column(name="gender", nullable = false)
 	public Gender getGender() {
 		return gender;
 	}
@@ -139,6 +91,7 @@ public class Devotee implements Serializable {
 		this.gender = gender;
 	}
 
+	@Column(name="marital_status", nullable = false)
 	public MaritalStatus getMaritalStatus() {
 		return maritalStatus;
 	}
@@ -147,6 +100,7 @@ public class Devotee implements Serializable {
 		this.maritalStatus = maritalStatus;
 	}
 
+	@Column(name="family_info", columnDefinition="text", nullable = true)
 	public String getFamilyInfo() {
 		return familyInfo;
 	}
@@ -155,6 +109,7 @@ public class Devotee implements Serializable {
 		this.familyInfo = familyInfo;
 	}
 
+	@Column(name="education", length=50, nullable = true)
 	public String getEducation() {
 		return education;
 	}
@@ -163,6 +118,7 @@ public class Devotee implements Serializable {
 		this.education = education;
 	}
 
+	@Column(name="occupation", length=50, nullable = true)
 	public String getOccupation() {
 		return occupation;
 	}
@@ -171,6 +127,7 @@ public class Devotee implements Serializable {
 		this.occupation = occupation;
 	}
 
+	@Column(name="organization", length=50, nullable = true)
 	public String getOrganization() {
 		return organization;
 	}
@@ -179,6 +136,7 @@ public class Devotee implements Serializable {
 		this.organization = organization;
 	}
 
+	@Column(name="designation", length=50, nullable = true)
 	public String getDesignation() {
 		return designation;
 	}
@@ -187,14 +145,16 @@ public class Devotee implements Serializable {
 		this.designation = designation;
 	}
 
-	public String getIncomeScale() {
+	@Column(name="income_scale", nullable = false)
+	public IncomeScale getIncomeScale() {
 		return incomeScale;
 	}
 
-	public void setIncomeScale(String incomeScale) {
+	public void setIncomeScale(IncomeScale incomeScale) {
 		this.incomeScale = incomeScale;
 	}
 
+	@Column(name="sms_phone", nullable = false)
 	public String getSmsPhone() {
 		return smsPhone;
 	}
@@ -203,6 +163,8 @@ public class Devotee implements Serializable {
 		this.smsPhone = smsPhone;
 	}
 
+	@Temporal(TemporalType.DATE)
+	@Column(name="intro_date", columnDefinition="date", nullable = true)
 	public Date getIntroDate() {
 		return introDate;
 	}
@@ -211,6 +173,7 @@ public class Devotee implements Serializable {
 		this.introDate = introDate;
 	}
 
+	@Column(name="area", nullable = false)
 	public String getArea() {
 		return area;
 	}
@@ -219,6 +182,7 @@ public class Devotee implements Serializable {
 		this.area = area;
 	}
 
+	@Column(name="address", columnDefinition="text", nullable = true)
 	public String getAddress() {
 		return address;
 	}
@@ -227,6 +191,7 @@ public class Devotee implements Serializable {
 		this.address = address;
 	}
 
+	@Column(name="email", nullable = true)
 	public String getEmail() {
 		return email;
 	}
@@ -235,6 +200,7 @@ public class Devotee implements Serializable {
 		this.email = email;
 	}
 
+	@Column(name="captured_for")
 	public String getCapturedFor() {
 		return capturedFor;
 	}
@@ -243,22 +209,7 @@ public class Devotee implements Serializable {
 		this.capturedFor = capturedFor;
 	}
 
-	public Devotee getCapturedBy() {
-		return capturedBy;
-	}
-
-	public void setCapturedBy(Devotee capturedBy) {
-		this.capturedBy = capturedBy;
-	}
-
-	public Set<Devotee> getCapturedDevotees() {
-		return capturedDevotees;
-	}
-
-	public void setCapturedDevotees(Set<Devotee> capturedDevotees) {
-		this.capturedDevotees = capturedDevotees;
-	}
-
+	@Column(name="books_read", nullable = true)
 	public String getBooksRead() {
 		return booksRead;
 	}
@@ -267,7 +218,8 @@ public class Devotee implements Serializable {
 		this.booksRead = booksRead;
 	}
 
-	public int getMonthlyContribution() {
+	@Column(name="monthly_contribution", nullable = true)
+	public Integer getMonthlyContribution() {
 		return monthlyContribution;
 	}
 
@@ -275,19 +227,12 @@ public class Devotee implements Serializable {
 		this.monthlyContribution = monthlyContribution;
 	}
 
+	@Column(name="siksha_level", nullable = true)
 	public String getSikshaLevel() {
 		return sikshaLevel;
 	}
 
 	public void setSikshaLevel(String sikshaLevel) {
 		this.sikshaLevel = sikshaLevel;
-	}
-
-	public Date getUpdateTimeStamp() {
-		return updateTimeStamp;
-	}
-
-	public void setUpdateTimeStamp(Date updateTimeStamp) {
-		this.updateTimeStamp = updateTimeStamp;
 	}
 }
