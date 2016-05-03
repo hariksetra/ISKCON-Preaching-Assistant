@@ -68,7 +68,7 @@ public class UserAccount implements Serializable {
 	}
 	
 	@OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-	@JoinColumn(name = "profile_id")
+	@JoinColumn(name = "profile_id", columnDefinition = "integer")
 	public Devotee getProfile() {
 		return profile;
 	}

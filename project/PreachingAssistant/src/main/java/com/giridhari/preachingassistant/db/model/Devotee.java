@@ -2,18 +2,22 @@ package com.giridhari.preachingassistant.db.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "devotee", catalog = "praeching_assistant")
+@Table(name = "devotee", catalog = "preaching_assistant")
 public class Devotee implements Serializable {
 	
 	/**
@@ -42,10 +46,11 @@ public class Devotee implements Serializable {
 	private String booksRead; //TODO: create a seperate table to maintain the list of books read
 	private Integer monthlyContribution;
 	private String sikshaLevel; //TODO: create an enum for siksha level
+	private Set<Program> programs;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="id", nullable = false)
+	@Column(name="id", columnDefinition = "integer", nullable = false)
 	public Long getId() {
 		return id;
 	}
@@ -234,5 +239,14 @@ public class Devotee implements Serializable {
 
 	public void setSikshaLevel(String sikshaLevel) {
 		this.sikshaLevel = sikshaLevel;
+	}
+	
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+	public Set<Program> getPrograms() {
+		return programs;
+	}
+	
+	public void setPrograms(Set<Program> programs) {
+		this.programs = programs;
 	}
 }
