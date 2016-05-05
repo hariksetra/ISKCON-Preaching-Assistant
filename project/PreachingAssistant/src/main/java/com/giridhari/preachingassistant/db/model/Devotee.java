@@ -256,7 +256,7 @@ public class Devotee implements Serializable {
 		this.userAccount = userAccount;
 	}
 	
-	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "id")
 	public Set<Program> getPrograms() {
 		return programs;
 	}
@@ -265,7 +265,7 @@ public class Devotee implements Serializable {
 		this.programs = programs;
 	}
 	
-	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy="id")
 	public Set<ProgramAssignment> getProgramAssignments() {
 		return programAssignments;
 	}
@@ -274,7 +274,7 @@ public class Devotee implements Serializable {
 		this.programAssignments = programAssignments;
 	}
 	
-	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy="id")
 	public Set<FollowUpAssignment> getFollowUpAssignments() {
 		return followUpAssignments;
 	}

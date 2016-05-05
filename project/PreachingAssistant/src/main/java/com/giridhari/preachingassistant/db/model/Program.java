@@ -60,7 +60,7 @@ public class Program implements Serializable {
 		this.mentor = mentor;
 	}
 	
-	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy="id")
 	public Set<FollowUpAssignment> getFollowUpAssignments() {
 		return followUpAssignments;
 	}
@@ -69,7 +69,7 @@ public class Program implements Serializable {
 		this.followUpAssignments = followUpAssignments;
 	}
 
-	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy="id")
 	public Set<ProgramAssignment> getProgramAssignments() {
 		return programAssignments;
 	}
