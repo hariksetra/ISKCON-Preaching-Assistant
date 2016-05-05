@@ -1,6 +1,7 @@
 package com.giridhari.preachingassistant.db.model;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -25,6 +27,8 @@ public class Program implements Serializable {
 	private Long id;
 	private String name;
 	private Devotee mentor;
+	private Set<FollowUpAssignment> followUpAssignments;
+	private Set<ProgramAssignment> programAssignments;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -56,4 +60,21 @@ public class Program implements Serializable {
 		this.mentor = mentor;
 	}
 	
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+	public Set<FollowUpAssignment> getFollowUpAssignments() {
+		return followUpAssignments;
+	}
+	
+	public void setFollowUpAssignments(Set<FollowUpAssignment> followUpAssignments) {
+		this.followUpAssignments = followUpAssignments;
+	}
+
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+	public Set<ProgramAssignment> getProgramAssignments() {
+		return programAssignments;
+	}
+	
+	public void setProgramAssignments(Set<ProgramAssignment> programAssignments) {
+		this.programAssignments = programAssignments;
+	}
 }

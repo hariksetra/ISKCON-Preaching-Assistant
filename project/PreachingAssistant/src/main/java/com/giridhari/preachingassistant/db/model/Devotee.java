@@ -11,7 +11,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -46,7 +48,10 @@ public class Devotee implements Serializable {
 	private String booksRead; //TODO: create a seperate table to maintain the list of books read
 	private Integer monthlyContribution;
 	private String sikshaLevel; //TODO: create an enum for siksha level
+	private UserAccount userAccount;
 	private Set<Program> programs;
+	private Set<ProgramAssignment> programAssignments;
+	private Set<FollowUpAssignment> followUpAssignments;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -241,6 +246,16 @@ public class Devotee implements Serializable {
 		this.sikshaLevel = sikshaLevel;
 	}
 	
+	@OneToOne(cascade = CascadeType.MERGE, optional = true, fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_account_id", columnDefinition = "integer")
+	public UserAccount getUserAccount() {
+		return userAccount;
+	}
+	
+	public void setUserAccount(UserAccount userAccount) {
+		this.userAccount = userAccount;
+	}
+	
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
 	public Set<Program> getPrograms() {
 		return programs;
@@ -248,5 +263,23 @@ public class Devotee implements Serializable {
 	
 	public void setPrograms(Set<Program> programs) {
 		this.programs = programs;
+	}
+	
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+	public Set<ProgramAssignment> getProgramAssignments() {
+		return programAssignments;
+	}
+	
+	public void setProgramAssignments(Set<ProgramAssignment> programAssignments) {
+		this.programAssignments = programAssignments;
+	}
+	
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+	public Set<FollowUpAssignment> getFollowUpAssignments() {
+		return followUpAssignments;
+	}
+	
+	public void setFollowUpAssignments(Set<FollowUpAssignment> followUpAssignments) {
+		this.followUpAssignments = followUpAssignments;
 	}
 }
