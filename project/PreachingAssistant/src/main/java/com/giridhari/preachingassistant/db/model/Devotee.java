@@ -52,6 +52,7 @@ public class Devotee implements Serializable {
 	private Set<Program> programs;
 	private Set<ProgramAssignment> programAssignments;
 	private Set<FollowUpAssignment> followUpAssignments;
+	private Set<FollowUp> followUps;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -281,5 +282,14 @@ public class Devotee implements Serializable {
 	
 	public void setFollowUpAssignments(Set<FollowUpAssignment> followUpAssignments) {
 		this.followUpAssignments = followUpAssignments;
+	}
+	
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "id")
+	public Set<FollowUp> getFollowUps() {
+		return followUps;
+	}
+	
+	public void setFollowUps(Set<FollowUp> followUps) {
+		this.followUps = followUps;
 	}
 }
