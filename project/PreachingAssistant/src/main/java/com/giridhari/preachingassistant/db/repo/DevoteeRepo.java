@@ -13,4 +13,8 @@ public interface DevoteeRepo extends Repository<Devotee, Long> {
 	
 	public Devotee save(Devotee devotee);
 	
+	public Devotee findOne(Long id);
+	
+	public void delete(Long id);
+	
 }

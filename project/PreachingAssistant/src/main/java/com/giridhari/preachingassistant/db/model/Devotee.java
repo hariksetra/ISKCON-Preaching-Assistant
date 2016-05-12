@@ -234,7 +234,7 @@ public class Devotee implements Serializable {
 		return monthlyContribution;
 	}
 
-	public void setMonthlyContribution(int monthlyContribution) {
+	public void setMonthlyContribution(Integer monthlyContribution) {
 		this.monthlyContribution = monthlyContribution;
 	}
 
