@@ -19,8 +19,9 @@ public class FollowUp {
 	private Devotee volunteer;
 	private Devotee attendee;
 	private FollowupStatus status;
-	private String response;
+	private String comment;
 	private Integer rating;
+//	private Date timestamp;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -62,13 +63,13 @@ public class FollowUp {
 		this.status = status;
 	}
 	
-	@Column(name = "response", nullable = true)
-	public String getResponse() {
-		return response;
+	@Column(name = "comment", nullable = true)
+	public String getComment() {
+		return comment;
 	}
 	
-	public void setResponse(String response) {
-		this.response = response;
+	public void setComment(String response) {
+		this.comment = response;
 	}
 	
 	@Column(name = "rating", columnDefinition = "integer", nullable = false)

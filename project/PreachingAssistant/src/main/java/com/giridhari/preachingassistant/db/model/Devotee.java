@@ -39,20 +39,21 @@ public class Devotee implements Serializable {
 	private String organization;
 	private String designation;
 	private IncomeScale incomeScale;
-	private String smsPhone; //TODO: Create a seperate table for phone numbers, whcih contains number, type of number eg:whatsapp or work, status eg: working or not working
+	private String smsPhone; //TODO: Create a separate table for phone numbers, which contains number, type of number eg:whatsapp or work, status eg: working or not working
 	private Date introDate;
 	private String area; //TODO: create a table for area later
 	private String address;
 	private String email;
 	private String capturedFor;
-	private String booksRead; //TODO: create a seperate table to maintain the list of books read
+	private String booksRead; //TODO: create a separate table to maintain the list of books read
 	private Integer monthlyContribution;
 	private String sikshaLevel; //TODO: create an enum for siksha level
 	private UserAccount userAccount;
 	private Set<Program> programs;
-	private Set<ProgramAssignment> programAssignments;
-	private Set<FollowUpAssignment> followUpAssignments;
-	private Set<FollowUp> followUps;
+	private Set<FollowUp> volunteeredFollowUps;
+	private Set<FollowUp> attendedFollowUps;
+	private Set<FollowUpAssignment> volunteeringFollowUps;
+	private Set<FollowUpAssignment> attendingFollowUps;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -102,7 +103,7 @@ public class Devotee implements Serializable {
 		this.gender = gender;
 	}
 
-	@Column(name="marital_status", nullable = false)
+	@Column(name="marital_status", nullable = true	)
 	public MaritalStatus getMaritalStatus() {
 		return maritalStatus;
 	}
@@ -156,7 +157,7 @@ public class Devotee implements Serializable {
 		this.designation = designation;
 	}
 
-	@Column(name="income_scale", nullable = false)
+	@Column(name="income_scale", nullable = true)
 	public IncomeScale getIncomeScale() {
 		return incomeScale;
 	}
@@ -257,7 +258,7 @@ public class Devotee implements Serializable {
 		this.userAccount = userAccount;
 	}
 	
-	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "id")
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "mentor")
 	public Set<Program> getPrograms() {
 		return programs;
 	}
@@ -266,30 +267,40 @@ public class Devotee implements Serializable {
 		this.programs = programs;
 	}
 	
-	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy="id")
-	public Set<ProgramAssignment> getProgramAssignments() {
-		return programAssignments;
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "volunteer")
+	public Set<FollowUp> getVolunteeredFollowUps() {
+		return volunteeredFollowUps;
 	}
 	
-	public void setProgramAssignments(Set<ProgramAssignment> programAssignments) {
-		this.programAssignments = programAssignments;
+	public void setVolunteeredFollowUps(Set<FollowUp> volunteeredFollowUps) {
+		this.volunteeredFollowUps = volunteeredFollowUps;
 	}
 	
-	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy="id")
-	public Set<FollowUpAssignment> getFollowUpAssignments() {
-		return followUpAssignments;
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "attendee")
+	public Set<FollowUp> getAttendedFollowUps() {
+		return attendedFollowUps;
 	}
 	
-	public void setFollowUpAssignments(Set<FollowUpAssignment> followUpAssignments) {
-		this.followUpAssignments = followUpAssignments;
+	public void setAttendedFollowUps(Set<FollowUp> attendedFollowUps) {
+		this.attendedFollowUps = attendedFollowUps;
 	}
 	
-	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "id")
-	public Set<FollowUp> getFollowUps() {
-		return followUps;
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "volunteer")
+	public Set<FollowUpAssignment> getVolunteeringFollowUps() {
+		return volunteeringFollowUps;
 	}
 	
-	public void setFollowUps(Set<FollowUp> followUps) {
-		this.followUps = followUps;
+	public void setVolunteeringFollowUps(Set<FollowUpAssignment> volunteeringFollowUps) {
+		this.volunteeringFollowUps = volunteeringFollowUps;
 	}
+
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "attendee")
+	public Set<FollowUpAssignment> getAttendingFollowUps() {
+		return attendingFollowUps;
+	}
+	
+	public void setAttendingFollowUps(Set<FollowUpAssignment> attendingFollowUps) {
+		this.attendingFollowUps = attendingFollowUps;
+	}
+	
 }
