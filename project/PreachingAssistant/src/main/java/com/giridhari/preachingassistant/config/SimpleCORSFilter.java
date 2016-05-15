@@ -20,9 +20,15 @@ public class SimpleCORSFilter implements Filter {
 
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
         HttpServletResponse response = (HttpServletResponse) res;
-        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT, OPTIONS");
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
         response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "x-requested-with, Content-Type");
+        response.setHeader("Access-Control-Allow-Headers", 
+        		"x-requested-with, "
+        		+ "Content-Type, Access-Control-Allow-Origin, "
+        		+ "Access-Control-Allow-Credentials, "
+        		+ "Access-Control-Allow-Methods, "
+        		+ "Access-Control-Max-Age");
+        response.setHeader("Access-Control-Allow-Origin", allowedOrigin);
         chain.doFilter(req, res);
     }
 
