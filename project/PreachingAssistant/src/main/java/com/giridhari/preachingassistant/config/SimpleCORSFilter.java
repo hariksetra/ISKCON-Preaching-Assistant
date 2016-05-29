@@ -27,7 +27,8 @@ public class SimpleCORSFilter implements Filter {
         		+ "Content-Type, Access-Control-Allow-Origin, "
         		+ "Access-Control-Allow-Credentials, "
         		+ "Access-Control-Allow-Methods, "
-        		+ "Access-Control-Max-Age");
+        		+ "Access-Control-Max-Age, "
+        		+ "Authorization");
         response.setHeader("Access-Control-Allow-Origin", allowedOrigin);
         chain.doFilter(req, res);
     }
