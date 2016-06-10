@@ -10,10 +10,8 @@ import org.springframework.stereotype.Repository;
 import com.giridhari.preachingassistant.db.model.Devotee;
 
 @Repository
-public interface DevoteeRepo extends PagingAndSortingRepository<Devotee, Long> {
-	
-	@Query("select d from Devotee d")
-	public Page<Devotee> findAll(Pageable pageable);
+public interface DevoteeRepo 
+	extends PagingAndSortingRepository<Devotee, Long> {
 	
 	@Query("select distinct d from Devotee d where "
 			+ "d.initiatedName = ?1 or d.legalName = ?1 "
@@ -22,5 +20,6 @@ public interface DevoteeRepo extends PagingAndSortingRepository<Devotee, Long> {
 	public Page<Devotee> findByQuery(
 			@Param(value = "query") String query, 
 			Pageable pageable);
+	
 	
 }
