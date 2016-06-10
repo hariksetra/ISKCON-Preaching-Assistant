@@ -28,6 +28,7 @@ public class UserAccount implements Serializable {
 	private String password;
 	private Type type;
 	private Devotee profile;
+	private Boolean enabled;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -75,6 +76,15 @@ public class UserAccount implements Serializable {
 	
 	public void setProfile(Devotee profile) {
 		this.profile = profile;
+	}
+	
+	@Column(name = "enabled", nullable = false)
+	public Boolean getEnabled() {
+		return enabled;
+	}
+	
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 	
 }

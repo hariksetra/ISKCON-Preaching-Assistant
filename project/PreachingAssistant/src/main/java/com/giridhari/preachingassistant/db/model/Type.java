@@ -1,6 +1,8 @@
 package com.giridhari.preachingassistant.db.model;
 
-public enum Type {
+import org.springframework.security.core.GrantedAuthority;
+
+public enum Type implements GrantedAuthority {
 	
 	MEMBER("MEMBER"),
 	ADMIN("ADMIN");
@@ -13,6 +15,11 @@ public enum Type {
 	
 	@Override
 	public String toString() {
+		return this.type;
+	}
+
+	@Override
+	public String getAuthority() {
 		return this.type;
 	}
 

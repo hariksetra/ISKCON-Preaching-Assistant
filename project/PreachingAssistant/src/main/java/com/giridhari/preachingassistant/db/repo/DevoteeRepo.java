@@ -21,5 +21,4 @@ public interface DevoteeRepo
 			@Param(value = "query") String query, 
 			Pageable pageable);
 	
-	
 }
