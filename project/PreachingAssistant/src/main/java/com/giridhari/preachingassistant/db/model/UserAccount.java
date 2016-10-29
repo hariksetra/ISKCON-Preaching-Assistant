@@ -46,7 +46,7 @@ public class UserAccount implements Serializable {
 		this.id = id;
 	}
 	
-	@Column(name = "username", nullable = false)
+	@Column(name = "username", nullable = false, unique = true)
 	public String getUsername() {
 		return username;
 	}
