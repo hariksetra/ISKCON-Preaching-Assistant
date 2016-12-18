@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -41,6 +42,9 @@ public class Devotee implements Serializable {
 	private IncomeScale incomeScale;
 	private String smsPhone; //TODO: Create a separate table for phone numbers, which contains number, type of number eg:whatsapp or work, status eg: working or not working
 	private Date introDate;
+	private String preferredLanguage;
+	private String description;
+	private Devotee capturedBy;
 	private String area; //TODO: create a table for area later
 	private String address;
 	private String email;
@@ -49,6 +53,7 @@ public class Devotee implements Serializable {
 	private Integer monthlyContribution;
 	private String sikshaLevel; //TODO: create an enum for siksha level
 	private UserAccount userAccount;
+	private Set<Devotee> capturedDevotees;
 	private Set<Program> programs;
 	private Set<FollowUp> volunteeredFollowUps;
 	private Set<FollowUp> attendedFollowUps;
@@ -184,6 +189,34 @@ public class Devotee implements Serializable {
 	public void setIntroDate(Date introDate) {
 		this.introDate = introDate;
 	}
+	
+	@Column(name = "preferred_lang", length = 50, nullable = true)
+	public String getPreferredLanguage() {
+		return preferredLanguage;
+	}
+	
+	public void setPreferredLanguage(String preferredLanguage) {
+		this.preferredLanguage = preferredLanguage;
+	}
+	
+	@Column(name = "description", nullable = true)
+	public String getDescription() {
+		return description;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	@ManyToOne(optional =true, targetEntity = Devotee.class, cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+	@JoinColumn(name = "captured_by", columnDefinition = "integer", nullable = true)
+	public Devotee getCapturedBy() {
+		return capturedBy;
+	}
+	
+	public void setCapturedBy(Devotee capturedBy) {
+		this.capturedBy = capturedBy;
+	}
 
 	@Column(name="area", nullable = false)
 	public String getArea() {
@@ -256,6 +289,15 @@ public class Devotee implements Serializable {
 	
 	public void setUserAccount(UserAccount userAccount) {
 		this.userAccount = userAccount;
+	}
+	
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "capturedBy")
+	public Set<Devotee> getCapturedDevotees() {
+		return capturedDevotees;
+	}
+	
+	public void setCapturedDevotees(Set<Devotee> capturedDevotees) {
+		this.capturedDevotees = capturedDevotees;
 	}
 	
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "mentor")

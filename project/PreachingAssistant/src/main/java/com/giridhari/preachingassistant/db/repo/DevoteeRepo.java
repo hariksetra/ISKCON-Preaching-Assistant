@@ -22,6 +22,6 @@ public interface DevoteeRepo
 			Pageable pageable);
 	
 	@Query("select distinct d from Devotee d where d not in (select distinct pa.attendee from ProgramAssignment pa)")
-	public Page<Devotee> unassignedDevotees(Pageable pageable); 
+	public Page<Devotee> unassignedDevotees(Pageable pageable);
 	
 }
