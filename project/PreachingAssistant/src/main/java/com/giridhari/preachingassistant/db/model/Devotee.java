@@ -18,9 +18,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "devotee", catalog = "preaching_assistant")
+@Table(name = "devotee", catalog = "preaching_assistant",
+		uniqueConstraints=@UniqueConstraint(columnNames={"sms_phone"}))
 public class Devotee implements Serializable {
 	
 	/**
@@ -180,8 +182,8 @@ public class Devotee implements Serializable {
 		this.smsPhone = smsPhone;
 	}
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="intro_date", columnDefinition="date", nullable = true)
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="intro_date", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP ", nullable = false, insertable = false, updatable = false)
 	public Date getIntroDate() {
 		return introDate;
 	}
