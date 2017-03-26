@@ -20,6 +20,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
+import com.giridhari.preachingassistant.model.Gender;
+import com.giridhari.preachingassistant.model.IncomeScale;
+import com.giridhari.preachingassistant.model.MaritalStatus;
+
 @Entity
 @Table(name = "devotee", catalog = "preaching_assistant",
 		uniqueConstraints=@UniqueConstraint(columnNames={"sms_phone"}))

@@ -7,10 +7,14 @@ import javax.annotation.Resource;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.giridhari.preachingassistant.db.model.Devotee;
+import com.giridhari.preachingassistant.db.model.mapper.DevoteeMapper;
+import com.giridhari.preachingassistant.rest.model.devotee.DevoteeDetailResponseEntity;
 import com.giridhari.preachingassistant.rest.model.devotee.DevoteeOverviewEntity;
+import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
 import com.giridhari.preachingassistant.rest.model.response.BaseListReponse;
 import com.giridhari.preachingassistant.service.DevoteeService;
 
@@ -26,16 +30,18 @@ public class DevoteeController {
 		List<Devotee> devoteeList = devoteeService.list();
 		List<DevoteeOverviewEntity> responseData = new ArrayList<>();
 		for(Devotee devotee: devoteeList) {
-			DevoteeOverviewEntity devoteeOverviewEntity = new DevoteeOverviewEntity();
-			devoteeOverviewEntity.setId(devotee.getId());
-			devoteeOverviewEntity.setName(devotee.getLegalName());
-			devoteeOverviewEntity.setPhone(devotee.getSmsPhone());
-			devoteeOverviewEntity.setIntroDate(devotee.getIntroDate());
-			devoteeOverviewEntity.setPreferredLanguage(devotee.getPreferredLanguage());
+			DevoteeOverviewEntity devoteeOverviewEntity = DevoteeMapper.convertToDevoteeOverviewEntity(devotee);
 			responseData.add(devoteeOverviewEntity);
 		}
 		response.setData(responseData);
 		return response;
+	}
+	
+	@RequestMapping(name = "/devotees/{id}", method = RequestMethod.GET)
+	public BaseDataResponse get(@RequestParam("id") long devoteeId) {
+		Devotee devotee = devoteeService.get(devoteeId);		
+		DevoteeDetailResponseEntity responseData = DevoteeMapper.convertToDevoteeDetailResponseEntity(devotee);		
+		return new BaseDataResponse(responseData);
 	}
 	
 }
