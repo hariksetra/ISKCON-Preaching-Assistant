@@ -1,0 +1,2 @@
+include ':PreachingAssistantModels'
+project(':PreachingAssistantModels').projectDir = new File(settingsDir, '../PreachingAssistantModels')
