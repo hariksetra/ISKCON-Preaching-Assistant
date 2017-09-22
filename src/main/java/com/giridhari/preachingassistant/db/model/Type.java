@@ -3,8 +3,9 @@ package com.giridhari.preachingassistant.db.model;
 import org.springframework.security.core.GrantedAuthority;
 
 public enum Type implements GrantedAuthority {
-	
-	MEMBER("MEMBER"),
+	DEVOTEE("DEVOTEE"),
+	MENTOR("MENTOR"),
+	YATRA_ADMIN("YATRA_ADMIN"),
 	ADMIN("ADMIN");
 	
 	private String type;

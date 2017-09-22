@@ -2,6 +2,8 @@ package com.giridhari.preachingassistant.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.giridhari.preachingassistant.db.model.Devotee;
@@ -18,5 +20,7 @@ public interface DevoteeService {
 	public void update(Devotee devotee);
 	
 	public void delete(long devoteeId);
+	
+	public Page<Devotee> searchDevotees(String query, Pageable pageable);
 
 }

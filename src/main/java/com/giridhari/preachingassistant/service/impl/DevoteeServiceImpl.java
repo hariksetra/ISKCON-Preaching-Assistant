@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.giridhari.preachingassistant.db.model.Devotee;
@@ -40,6 +42,11 @@ public class DevoteeServiceImpl implements DevoteeService {
 	@Override
 	public void delete(long devoteeId) {
 		devoteeRepo.delete(devoteeId);
+	}
+
+	@Override
+	public Page<Devotee> searchDevotees(String query, Pageable pageable) {
+		return devoteeRepo.findByQuery(query, pageable);
 	}
 	
 }
