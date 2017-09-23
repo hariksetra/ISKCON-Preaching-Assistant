@@ -105,7 +105,7 @@ public class Devotee implements Serializable {
 		this.dob = dob;
 	}
 
-	@Column(name="gender", nullable = false)
+	@Column(name="gender", nullable = true)
 	public Gender getGender() {
 		return gender;
 	}
@@ -177,7 +177,7 @@ public class Devotee implements Serializable {
 		this.incomeScale = incomeScale;
 	}
 
-	@Column(name="sms_phone", nullable = false)
+	@Column(name="sms_phone", nullable = true)
 	public String getSmsPhone() {
 		return smsPhone;
 	}
@@ -224,7 +224,7 @@ public class Devotee implements Serializable {
 		this.capturedBy = capturedBy;
 	}
 
-	@Column(name="area", nullable = false)
+	@Column(name="area", nullable = true)
 	public String getArea() {
 		return area;
 	}
