@@ -7,3 +7,6 @@
 *.class
 /build/
 /bin/
+build.gradle
+gradle/wrapper/gradle-wrapper.properties
+src/test/java/com/giridhari/preachingassistant/PreachingAssistantApplicationTests.java
