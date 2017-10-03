@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import com.giridhari.preachingassistant.db.model.Devotee;
 
+import java.util.List;
+
 @Repository
 public interface DevoteeRepo 
 	extends PagingAndSortingRepository<Devotee, Long> {
@@ -20,6 +22,11 @@ public interface DevoteeRepo
 	public Page<Devotee> findByQuery(
 			@Param(value = "query") String query, 
 			Pageable pageable);
+	
+	
+	@Query("select distinct d from Devotee d where d.capturedBy.id = ?1")
+	public List<Devotee> findByCapturedBy(
+			@Param(value = "captured_by") long devoteeId);
 	
 	@Query("select distinct d from Devotee d where d not in (select distinct pa.attendee from ProgramAssignment pa)")
 	public Page<Devotee> unassignedDevotees(Pageable pageable);

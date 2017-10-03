@@ -63,5 +63,17 @@ public class DevoteeController {
 		DevoteeDetailResponseEntity responseData = DevoteeMapper.convertToDevoteeDetailResponseEntity(devotee);
 		return responseData;
 	}
-
+	
+	@RequestMapping(name = "myCapturedList", value="/my_captured_list/{id}", method = RequestMethod.GET)
+	public BaseListReponse list(@PathVariable("id") long devoteeId) {
+		BaseListReponse response = new BaseListReponse();
+		List<Devotee> devoteeList = devoteeService.getMyCapturedList(devoteeId);
+		List<DevoteeOverviewEntity> responseData = new ArrayList<>();
+		for(Devotee devotee: devoteeList) {
+			DevoteeOverviewEntity devoteeOverviewEntity = DevoteeMapper.convertToDevoteeOverviewEntity(devotee);
+			responseData.add(devoteeOverviewEntity);
+		}
+		response.setData(responseData);
+		return response;
+	}
 }

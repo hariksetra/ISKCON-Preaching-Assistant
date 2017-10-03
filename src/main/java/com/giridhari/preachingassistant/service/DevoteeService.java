@@ -21,6 +21,8 @@ public interface DevoteeService {
 	
 	public void delete(long devoteeId);
 	
+	public List<Devotee> getMyCapturedList (long devoteeId);
+	
 	public Page<Devotee> searchDevotees(String query, Pageable pageable);
 
 }
