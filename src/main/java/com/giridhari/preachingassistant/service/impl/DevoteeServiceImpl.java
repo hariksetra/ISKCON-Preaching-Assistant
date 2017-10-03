@@ -43,6 +43,11 @@ public class DevoteeServiceImpl implements DevoteeService {
 	public void delete(long devoteeId) {
 		devoteeRepo.delete(devoteeId);
 	}
+	
+	@Override
+	public List<Devotee> getMyCapturedList(long devoteeId) {
+		return (List<Devotee>) CollectionUtils.makeCollection(devoteeRepo.findByCapturedBy(devoteeId));
+	}
 
 	@Override
 	public Page<Devotee> searchDevotees(String query, Pageable pageable) {
