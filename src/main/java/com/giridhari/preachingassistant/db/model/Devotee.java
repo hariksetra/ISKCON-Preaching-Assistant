@@ -65,6 +65,9 @@ public class Devotee implements Serializable {
 	private Set<FollowUp> attendedFollowUps;
 	private Set<FollowUpAssignment> volunteeringFollowUps;
 	private Set<FollowUpAssignment> attendingFollowUps;
+	private Set<ImportantDate> importantDates;
+	private Set<DevoteeHistory> devoteeHistory;
+	private Set<FollowUpVolunteer> followUps;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -349,6 +352,33 @@ public class Devotee implements Serializable {
 	
 	public void setAttendingFollowUps(Set<FollowUpAssignment> attendingFollowUps) {
 		this.attendingFollowUps = attendingFollowUps;
+	}
+
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "devotee")
+	public Set<ImportantDate> getImportantDates() {
+		return importantDates;
+	}
+	
+	public void setImportantDates(Set<ImportantDate> importantDates) {
+		this.importantDates = importantDates;
+	}
+
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "devotee")
+	public Set<DevoteeHistory> getDevoteeHistory() {
+		return devoteeHistory;
+	}
+	
+	public void setDevoteeHistory(Set<DevoteeHistory> devoteeHistory) {
+		this.devoteeHistory = devoteeHistory;
+	}
+
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "devotee")
+	public Set<FollowUpVolunteer> getFollowUpHistory() {
+		return followUps;
+	}
+	
+	public void setFollowUpHistory(Set<FollowUpVolunteer> followUps) {
+		this.followUps = followUps;
 	}
 	
 }
