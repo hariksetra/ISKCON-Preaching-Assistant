@@ -46,11 +46,11 @@ public class DevoteeHistoryController {
 		return new BaseDataResponse(responseData);
 	}
 	
-	@RequestMapping(name = "devoteeHistoryDetailByDevotee", value="/devoteeHistoryByDevotee/{id}", method = RequestMethod.GET)
-	public BaseListResponse getByDevoteeId(@PathVariable("id") long devoteeId) {
+	@RequestMapping(name = "devoteeHistoryDetailByRatedDevotee", value="/devoteeHistoryByRatedDevotee/{id}", method = RequestMethod.GET)
+	public BaseListResponse getByDevoteeId(@PathVariable("id") long ratedDevoteeId) {
 		BaseListResponse response = new BaseListResponse();
 		List<DevoteeHistoryDetailResponseEntity> responseData = new ArrayList<>();
-		List<DevoteeHistory> devoteeHistoryList = devoteeHistoryService.getByDevoteeId(devoteeId);
+		List<DevoteeHistory> devoteeHistoryList = devoteeHistoryService.getByRatedDevoteeId(ratedDevoteeId);
 		for(DevoteeHistory devoteeHistory: devoteeHistoryList)
 		{
 			DevoteeHistoryDetailResponseEntity devoteeHistoryDetailResponseEntity = DevoteeHistoryMapper.convertToDevoteeHistoryDetailResponseEntity(devoteeHistory);
@@ -60,11 +60,11 @@ public class DevoteeHistoryController {
 		return response;
 	}
 	
-	@RequestMapping(name = "devoteeHistoryDetailByFollowUpVolunteer", value="/devoteeHistoryByFollowUpVolunteer/{id}", method = RequestMethod.GET)
-	public BaseListResponse getByFollowUpVolunteerId(@PathVariable("id") long followUpVolunteerId) {
+	@RequestMapping(name = "devoteeHistoryDetailByCommentedByDevotee", value="/devoteeHistoryByCommentedByDevotee/{id}", method = RequestMethod.GET)
+	public BaseListResponse getByFollowUpVolunteerId(@PathVariable("id") long commentedByDevoteeId) {
 		BaseListResponse response = new BaseListResponse();
 		List<DevoteeHistoryDetailResponseEntity> responseData = new ArrayList<>();
-		List<DevoteeHistory> devoteeHistoryList = devoteeHistoryService.getByFollowUpVolunteerId(followUpVolunteerId);
+		List<DevoteeHistory> devoteeHistoryList = devoteeHistoryService.getByCommentedByDevoteeId(commentedByDevoteeId);
 		for(DevoteeHistory devoteeHistory: devoteeHistoryList)
 		{
 			DevoteeHistoryDetailResponseEntity devoteeHistoryDetailResponseEntity = DevoteeHistoryMapper.convertToDevoteeHistoryDetailResponseEntity(devoteeHistory);
@@ -90,5 +90,11 @@ public class DevoteeHistoryController {
 		devoteeHistoryService.update(devoteeHistory);
 		DevoteeHistoryDetailResponseEntity responseData = DevoteeHistoryMapper.convertToDevoteeHistoryDetailResponseEntity(devoteeHistory);
 		return responseData;
+	}
+	
+	@RequestMapping(name="devoteeHistoryDelete", value="/devoteeHistory/{id}", method=RequestMethod.DELETE)
+	public void delete(@PathVariable("id") long devoteeHistoryId)
+	{
+		devoteeHistoryService.delete(devoteeHistoryId);
 	}
 }

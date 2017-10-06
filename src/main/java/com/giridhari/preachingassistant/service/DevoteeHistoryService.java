@@ -13,9 +13,9 @@ public interface DevoteeHistoryService {
 	
 	public DevoteeHistory getById(long devoteeHistoryId);
 	
-	public List<DevoteeHistory> getByDevoteeId(long devoteeId);
+	public List<DevoteeHistory> getByRatedDevoteeId(long ratedDevoteeId);
 	
-	public List<DevoteeHistory> getByFollowUpVolunteerId(long followUpVolunteerId);
+	public List<DevoteeHistory> getByCommentedByDevoteeId(long commentedByDevoteeId);
 	
 	public void create(DevoteeHistory devoteeHistory);
 	

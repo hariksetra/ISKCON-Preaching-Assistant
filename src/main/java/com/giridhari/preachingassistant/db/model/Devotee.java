@@ -68,7 +68,8 @@ public class Devotee implements Serializable {
 	private Set<FollowUpAssignment> volunteeringFollowUps;
 	private Set<FollowUpAssignment> attendingFollowUps;
 	private Set<ImportantDate> importantDates;
-	private Set<DevoteeHistory> devoteeHistory;
+	private Set<DevoteeHistory> ratedDevoteeHistory;
+	private Set<DevoteeHistory> commentedByDevoteeHistory;
 	private Set<FollowUpVolunteer> followUps;
 
 	@Id
@@ -383,13 +384,22 @@ public class Devotee implements Serializable {
 		this.importantDates = importantDates;
 	}
 
-	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "devotee")
-	public Set<DevoteeHistory> getDevoteeHistory() {
-		return devoteeHistory;
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "ratedDevotee")
+	public Set<DevoteeHistory> getRatedDevoteeHistory() {
+		return ratedDevoteeHistory;
 	}
 	
-	public void setDevoteeHistory(Set<DevoteeHistory> devoteeHistory) {
-		this.devoteeHistory = devoteeHistory;
+	public void setRatedDevoteeHistory(Set<DevoteeHistory> ratedDevoteeHistory) {
+		this.ratedDevoteeHistory = ratedDevoteeHistory;
+	}
+	
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "commentedByDevotee")
+	public Set<DevoteeHistory> getCommentedByDevoteeHistory() {
+		return commentedByDevoteeHistory;
+	}
+
+	public void setCommentedByDevoteeHistory(Set<DevoteeHistory> commentedByDevoteeHistory) {
+		this.commentedByDevoteeHistory = commentedByDevoteeHistory;
 	}
 
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "devotee")

@@ -1,7 +1,6 @@
 package com.giridhari.preachingassistant.db.model.mapper;
 
 import com.giridhari.preachingassistant.db.model.Devotee;
-import com.giridhari.preachingassistant.db.model.FollowUpVolunteer;
 import com.giridhari.preachingassistant.db.model.DevoteeHistory;
 import com.giridhari.preachingassistant.db.model.Response;
 import com.giridhari.preachingassistant.rest.model.devoteehistory.DevoteeHistoryDetailRequestEntity;
@@ -20,10 +19,10 @@ public class DevoteeHistoryMapper {
 		if(devoteeHistory.getResponse() != null)
 			responseData.setResponse(devoteeHistory.getResponse().toString());
 		responseData.setTimeStamp(devoteeHistory.getTimeStamp());
-		if(devoteeHistory.getDevotee() != null)
-			responseData.setDevoteeId(devoteeHistory.getDevotee().getId());
-		if(devoteeHistory.getFollowUpVolunteer() != null)
-			responseData.setFollowUpVolunteerId(devoteeHistory.getFollowUpVolunteer().getId());
+		if(devoteeHistory.getRatedDevotee() != null)
+			responseData.setRatedDevoteeId(devoteeHistory.getRatedDevotee().getId());
+		if(devoteeHistory.getCommentedByDevotee() != null)
+			responseData.setCommentedByDevoteeId(devoteeHistory.getCommentedByDevotee().getId());
 		
 		return responseData;
 	}
@@ -41,19 +40,18 @@ public class DevoteeHistoryMapper {
 		}
 		if(requestData.getTimeStamp()!=null)
 			devoteeHistory.setTimeStamp(devoteeHistory.getTimeStamp());
-		if(requestData.getDevoteeId()!=null)
+		if(requestData.getRatedDevoteeId()!=null)
 		{
 			Devotee devotee = new Devotee();
-			devotee.setId(requestData.getDevoteeId());
-			devoteeHistory.setDevotee(devotee);
+			devotee.setId(requestData.getRatedDevoteeId());
+			devoteeHistory.setRatedDevotee(devotee);
 		}
-		if(requestData.getFollowUpVolunteerId()!=null)
+		if(requestData.getCommentedByDevoteeId()!=null)
 		{
-			FollowUpVolunteer followUpVolunteer = new FollowUpVolunteer();
-			followUpVolunteer.setId(requestData.getFollowUpVolunteerId());
-			devoteeHistory.setFollowUpVolunteer(followUpVolunteer);
+			Devotee devotee = new Devotee();
+			devotee.setId(requestData.getCommentedByDevoteeId());
+			devoteeHistory.setCommentedByDevotee(devotee);
 		}
-		
 	}
 	
 }

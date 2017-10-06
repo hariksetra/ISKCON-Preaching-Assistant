@@ -20,7 +20,6 @@ public class FollowUpVolunteer {
 	private Long id;
 	private Program program;
 	private Devotee devotee;
-	private Set<DevoteeHistory> devoteeHistory;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -49,15 +48,6 @@ public class FollowUpVolunteer {
 	
 	public void setDevotee(Devotee devotee) {
 		this.devotee = devotee;
-	}
-
-	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "followUpVolunteer")
-	public Set<DevoteeHistory> getDevoteeHistory() {
-		return devoteeHistory;
-	}
-	
-	public void setDevoteeHistory(Set<DevoteeHistory> devoteeHistory) {
-		this.devoteeHistory = devoteeHistory;
 	}
 	
 }

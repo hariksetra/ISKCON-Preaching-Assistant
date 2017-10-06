@@ -19,8 +19,8 @@ import javax.persistence.TemporalType;
 public class DevoteeHistory {
 
 	private Long id;
-	private FollowUpVolunteer followUpVolunteer;
-	private Devotee devotee;
+	private Devotee commentedByDevotee;
+	private Devotee ratedDevotee;
 	private Integer rating;
 	private Response response;
 	private String comment;
@@ -36,25 +36,25 @@ public class DevoteeHistory {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	@ManyToOne(optional = false, targetEntity = FollowUpVolunteer.class, cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	public FollowUpVolunteer getFollowUpVolunteer() {
-		return followUpVolunteer;
+	
+	@ManyToOne(optional = false, targetEntity = Devotee.class, cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	public Devotee getCommentedByDevotee() {
+		return commentedByDevotee;
 	}
 
-	public void setFollowUpVolunteer(FollowUpVolunteer followUpVolunteer) {
-		this.followUpVolunteer = followUpVolunteer;
+	public void setCommentedByDevotee(Devotee commentedByDevotee) {
+		this.commentedByDevotee = commentedByDevotee;
 	}
 
 	@ManyToOne(optional = false, targetEntity = Devotee.class, cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	public Devotee getDevotee() {
-		return devotee;
+	public Devotee getRatedDevotee() {
+		return ratedDevotee;
 	}
 
-	public void setDevotee(Devotee devotee) {
-		this.devotee = devotee;
+	public void setRatedDevotee(Devotee ratedDevotee) {
+		this.ratedDevotee = ratedDevotee;
 	}
-
+	
 	@Column(name = "rating", columnDefinition = "integer", nullable = true)
 	public Integer getRating() {
 		return rating;

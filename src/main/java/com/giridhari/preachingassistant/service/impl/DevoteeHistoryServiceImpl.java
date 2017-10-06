@@ -29,15 +29,15 @@ public class DevoteeHistoryServiceImpl implements DevoteeHistoryService{
 	}
 	
 	@Override
-	public List<DevoteeHistory> getByDevoteeId(long devoteeId)
+	public List<DevoteeHistory> getByRatedDevoteeId(long ratedDevoteeId)
 	{
-		return devoteeHistoryRepo.findByDevotee_id(devoteeId);
+		return devoteeHistoryRepo.findByRatedDevotee_id(ratedDevoteeId);
 	}
 	
 	@Override
-	public List<DevoteeHistory> getByFollowUpVolunteerId(long followUpVolunteerId)
+	public List<DevoteeHistory> getByCommentedByDevoteeId(long commentedByDevoteeId)
 	{
-		return devoteeHistoryRepo.findByFollowUpVolunteer_id(followUpVolunteerId);
+		return devoteeHistoryRepo.findByCommentedByDevotee_id(commentedByDevoteeId);
 	}
 	
 	@Override
@@ -53,8 +53,8 @@ public class DevoteeHistoryServiceImpl implements DevoteeHistoryService{
 	}
 	
 	@Override
-	public void delete(long devoteeHistory)
+	public void delete(long devoteeHistoryId)
 	{
-		devoteeHistoryRepo.delete(devoteeHistory);
+		devoteeHistoryRepo.delete(devoteeHistoryId);
 	}
 }
