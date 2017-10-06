@@ -53,6 +53,8 @@ public class Devotee implements Serializable {
 	private Devotee capturedBy;
 	private String area; //TODO: create a table for area later
 	private String address;
+	private String postalCode;
+	private String country;
 	private String email;
 	private String capturedFor;
 	private String booksRead; //TODO: create a separate table to maintain the list of books read
@@ -243,6 +245,24 @@ public class Devotee implements Serializable {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+	
+	@Column(name="postal_code", nullable = true)
+	public String getPostalCode() {
+		return postalCode;
+	}
+
+	public void setPostalCode(String postalCode) {
+		this.postalCode = postalCode;
+	}
+
+	@Column(name="country", nullable = true)
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
 	}
 
 	@Column(name="email", nullable = true)

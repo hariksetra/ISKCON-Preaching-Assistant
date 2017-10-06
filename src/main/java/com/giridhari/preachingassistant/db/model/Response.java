@@ -17,6 +17,10 @@ public enum Response {
 		this.response = response;
 	}
 	
+	public void setResponse(String response) {
+		this.response = response;
+	}
+
 	public String getResponse() {
 		return this.response;
 	}

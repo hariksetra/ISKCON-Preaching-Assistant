@@ -11,8 +11,11 @@ public class DevoteeMapper {
 		DevoteeDetailResponseEntity responseData = new DevoteeDetailResponseEntity();
 		responseData.setAddress(devotee.getAddress());
 		responseData.setArea(devotee.getArea());
+		responseData.setCountry(devotee.getCountry());
+		responseData.setPostalCode(devotee.getPostalCode());
 		responseData.setBooksRead(devotee.getBooksRead());
-		responseData.setCapturedBy(devotee.getCapturedBy().getId());
+		if(devotee.getCapturedBy() != null)
+			responseData.setCapturedBy(devotee.getCapturedBy().getId());
 		responseData.setCapturedFor(devotee.getCapturedFor());
 		responseData.setDescription(devotee.getDescription());
 		responseData.setDesignation(devotee.getDesignation());
@@ -63,7 +66,13 @@ public class DevoteeMapper {
 
 		if (requestData.getArea() != null)
 			devotee.setArea(requestData.getArea());
-
+		
+		if(requestData.getCountry() != null)
+			devotee.setCountry(requestData.getCountry());
+		
+		if(requestData.getPostalCode() != null)
+			devotee.setPostalCode(requestData.getPostalCode());
+		
 		if (requestData.getCapturedBy() != null) {
 			Devotee capturedBy = new Devotee();
 			capturedBy.setId(requestData.getCapturedBy());

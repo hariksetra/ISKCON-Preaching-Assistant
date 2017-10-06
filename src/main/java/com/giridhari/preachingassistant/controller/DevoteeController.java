@@ -17,7 +17,7 @@ import com.giridhari.preachingassistant.rest.model.devotee.DevoteeDetailRequestE
 import com.giridhari.preachingassistant.rest.model.devotee.DevoteeDetailResponseEntity;
 import com.giridhari.preachingassistant.rest.model.devotee.DevoteeOverviewEntity;
 import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
-import com.giridhari.preachingassistant.rest.model.response.BaseListReponse;
+import com.giridhari.preachingassistant.rest.model.response.BaseListResponse;
 import com.giridhari.preachingassistant.service.DevoteeService;
 
 @RestController
@@ -27,8 +27,8 @@ public class DevoteeController {
 	private DevoteeService devoteeService;
 
 	@RequestMapping(name = "/devotees", value="/devotees", method = RequestMethod.GET)
-	public BaseListReponse list() {
-		BaseListReponse response = new BaseListReponse();
+	public BaseListResponse list() {
+		BaseListResponse response = new BaseListResponse();
 		List<Devotee> devoteeList = devoteeService.list();
 		List<DevoteeOverviewEntity> responseData = new ArrayList<>();
 		for(Devotee devotee: devoteeList) {
@@ -65,8 +65,8 @@ public class DevoteeController {
 	}
 	
 	@RequestMapping(name = "myCapturedList", value="/my_captured_list/{id}", method = RequestMethod.GET)
-	public BaseListReponse list(@PathVariable("id") long devoteeId) {
-		BaseListReponse response = new BaseListReponse();
+	public BaseListResponse list(@PathVariable("id") long devoteeId) {
+		BaseListResponse response = new BaseListResponse();
 		List<Devotee> devoteeList = devoteeService.getMyCapturedList(devoteeId);
 		List<DevoteeOverviewEntity> responseData = new ArrayList<>();
 		for(Devotee devotee: devoteeList) {
