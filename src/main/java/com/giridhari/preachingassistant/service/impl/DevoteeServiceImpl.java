@@ -54,4 +54,13 @@ public class DevoteeServiceImpl implements DevoteeService {
 		return devoteeRepo.findByQuery(query, pageable);
 	}
 	
+	@Override
+	public String getDisplayName(Devotee devotee) {
+		if (devotee.getInitiatedName() != null && devotee.getInitiatedName() != "") {
+			return devotee.getInitiatedName();
+		} else {
+			return devotee.getLegalName();
+		}
+	}
+	
 }

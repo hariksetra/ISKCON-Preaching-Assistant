@@ -24,5 +24,7 @@ public interface DevoteeService {
 	public List<Devotee> getMyCapturedList (long devoteeId);
 	
 	public Page<Devotee> searchDevotees(String query, Pageable pageable);
+	
+	public String getDisplayName(Devotee devotee);
 
 }

@@ -9,12 +9,16 @@ import org.springframework.stereotype.Service;
 import com.giridhari.preachingassistant.db.model.DevoteeHistory;
 import com.giridhari.preachingassistant.db.repo.DevoteeHistoryRepo;
 import com.giridhari.preachingassistant.service.DevoteeHistoryService;
+import com.giridhari.preachingassistant.service.DevoteeService;
 
 @Service
 public class DevoteeHistoryServiceImpl implements DevoteeHistoryService{
 
 	@Resource
 	DevoteeHistoryRepo devoteeHistoryRepo;
+	
+	@Resource
+	DevoteeService devoteeService;
 	
 	@Override
 	public List<DevoteeHistory> list()
@@ -56,5 +60,23 @@ public class DevoteeHistoryServiceImpl implements DevoteeHistoryService{
 	public void delete(long devoteeHistoryId)
 	{
 		devoteeHistoryRepo.delete(devoteeHistoryId);
+	}
+	
+	@Override
+	public String getCommentedByDevoteeName(DevoteeHistory devoteeHistory) {
+		String commentedByDevoteeName;
+		if (devoteeHistory.getCommentedByDevotee() != null) {
+			commentedByDevoteeName = devoteeService.getDisplayName(devoteeHistory.getCommentedByDevotee());
+		} else commentedByDevoteeName = "";
+		return commentedByDevoteeName;
+	}
+	
+	@Override
+	public String getRatedByDevoteeName(DevoteeHistory devoteeHistory) {
+		String ratedDevoteeName;
+		if (devoteeHistory.getRatedDevotee() != null) {
+			ratedDevoteeName = devoteeService.getDisplayName(devoteeHistory.getRatedDevotee());
+		} else ratedDevoteeName = "";
+		return ratedDevoteeName;
 	}
 }

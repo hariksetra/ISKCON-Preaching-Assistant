@@ -9,7 +9,8 @@ import com.giridhari.preachingassistant.rest.model.devoteehistory.DevoteeHistory
 
 public class DevoteeHistoryMapper {
 	
-	public static DevoteeHistoryDetailResponseEntity convertToDevoteeHistoryDetailResponseEntity(DevoteeHistory devoteeHistory) 
+	public static DevoteeHistoryDetailResponseEntity convertToDevoteeHistoryDetailResponseEntity(DevoteeHistory devoteeHistory,
+			String commentedByDevoteeName, String ratedDevoteeName) 
 	{
 		DevoteeHistoryDetailResponseEntity responseData = new DevoteeHistoryDetailResponseEntity();
 		
@@ -19,10 +20,14 @@ public class DevoteeHistoryMapper {
 		if(devoteeHistory.getResponse() != null)
 			responseData.setResponse(devoteeHistory.getResponse().toString());
 		responseData.setTimeStamp(devoteeHistory.getTimeStamp());
-		if(devoteeHistory.getRatedDevotee() != null)
+		if(devoteeHistory.getRatedDevotee() != null) {
 			responseData.setRatedDevoteeId(devoteeHistory.getRatedDevotee().getId());
-		if(devoteeHistory.getCommentedByDevotee() != null)
+			responseData.setRatedDevoteeName(ratedDevoteeName);
+		}
+		if(devoteeHistory.getCommentedByDevotee() != null) {
 			responseData.setCommentedByDevoteeId(devoteeHistory.getCommentedByDevotee().getId());
+			responseData.setCommentedByDevoteeName(commentedByDevoteeName);
+		}
 		
 		return responseData;
 	}

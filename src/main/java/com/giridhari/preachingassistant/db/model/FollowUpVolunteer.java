@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "followup_volunteers", schema = "preaching_assistant")
+@Table(name = "followup_volunteers", catalog = "preaching_assistant")
 public class FollowUpVolunteer {
 
 	private Long id;

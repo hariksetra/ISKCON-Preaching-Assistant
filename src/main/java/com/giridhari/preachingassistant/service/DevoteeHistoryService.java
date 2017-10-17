@@ -22,4 +22,8 @@ public interface DevoteeHistoryService {
 	public void update(DevoteeHistory devoteeHistory);
 	
 	public void delete(long devoteeHistoryId);
+	
+	public String getCommentedByDevoteeName(DevoteeHistory devoteeHistory);
+	
+	public String getRatedByDevoteeName(DevoteeHistory devoteeHistory);
 }

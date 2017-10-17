@@ -18,6 +18,7 @@ import com.giridhari.preachingassistant.rest.model.devoteehistory.DevoteeHistory
 import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
 import com.giridhari.preachingassistant.rest.model.response.BaseListResponse;
 import com.giridhari.preachingassistant.service.DevoteeHistoryService;
+import com.giridhari.preachingassistant.service.DevoteeService;
 
 @RestController
 public class DevoteeHistoryController {
@@ -31,8 +32,12 @@ public class DevoteeHistoryController {
 		List<DevoteeHistoryDetailResponseEntity> responseData = new ArrayList<>();
 		List<DevoteeHistory> devoteeHistoryList = devoteeHistoryService.list();
 		for(DevoteeHistory devoteeHistory: devoteeHistoryList) {
-			
-			DevoteeHistoryDetailResponseEntity devoteeHistoryDetailResponseEntity = DevoteeHistoryMapper.convertToDevoteeHistoryDetailResponseEntity(devoteeHistory);
+			DevoteeHistoryDetailResponseEntity devoteeHistoryDetailResponseEntity = 
+					DevoteeHistoryMapper.convertToDevoteeHistoryDetailResponseEntity(
+							devoteeHistory,
+							devoteeHistoryService.getCommentedByDevoteeName(devoteeHistory),
+							devoteeHistoryService.getRatedByDevoteeName(devoteeHistory)
+						);
 			responseData.add(devoteeHistoryDetailResponseEntity);
 		}
 		response.setData(responseData);
@@ -42,7 +47,12 @@ public class DevoteeHistoryController {
 	@RequestMapping(name = "devoteeHistoryDetail", value="/devoteeHistory/{id}", method = RequestMethod.GET)
 	public BaseDataResponse getById(@PathVariable("id") long devoteeHistoryId) {
 		DevoteeHistory devoteeHistory = devoteeHistoryService.getById(devoteeHistoryId);
-		DevoteeHistoryDetailResponseEntity responseData = DevoteeHistoryMapper.convertToDevoteeHistoryDetailResponseEntity(devoteeHistory);
+		DevoteeHistoryDetailResponseEntity responseData = 
+				DevoteeHistoryMapper.convertToDevoteeHistoryDetailResponseEntity(
+						devoteeHistory,
+						devoteeHistoryService.getCommentedByDevoteeName(devoteeHistory),
+						devoteeHistoryService.getRatedByDevoteeName(devoteeHistory)
+					);
 		return new BaseDataResponse(responseData);
 	}
 	
@@ -53,7 +63,12 @@ public class DevoteeHistoryController {
 		List<DevoteeHistory> devoteeHistoryList = devoteeHistoryService.getByRatedDevoteeId(ratedDevoteeId);
 		for(DevoteeHistory devoteeHistory: devoteeHistoryList)
 		{
-			DevoteeHistoryDetailResponseEntity devoteeHistoryDetailResponseEntity = DevoteeHistoryMapper.convertToDevoteeHistoryDetailResponseEntity(devoteeHistory);
+			DevoteeHistoryDetailResponseEntity devoteeHistoryDetailResponseEntity = 
+					DevoteeHistoryMapper.convertToDevoteeHistoryDetailResponseEntity(
+							devoteeHistory,
+							devoteeHistoryService.getCommentedByDevoteeName(devoteeHistory),
+							devoteeHistoryService.getRatedByDevoteeName(devoteeHistory)
+						);
 			responseData.add(devoteeHistoryDetailResponseEntity);
 		}
 		response.setData(responseData);
@@ -67,7 +82,12 @@ public class DevoteeHistoryController {
 		List<DevoteeHistory> devoteeHistoryList = devoteeHistoryService.getByCommentedByDevoteeId(commentedByDevoteeId);
 		for(DevoteeHistory devoteeHistory: devoteeHistoryList)
 		{
-			DevoteeHistoryDetailResponseEntity devoteeHistoryDetailResponseEntity = DevoteeHistoryMapper.convertToDevoteeHistoryDetailResponseEntity(devoteeHistory);
+			DevoteeHistoryDetailResponseEntity devoteeHistoryDetailResponseEntity = 
+					DevoteeHistoryMapper.convertToDevoteeHistoryDetailResponseEntity(
+							devoteeHistory,
+							devoteeHistoryService.getCommentedByDevoteeName(devoteeHistory),
+							devoteeHistoryService.getRatedByDevoteeName(devoteeHistory)
+						);
 			responseData.add(devoteeHistoryDetailResponseEntity);
 		}
 		response.setData(responseData);
@@ -79,7 +99,12 @@ public class DevoteeHistoryController {
 		DevoteeHistory devoteeHistory = devoteeHistoryService.getById(devoteeHistoryId);
 		DevoteeHistoryMapper.patchDevoteeHistory(devoteeHistory, requestData);
 		devoteeHistoryService.update(devoteeHistory);
-		DevoteeHistoryDetailResponseEntity responseData = DevoteeHistoryMapper.convertToDevoteeHistoryDetailResponseEntity(devoteeHistory);
+		DevoteeHistoryDetailResponseEntity responseData = 
+				DevoteeHistoryMapper.convertToDevoteeHistoryDetailResponseEntity(
+						devoteeHistory,
+						devoteeHistoryService.getCommentedByDevoteeName(devoteeHistory),
+						devoteeHistoryService.getRatedByDevoteeName(devoteeHistory)
+					);
 		return responseData;
 	}
 
@@ -88,7 +113,12 @@ public class DevoteeHistoryController {
 		DevoteeHistory devoteeHistory = new DevoteeHistory();
 		DevoteeHistoryMapper.patchDevoteeHistory(devoteeHistory, requestData);
 		devoteeHistoryService.update(devoteeHistory);
-		DevoteeHistoryDetailResponseEntity responseData = DevoteeHistoryMapper.convertToDevoteeHistoryDetailResponseEntity(devoteeHistory);
+		DevoteeHistoryDetailResponseEntity responseData = 
+				DevoteeHistoryMapper.convertToDevoteeHistoryDetailResponseEntity(
+					devoteeHistory,
+					devoteeHistoryService.getCommentedByDevoteeName(devoteeHistory),
+					devoteeHistoryService.getRatedByDevoteeName(devoteeHistory)
+				);
 		return responseData;
 	}
 	

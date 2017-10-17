@@ -15,7 +15,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "devotee_history", schema= "preaching_assistant")
+@Table(name = "devotee_history", catalog= "preaching_assistant")
 public class DevoteeHistory {
 
 	private Long id;
@@ -37,7 +37,7 @@ public class DevoteeHistory {
 		this.id = id;
 	}
 	
-	@ManyToOne(optional = false, targetEntity = Devotee.class, cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@ManyToOne(optional = false, cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	public Devotee getCommentedByDevotee() {
 		return commentedByDevotee;
 	}
@@ -46,7 +46,7 @@ public class DevoteeHistory {
 		this.commentedByDevotee = commentedByDevotee;
 	}
 
-	@ManyToOne(optional = false, targetEntity = Devotee.class, cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@ManyToOne(optional = false, cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	public Devotee getRatedDevotee() {
 		return ratedDevotee;
 	}
@@ -82,8 +82,8 @@ public class DevoteeHistory {
 		this.comment = comment;
 	}
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="time_stamp", columnDefinition="date", nullable = true)
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="time_stamp", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP ", nullable = false, insertable = false, updatable = false)
 	public Date getTimeStamp() {
 		return timeStamp;
 	}
