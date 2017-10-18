@@ -29,6 +29,11 @@ public class DevoteeMapper {
 		responseData.setInitiatedName(devotee.getInitiatedName());
 		responseData.setIntroDate(devotee.getIntroDate());
 		responseData.setLegalName(devotee.getLegalName());
+		if (devotee.getInitiatedName() != null && devotee.getInitiatedName() != "") {
+			responseData.setDisplayName(devotee.getInitiatedName());
+		} else {
+			responseData.setDisplayName(devotee.getLegalName());
+		}
 		responseData.setMaritalStatus(devotee.getMaritalStatus());
 		responseData.setMonthlyContribution(devotee.getMonthlyContribution());
 		responseData.setOccupation(devotee.getOccupation());
@@ -45,7 +50,11 @@ public class DevoteeMapper {
 	public static DevoteeOverviewEntity convertToDevoteeOverviewEntity(Devotee devotee) {
 		DevoteeOverviewEntity devoteeOverviewEntity = new DevoteeOverviewEntity();
 		devoteeOverviewEntity.setId(devotee.getId());
-		devoteeOverviewEntity.setName(devotee.getLegalName());
+		if (devotee.getInitiatedName() != null && devotee.getInitiatedName() != "") {
+			devoteeOverviewEntity.setName(devotee.getInitiatedName());
+		} else {
+			devoteeOverviewEntity.setName(devotee.getLegalName());
+		}
 		devoteeOverviewEntity.setPhone(devotee.getSmsPhone());
 		devoteeOverviewEntity.setIntroDate(devotee.getIntroDate());
 		devoteeOverviewEntity.setPreferredLanguage(devotee.getPreferredLanguage());
@@ -74,6 +83,7 @@ public class DevoteeMapper {
 			devotee.setPostalCode(requestData.getPostalCode());
 		
 		if (requestData.getCapturedBy() != null) {
+			//TODO: If we try to update the capturedBy field error occurs as it tries to update child devotee also.
 			Devotee capturedBy = new Devotee();
 			capturedBy.setId(requestData.getCapturedBy());
 			devotee.setCapturedBy(capturedBy);

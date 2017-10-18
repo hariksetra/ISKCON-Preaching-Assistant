@@ -50,6 +50,7 @@ public class DevoteeController {
 	public DevoteeDetailResponseEntity put(@PathVariable("id") long devoteeId, @RequestBody DevoteeDetailRequestEntity requestData) {
 		Devotee devotee = devoteeService.get(devoteeId);
 		DevoteeMapper.patchDevotee(devotee, requestData);
+		devotee.setCapturedBy(devoteeService.get(requestData.getCapturedBy())); //Without this line update fails!!
 		devoteeService.update(devotee);
 		DevoteeDetailResponseEntity responseData = DevoteeMapper.convertToDevoteeDetailResponseEntity(devotee);
 		return responseData;
