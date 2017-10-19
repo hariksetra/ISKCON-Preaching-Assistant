@@ -83,7 +83,6 @@ public class DevoteeMapper {
 			devotee.setPostalCode(requestData.getPostalCode());
 		
 		if (requestData.getCapturedBy() != null) {
-			//TODO: If we try to update the capturedBy field error occurs as it tries to update child devotee also.
 			Devotee capturedBy = new Devotee();
 			capturedBy.setId(requestData.getCapturedBy());
 			devotee.setCapturedBy(capturedBy);

@@ -18,7 +18,6 @@ import com.giridhari.preachingassistant.rest.model.devoteehistory.DevoteeHistory
 import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
 import com.giridhari.preachingassistant.rest.model.response.BaseListResponse;
 import com.giridhari.preachingassistant.service.DevoteeHistoryService;
-import com.giridhari.preachingassistant.service.DevoteeService;
 
 @RestController
 public class DevoteeHistoryController {

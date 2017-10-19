@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.giridhari.preachingassistant.model.YatraType;
+
 @Entity
 @Table(name = "yatra", catalog = "preaching_assistant")
 public class Yatra implements Serializable {
