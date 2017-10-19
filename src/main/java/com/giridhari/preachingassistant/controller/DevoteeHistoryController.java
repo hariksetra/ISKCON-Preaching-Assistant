@@ -111,7 +111,7 @@ public class DevoteeHistoryController {
 	public DevoteeHistoryDetailResponseEntity post(@RequestBody DevoteeHistoryDetailRequestEntity requestData) {
 		DevoteeHistory devoteeHistory = new DevoteeHistory();
 		DevoteeHistoryMapper.patchDevoteeHistory(devoteeHistory, requestData);
-		devoteeHistoryService.update(devoteeHistory);
+		devoteeHistoryService.create(devoteeHistory);
 		DevoteeHistoryDetailResponseEntity responseData = 
 				DevoteeHistoryMapper.convertToDevoteeHistoryDetailResponseEntity(
 					devoteeHistory,
