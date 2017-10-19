@@ -62,6 +62,7 @@ public class Devotee implements Serializable {
 	private String sikshaLevel; //TODO: create an enum for siksha level
 	private UserAccount userAccount;
 	private Set<Devotee> capturedDevotees;
+	private Set<Yatra> yatras;
 	private Set<Program> programs;
 	private Set<FollowUp> volunteeredFollowUps;
 	private Set<FollowUp> attendedFollowUps;
@@ -330,6 +331,15 @@ public class Devotee implements Serializable {
 		this.capturedDevotees = capturedDevotees;
 	}
 	
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "yatraAdmin")
+	public Set<Yatra> getYatras() {
+		return yatras;
+	}
+
+	public void setYatras(Set<Yatra> yatras) {
+		this.yatras = yatras;
+	}
+
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "mentor")
 	public Set<Program> getPrograms() {
 		return programs;
