@@ -2,7 +2,7 @@ package com.giridhari.preachingassistant.db.model.mapper;
 
 import com.giridhari.preachingassistant.db.model.Devotee;
 import com.giridhari.preachingassistant.db.model.DevoteeHistory;
-import com.giridhari.preachingassistant.db.model.Response;
+import com.giridhari.preachingassistant.model.Response;
 import com.giridhari.preachingassistant.rest.model.devoteehistory.DevoteeHistoryDetailRequestEntity;
 import com.giridhari.preachingassistant.rest.model.devoteehistory.DevoteeHistoryDetailResponseEntity;
 

@@ -20,9 +20,11 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
+import com.giridhari.preachingassistant.model.CountryCode;
 import com.giridhari.preachingassistant.model.Gender;
 import com.giridhari.preachingassistant.model.IncomeScale;
 import com.giridhari.preachingassistant.model.MaritalStatus;
+import com.giridhari.preachingassistant.model.SikshaLevel;
 
 @Entity
 @Table(name = "devotee", catalog = "preaching_assistant",
@@ -51,27 +53,40 @@ public class Devotee implements Serializable {
 	private String preferredLanguage;
 	private String description;
 	private Devotee capturedBy;
-	private String area; //TODO: create a table for area later
+	private String area;
 	private String address;
-	private String postalCode;
-	private String country;
+	private CountryCode countryCode;
+	private String zipPostalCode;
 	private String email;
 	private String capturedFor;
-	private String booksRead; //TODO: create a separate table to maintain the list of books read
+	private String booksRead;
 	private Integer monthlyContribution;
-	private String sikshaLevel; //TODO: create an enum for siksha level
+	private SikshaLevel sikshaLevel; //TODO: create an enum for siksha level
 	private UserAccount userAccount;
+	
 	private Set<Devotee> capturedDevotees;
-	private Set<Yatra> yatras;
-	private Set<Program> programs;
-	private Set<FollowUp> volunteeredFollowUps;
-	private Set<FollowUp> attendedFollowUps;
-	private Set<FollowUpAssignment> volunteeringFollowUps;
-	private Set<FollowUpAssignment> attendingFollowUps;
-	private Set<ImportantDate> importantDates;
+	
 	private Set<DevoteeHistory> ratedDevoteeHistory;
 	private Set<DevoteeHistory> commentedByDevoteeHistory;
+	
+	private Set<Yatra> yatras;
+	
+	private Set<Program> programs;
+	private Set<ProgramAssignment> attendingPrograms;
+	private Set<ProgramAttendance> myAttendanceRecords;
+	
 	private Set<FollowUpVolunteer> followUps;
+	private Set<FollowUpAssignment> volunteeringFollowUps;
+	private Set<FollowUpAssignment> attendingFollowUps;
+	private Set<FollowUp> volunteeredFollowUps;
+	private Set<FollowUp> attendedFollowUps;
+	
+	
+	private Set<ImportantDate> importantDates;
+	
+	
+	
+	
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -249,22 +264,22 @@ public class Devotee implements Serializable {
 		this.address = address;
 	}
 	
-	@Column(name="postal_code", nullable = true)
-	public String getPostalCode() {
-		return postalCode;
+	@Column(name="country_code", nullable = true)
+	public CountryCode getCountryCode() {
+		return countryCode;
 	}
 
-	public void setPostalCode(String postalCode) {
-		this.postalCode = postalCode;
+	public void setCountryCode(CountryCode countryCode) {
+		this.countryCode = countryCode;
 	}
 
-	@Column(name="country", nullable = true)
-	public String getCountry() {
-		return country;
+	@Column(name="zip_postal_code", nullable = true)
+	public String getZipPostalCode() {
+		return zipPostalCode;
 	}
 
-	public void setCountry(String country) {
-		this.country = country;
+	public void setZipPostalCode(String zipPostalCode) {
+		this.zipPostalCode = zipPostalCode;
 	}
 
 	@Column(name="email", nullable = true)
@@ -304,11 +319,11 @@ public class Devotee implements Serializable {
 	}
 
 	@Column(name="siksha_level", nullable = true)
-	public String getSikshaLevel() {
+	public SikshaLevel getSikshaLevel() {
 		return sikshaLevel;
 	}
 
-	public void setSikshaLevel(String sikshaLevel) {
+	public void setSikshaLevel(SikshaLevel sikshaLevel) {
 		this.sikshaLevel = sikshaLevel;
 	}
 	
@@ -349,6 +364,24 @@ public class Devotee implements Serializable {
 		this.programs = programs;
 	}
 	
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "program")
+	public Set<ProgramAssignment> getAttendingPrograms() {
+		return attendingPrograms;
+	}
+
+	public void setAttendingPrograms(Set<ProgramAssignment> attendingPrograms) {
+		this.attendingPrograms = attendingPrograms;
+	}
+
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "programId")
+	public Set<ProgramAttendance> getMyAttendanceRecords() {
+		return myAttendanceRecords;
+	}
+
+	public void setMyAttendanceRecords(Set<ProgramAttendance> myAttendanceRecords) {
+		this.myAttendanceRecords = myAttendanceRecords;
+	}
+
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "volunteer")
 	public Set<FollowUp> getVolunteeredFollowUps() {
 		return volunteeredFollowUps;
@@ -413,11 +446,11 @@ public class Devotee implements Serializable {
 	}
 
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "devotee")
-	public Set<FollowUpVolunteer> getFollowUpHistory() {
+	public Set<FollowUpVolunteer> getFollowUps() {
 		return followUps;
 	}
 	
-	public void setFollowUpHistory(Set<FollowUpVolunteer> followUps) {
+	public void setFollowUps(Set<FollowUpVolunteer> followUps) {
 		this.followUps = followUps;
 	}
 	

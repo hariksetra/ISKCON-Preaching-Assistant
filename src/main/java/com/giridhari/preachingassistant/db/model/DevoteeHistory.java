@@ -14,6 +14,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.giridhari.preachingassistant.model.Response;
+
 @Entity
 @Table(name = "devotee_history", catalog= "preaching_assistant")
 public class DevoteeHistory {

@@ -1,5 +1,7 @@
 package com.giridhari.preachingassistant.db.model;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.giridhari.preachingassistant.model.Response;
 
 @Entity
 @Table(name = "follow_up", catalog = "preaching_assistant")
@@ -18,10 +24,11 @@ public class FollowUp {
 	private Long id;
 	private Devotee volunteer;
 	private Devotee attendee;
-	private FollowupStatus status;
+	private Response response;
 	private String comment;
 	private Integer rating;
-//	private Date timestamp;
+	private Date timestamp;
+	private String taskStatus; 
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -54,13 +61,13 @@ public class FollowUp {
 		this.attendee = attendee;
 	}
 	
-	@Column(name = "status", nullable = false)
-	public FollowupStatus getStatus() {
-		return status;
+	@Column(name = "response", nullable = false)
+	public Response getStatus() {
+		return response;
 	}
 	
-	public void setStatus(FollowupStatus status) {
-		this.status = status;
+	public void setStatus(Response response) {
+		this.response = response;
 	}
 	
 	@Column(name = "comment", nullable = true)
@@ -81,4 +88,22 @@ public class FollowUp {
 		this.rating = rating;
 	}
 
+	@Temporal(TemporalType.DATE)
+	@Column(name="followup_date", columnDefinition="date", nullable = false)
+	public Date getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	@Column(name = "task_status", nullable = true)
+	public String getTaskStatus() {
+		return taskStatus;
+	}
+
+	public void setTaskStatus(String taskStatus) {
+		this.taskStatus = taskStatus;
+	}
 }
