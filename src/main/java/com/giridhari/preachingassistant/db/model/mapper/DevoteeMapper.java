@@ -1,6 +1,9 @@
 package com.giridhari.preachingassistant.db.model.mapper;
 
+import org.springframework.data.domain.Page;
+
 import com.giridhari.preachingassistant.db.model.Devotee;
+import com.giridhari.preachingassistant.rest.model.Paging;
 import com.giridhari.preachingassistant.rest.model.devotee.DevoteeDetailRequestEntity;
 import com.giridhari.preachingassistant.rest.model.devotee.DevoteeDetailResponseEntity;
 import com.giridhari.preachingassistant.rest.model.devotee.DevoteeOverviewEntity;
@@ -146,6 +149,23 @@ public class DevoteeMapper {
 			devotee.setSmsPhone(requestData.getSmsPhone());
 
 	}
-
+	
+	public static Paging setPagingParameters(Page<Devotee> devoteePage)
+	 {
+		 Paging paging = new Paging();
+		 paging.setFirst(devoteePage.isFirst());
+		 paging.setLast(devoteePage.isLast());
+		 paging.setNumberOfElements(devoteePage.getNumberOfElements());
+		 paging.setPageNumber(devoteePage.getNumber());
+		 paging.setPageSize(devoteePage.getSize());
+		 //Sorted Order will tell the parameter over which it was sorted and direction of sort
+		 if(devoteePage.getSort()!= null)
+			 paging.setSortedOrder(devoteePage.getSort().toString());
+		 else
+			 paging.setSortedOrder(null);
+		 paging.setTotalElements(devoteePage.getTotalElements());
+		 paging.setTotalPages(devoteePage.getTotalPages());
+		 return paging;
+	 }
 
 }

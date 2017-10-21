@@ -1,7 +1,11 @@
 package com.giridhari.preachingassistant.db.model.mapper;
 
+import org.springframework.data.domain.Page;
+
 import com.giridhari.preachingassistant.db.model.Devotee;
+import com.giridhari.preachingassistant.db.model.DevoteeHistory;
 import com.giridhari.preachingassistant.db.model.Yatra;
+import com.giridhari.preachingassistant.rest.model.Paging;
 import com.giridhari.preachingassistant.rest.model.yatra.YatraDetailRequestEntity;
 import com.giridhari.preachingassistant.rest.model.yatra.YatraDetailResponseEntity;
 
@@ -44,4 +48,22 @@ public class YatraMapper {
 			yatra.setYatraType(request.getYatraType());
 		}
 	}
+	
+	public static Paging setPagingParameters(Page<Yatra> yatraPage)
+	 {
+		 Paging paging = new Paging();
+		 paging.setFirst(yatraPage.isFirst());
+		 paging.setLast(yatraPage.isLast());
+		 paging.setNumberOfElements(yatraPage.getNumberOfElements());
+		 paging.setPageNumber(yatraPage.getNumber());
+		 paging.setPageSize(yatraPage.getSize());
+		 //Sorted Order will tell the parameter over which it was sorted and direction of sort
+		 if(yatraPage.getSort() != null)
+			 paging.setSortedOrder(yatraPage.getSort().toString());
+		 else
+			 paging.setSortedOrder(null);
+		 paging.setTotalElements(yatraPage.getTotalElements());
+		 paging.setTotalPages(yatraPage.getTotalPages());
+		 return paging;
+	 }
 }

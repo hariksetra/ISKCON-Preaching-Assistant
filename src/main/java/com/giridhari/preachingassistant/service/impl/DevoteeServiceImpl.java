@@ -23,6 +23,11 @@ public class DevoteeServiceImpl implements DevoteeService {
 	public List<Devotee> list() {
 		return (List<Devotee>) CollectionUtils.makeCollection(devoteeRepo.findAll());
 	}
+	
+	@Override
+	public Page<Devotee> list(Pageable pageable) {
+		return devoteeRepo.findAll(pageable);
+	}
 
 	@Override
 	public Devotee get(long devoteeId) {
@@ -47,6 +52,11 @@ public class DevoteeServiceImpl implements DevoteeService {
 	@Override
 	public List<Devotee> getMyCapturedList(long devoteeId) {
 		return (List<Devotee>) CollectionUtils.makeCollection(devoteeRepo.findByCapturedBy(devoteeId));
+	}
+	
+	@Override
+	public Page<Devotee> getMyCapturedList(long devoteeId, Pageable pageable) {
+		return devoteeRepo.findByCapturedBy(devoteeId, pageable);
 	}
 
 	@Override

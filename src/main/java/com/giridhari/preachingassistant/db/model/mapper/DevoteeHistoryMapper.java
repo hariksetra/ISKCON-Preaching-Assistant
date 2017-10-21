@@ -70,7 +70,10 @@ public class DevoteeHistoryMapper {
 		 paging.setPageNumber(devoteeHistoryPage.getNumber());
 		 paging.setPageSize(devoteeHistoryPage.getSize());
 		 //Sorted Order will tell the parameter over which it was sorted and direction of sort
-		 paging.setSortedOrder(devoteeHistoryPage.getSort().toString());
+		 if(devoteeHistoryPage.getSort() != null)
+			 paging.setSortedOrder(devoteeHistoryPage.getSort().toString());
+		 else
+			 paging.setSortedOrder(null);
 		 paging.setTotalElements(devoteeHistoryPage.getTotalElements());
 		 paging.setTotalPages(devoteeHistoryPage.getTotalPages());
 		 return paging;

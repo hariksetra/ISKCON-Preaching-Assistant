@@ -1,14 +1,19 @@
 package com.giridhari.preachingassistant.service;
 
-import org.springframework.stereotype.Service;
 import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import com.giridhari.preachingassistant.db.model.Yatra;
-import com.giridhari.preachingassistant.model.YatraType;
 
 @Service
 public interface YatraService {
 	
 	public List<Yatra> list();
+	
+	public Page<Yatra> list(Pageable pageable);
 	
 	public Yatra getById(long yatraId);
 	

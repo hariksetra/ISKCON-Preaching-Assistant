@@ -13,6 +13,8 @@ public interface DevoteeService {
 	
 	public List<Devotee> list();
 	
+	public Page<Devotee> list(Pageable pageable);
+	
 	public Devotee get(long devoteeId);
 	
 	public void create(Devotee devotee);
@@ -22,6 +24,8 @@ public interface DevoteeService {
 	public void delete(long devoteeId);
 	
 	public List<Devotee> getMyCapturedList (long devoteeId);
+	
+	public Page<Devotee> getMyCapturedList (long devoteeId, Pageable pageable);
 	
 	public Page<Devotee> searchDevotees(String query, Pageable pageable);
 	

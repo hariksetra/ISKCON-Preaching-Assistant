@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,7 @@ import com.giridhari.preachingassistant.rest.model.devotee.DevoteeDetailResponse
 import com.giridhari.preachingassistant.rest.model.devotee.DevoteeOverviewEntity;
 import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
 import com.giridhari.preachingassistant.rest.model.response.BaseListResponse;
+import com.giridhari.preachingassistant.rest.model.Paging;
 import com.giridhari.preachingassistant.service.DevoteeService;
 
 @RestController
@@ -31,6 +34,24 @@ public class DevoteeController {
 		BaseListResponse response = new BaseListResponse();
 		List<Devotee> devoteeList = devoteeService.list();
 		List<DevoteeOverviewEntity> responseData = new ArrayList<>();
+		for(Devotee devotee: devoteeList) {
+			DevoteeOverviewEntity devoteeOverviewEntity = DevoteeMapper.convertToDevoteeOverviewEntity(devotee);
+			responseData.add(devoteeOverviewEntity);
+		}
+		response.setData(responseData);
+		return response;
+	}
+	
+	@RequestMapping(name = "/devoteesPage", value="/devoteesPage", method = RequestMethod.GET)
+	public BaseListResponse list(Pageable pageable) {
+		Page<Devotee> devoteePage = devoteeService.list(pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<DevoteeOverviewEntity> responseData = new ArrayList<>();
+		
+		Paging paging = DevoteeMapper.setPagingParameters(devoteePage);
+		response.setPaging(paging);
+		
+		List<Devotee> devoteeList = devoteePage.getContent();
 		for(Devotee devotee: devoteeList) {
 			DevoteeOverviewEntity devoteeOverviewEntity = DevoteeMapper.convertToDevoteeOverviewEntity(devotee);
 			responseData.add(devoteeOverviewEntity);
@@ -67,11 +88,29 @@ public class DevoteeController {
 		return responseData;
 	}
 	
-	@RequestMapping(name = "myCapturedList", value="/my_captured_list/{id}", method = RequestMethod.GET)
+	@RequestMapping(name = "myCapturedList", value="/myCapturedList/{id}", method = RequestMethod.GET)
 	public BaseListResponse list(@PathVariable("id") long devoteeId) {
 		BaseListResponse response = new BaseListResponse();
 		List<Devotee> devoteeList = devoteeService.getMyCapturedList(devoteeId);
 		List<DevoteeOverviewEntity> responseData = new ArrayList<>();
+		for(Devotee devotee: devoteeList) {
+			DevoteeOverviewEntity devoteeOverviewEntity = DevoteeMapper.convertToDevoteeOverviewEntity(devotee);
+			responseData.add(devoteeOverviewEntity);
+		}
+		response.setData(responseData);
+		return response;
+	}
+	
+	@RequestMapping(name = "myCapturedListPage", value="/myCapturedListPage/{id}", method = RequestMethod.GET)
+	public BaseListResponse list(@PathVariable("id") long devoteeId, Pageable pageable) {
+		Page<Devotee> devoteePage = devoteeService.getMyCapturedList(devoteeId, pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<DevoteeOverviewEntity> responseData = new ArrayList<>();
+		
+		Paging paging = DevoteeMapper.setPagingParameters(devoteePage);
+		response.setPaging(paging);
+		
+		List<Devotee> devoteeList = devoteePage.getContent();
 		for(Devotee devotee: devoteeList) {
 			DevoteeOverviewEntity devoteeOverviewEntity = DevoteeMapper.convertToDevoteeOverviewEntity(devotee);
 			responseData.add(devoteeOverviewEntity);
