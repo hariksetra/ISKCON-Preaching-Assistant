@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.giridhari.preachingassistant.model.CountryCode;
 
 @Entity
@@ -36,6 +37,7 @@ public class ProgramAreaSubscription {
 	
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
 	@JoinColumn(name = "program_id", columnDefinition = "integer")
+	@JsonManagedReference
 	public Program getProgramId() {
 		return programId;
 	}

@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.giridhari.preachingassistant.model.YatraType;
 
 @Entity
@@ -70,8 +72,9 @@ public class Yatra implements Serializable {
 		this.yatraType = yatraType;
 	}
 	
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false)
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "yatra_admin", columnDefinition = "integer")
+	@JsonManagedReference
 	public Devotee getYatraAdmin() {
 		return yatraAdmin;
 	}
@@ -81,6 +84,7 @@ public class Yatra implements Serializable {
 	}
 
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy="parentYatra")
+	@JsonBackReference
 	public Set<Program> getProgramsInYatra() {
 		return programsInYatra;
 	}

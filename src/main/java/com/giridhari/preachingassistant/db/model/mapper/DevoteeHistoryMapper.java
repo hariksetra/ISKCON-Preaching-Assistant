@@ -1,11 +1,13 @@
 package com.giridhari.preachingassistant.db.model.mapper;
 
+import org.springframework.data.domain.Page;
+
 import com.giridhari.preachingassistant.db.model.Devotee;
 import com.giridhari.preachingassistant.db.model.DevoteeHistory;
 import com.giridhari.preachingassistant.model.Response;
+import com.giridhari.preachingassistant.rest.model.Paging;
 import com.giridhari.preachingassistant.rest.model.devoteehistory.DevoteeHistoryDetailRequestEntity;
 import com.giridhari.preachingassistant.rest.model.devoteehistory.DevoteeHistoryDetailResponseEntity;
-
 
 public class DevoteeHistoryMapper {
 	
@@ -59,4 +61,18 @@ public class DevoteeHistoryMapper {
 		}
 	}
 	
+	 public static Paging setPagingParameters(Page<DevoteeHistory> devoteeHistoryPage)
+	 {
+		 Paging paging = new Paging();
+		 paging.setFirst(devoteeHistoryPage.isFirst());
+		 paging.setLast(devoteeHistoryPage.isLast());
+		 paging.setNumberOfElements(devoteeHistoryPage.getNumberOfElements());
+		 paging.setPageNumber(devoteeHistoryPage.getNumber());
+		 paging.setPageSize(devoteeHistoryPage.getSize());
+		 //Sorted Order will tell the parameter over which it was sorted and direction of sort
+		 paging.setSortedOrder(devoteeHistoryPage.getSort().toString());
+		 paging.setTotalElements(devoteeHistoryPage.getTotalElements());
+		 paging.setTotalPages(devoteeHistoryPage.getTotalPages());
+		 return paging;
+	 }
 }

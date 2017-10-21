@@ -14,6 +14,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "important_date", catalog = "preaching_assistant")
 public class ImportantDate {
@@ -34,7 +36,8 @@ public class ImportantDate {
 		this.id = id;
 	}
 	
-	@ManyToOne(optional = false, targetEntity = Devotee.class, cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@ManyToOne(optional = false, targetEntity = Devotee.class, cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+	@JsonManagedReference
 	public Devotee getDevotee() {
 		return devotee;
 	}

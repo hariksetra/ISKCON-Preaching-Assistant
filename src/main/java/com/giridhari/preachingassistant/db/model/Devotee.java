@@ -20,6 +20,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.giridhari.preachingassistant.model.CountryCode;
 import com.giridhari.preachingassistant.model.Gender;
 import com.giridhari.preachingassistant.model.IncomeScale;
@@ -238,6 +240,7 @@ public class Devotee implements Serializable {
 	
 	@ManyToOne(optional =true, targetEntity = Devotee.class, cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
 	@JoinColumn(name = "captured_by", columnDefinition = "integer", nullable = true)
+	@JsonManagedReference
 	public Devotee getCapturedBy() {
 		return capturedBy;
 	}
@@ -329,6 +332,7 @@ public class Devotee implements Serializable {
 	
 	@OneToOne(cascade = CascadeType.MERGE, optional = true, fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_account_id", columnDefinition = "integer")
+	@JsonBackReference
 	public UserAccount getUserAccount() {
 		return userAccount;
 	}
@@ -338,6 +342,7 @@ public class Devotee implements Serializable {
 	}
 	
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "capturedBy")
+	@JsonBackReference
 	public Set<Devotee> getCapturedDevotees() {
 		return capturedDevotees;
 	}
@@ -347,6 +352,7 @@ public class Devotee implements Serializable {
 	}
 	
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "yatraAdmin")
+	@JsonBackReference
 	public Set<Yatra> getYatras() {
 		return yatras;
 	}
@@ -356,6 +362,7 @@ public class Devotee implements Serializable {
 	}
 
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "mentor")
+	@JsonBackReference
 	public Set<Program> getPrograms() {
 		return programs;
 	}
@@ -365,6 +372,7 @@ public class Devotee implements Serializable {
 	}
 	
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "program")
+	@JsonBackReference
 	public Set<ProgramAssignment> getAttendingPrograms() {
 		return attendingPrograms;
 	}
@@ -374,6 +382,7 @@ public class Devotee implements Serializable {
 	}
 
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "programId")
+	@JsonBackReference
 	public Set<ProgramAttendance> getMyAttendanceRecords() {
 		return myAttendanceRecords;
 	}
@@ -383,6 +392,7 @@ public class Devotee implements Serializable {
 	}
 
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "volunteer")
+	@JsonBackReference
 	public Set<FollowUp> getVolunteeredFollowUps() {
 		return volunteeredFollowUps;
 	}
@@ -392,6 +402,7 @@ public class Devotee implements Serializable {
 	}
 	
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "attendee")
+	@JsonBackReference
 	public Set<FollowUp> getAttendedFollowUps() {
 		return attendedFollowUps;
 	}
@@ -401,6 +412,7 @@ public class Devotee implements Serializable {
 	}
 	
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "volunteer")
+	@JsonBackReference
 	public Set<FollowUpAssignment> getVolunteeringFollowUps() {
 		return volunteeringFollowUps;
 	}
@@ -410,6 +422,7 @@ public class Devotee implements Serializable {
 	}
 
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "attendee")
+	@JsonBackReference
 	public Set<FollowUpAssignment> getAttendingFollowUps() {
 		return attendingFollowUps;
 	}
@@ -419,6 +432,7 @@ public class Devotee implements Serializable {
 	}
 
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "devotee")
+	@JsonBackReference
 	public Set<ImportantDate> getImportantDates() {
 		return importantDates;
 	}
@@ -428,6 +442,7 @@ public class Devotee implements Serializable {
 	}
 
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "ratedDevotee")
+	@JsonBackReference
 	public Set<DevoteeHistory> getRatedDevoteeHistory() {
 		return ratedDevoteeHistory;
 	}
@@ -437,6 +452,7 @@ public class Devotee implements Serializable {
 	}
 	
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "commentedByDevotee")
+	@JsonBackReference
 	public Set<DevoteeHistory> getCommentedByDevoteeHistory() {
 		return commentedByDevoteeHistory;
 	}
@@ -446,6 +462,7 @@ public class Devotee implements Serializable {
 	}
 
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "devotee")
+	@JsonBackReference
 	public Set<FollowUpVolunteer> getFollowUps() {
 		return followUps;
 	}

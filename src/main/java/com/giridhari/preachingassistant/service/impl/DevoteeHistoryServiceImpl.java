@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.giridhari.preachingassistant.db.model.DevoteeHistory;
@@ -39,9 +41,21 @@ public class DevoteeHistoryServiceImpl implements DevoteeHistoryService{
 	}
 	
 	@Override
+	public Page<DevoteeHistory> getByRatedDevoteeId(long ratedDevoteeId, Pageable pageable)
+	{
+		return devoteeHistoryRepo.findByRatedDevotee_id(ratedDevoteeId, pageable);
+	}
+	
+	@Override
 	public List<DevoteeHistory> getByCommentedByDevoteeId(long commentedByDevoteeId)
 	{
 		return devoteeHistoryRepo.findByCommentedByDevotee_id(commentedByDevoteeId);
+	}
+	
+	@Override
+	public Page<DevoteeHistory> getByCommentedByDevoteeId(long commentedByDevoteeId, Pageable pageable)
+	{
+		return devoteeHistoryRepo.findByCommentedByDevotee_id(commentedByDevoteeId, pageable);
 	}
 	
 	@Override
@@ -78,5 +92,11 @@ public class DevoteeHistoryServiceImpl implements DevoteeHistoryService{
 			ratedDevoteeName = devoteeService.getDisplayName(devoteeHistory.getRatedDevotee());
 		} else ratedDevoteeName = "";
 		return ratedDevoteeName;
+	}
+	
+	@Override
+	public Page<DevoteeHistory> listAllByPage(Pageable pageable)
+	{
+		return devoteeHistoryRepo.findAll(pageable);
 	}
 }

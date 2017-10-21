@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "follow_up_assignment", catalog = "preaching_assistant")
 public class FollowUpAssignment implements Serializable {
@@ -40,6 +42,7 @@ public class FollowUpAssignment implements Serializable {
 
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "attendee_id", columnDefinition = "integer")
+	@JsonManagedReference
 	public Devotee getAttendee() {
 		return attendee;
 	}
@@ -50,6 +53,7 @@ public class FollowUpAssignment implements Serializable {
 
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "volunteer_id", columnDefinition = "integer")
+	@JsonManagedReference
 	public Devotee getVolunteer() {
 		return volunteer;
 	}
@@ -60,6 +64,7 @@ public class FollowUpAssignment implements Serializable {
 
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "program_id", columnDefinition = "integer")
+	@JsonManagedReference
 	public Program getProgram() {
 		return program;
 	}

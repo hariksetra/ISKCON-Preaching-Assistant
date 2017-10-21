@@ -15,6 +15,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "program", catalog = "preaching_assistant")
 public class ProgramAttendance {
@@ -46,8 +48,9 @@ public class ProgramAttendance {
 		this.attendanceDate = attendanceDate;
 	}
 	
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false)
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "program_id", columnDefinition = "integer")
+	@JsonManagedReference
 	public Program getProgramId() {
 		return programId;
 	}
@@ -56,8 +59,9 @@ public class ProgramAttendance {
 		this.programId = programId;
 	}
 	
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false)
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "devotee_id", columnDefinition = "integer")
+	@JsonManagedReference
 	public Devotee getDevoteeId() {
 		return devoteeId;
 	}

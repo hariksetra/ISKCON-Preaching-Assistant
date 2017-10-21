@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.giridhari.preachingassistant.model.Response;
 
 @Entity
@@ -39,7 +40,8 @@ public class DevoteeHistory {
 		this.id = id;
 	}
 	
-	@ManyToOne(optional = false, cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@ManyToOne(optional = false, cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+	@JsonManagedReference
 	public Devotee getCommentedByDevotee() {
 		return commentedByDevotee;
 	}
@@ -48,7 +50,8 @@ public class DevoteeHistory {
 		this.commentedByDevotee = commentedByDevotee;
 	}
 
-	@ManyToOne(optional = false, cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@ManyToOne(optional = false, cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+	@JsonManagedReference
 	public Devotee getRatedDevotee() {
 		return ratedDevotee;
 	}

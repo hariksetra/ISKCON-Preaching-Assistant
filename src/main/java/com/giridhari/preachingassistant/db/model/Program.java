@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.giridhari.preachingassistant.model.ProgramType;
 import com.giridhari.preachingassistant.model.TargetAudiance;
 
@@ -64,8 +66,9 @@ public class Program implements Serializable {
 		this.name = name;
 	}
 	
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
 	@JoinColumn(name = "mentor_id", columnDefinition = "integer" )
+	@JsonManagedReference
 	public Devotee getMentor() {
 		return mentor;
 	}
@@ -74,8 +77,9 @@ public class Program implements Serializable {
 		this.mentor = mentor;
 	}
 	
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
 	@JoinColumn(name = "parent_yatra_id", columnDefinition = "integer" )
+	@JsonManagedReference
 	public Yatra getParentYatra() {
 		return parentYatra;
 	}
@@ -139,6 +143,7 @@ public class Program implements Serializable {
 	}
 
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy="programId")
+	@JsonBackReference
 	public Set<ProgramAreaSubscription> getAreasSubscribed() {
 		return areasSubscribed;
 	}
@@ -148,6 +153,7 @@ public class Program implements Serializable {
 	}
 
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy="program")
+	@JsonBackReference
 	public Set<ProgramAssignment> getParticipants() {
 		return participants;
 	}
@@ -157,6 +163,7 @@ public class Program implements Serializable {
 	}
 	
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy="programId")
+	@JsonBackReference
 	public Set<ProgramAttendance> getAttendanceRecords() {
 		return attendanceRecords;
 	}
@@ -166,6 +173,7 @@ public class Program implements Serializable {
 	}
 
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy="program")
+	@JsonBackReference
 	public Set<FollowUpAssignment> getFollowUpAssignments() {
 		return followUpAssignments;
 	}

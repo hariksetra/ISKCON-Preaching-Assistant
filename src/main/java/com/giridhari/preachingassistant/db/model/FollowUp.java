@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.giridhari.preachingassistant.model.Response;
 
 @Entity
@@ -41,8 +42,9 @@ public class FollowUp {
 		this.id = id;
 	}
 	
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false)
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "volunteer_id", columnDefinition = "integer", nullable = false)
+	@JsonManagedReference
 	public Devotee getVolunteer() {
 		return volunteer;
 	}
@@ -51,8 +53,9 @@ public class FollowUp {
 		this.volunteer = volunteer;
 	}
 	
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false)
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "attendee_id", columnDefinition = "integer", nullable = false)
+	@JsonManagedReference
 	public Devotee getAttendee() {
 		return attendee;
 	}

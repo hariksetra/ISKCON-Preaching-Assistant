@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "followup_volunteers", catalog = "preaching_assistant")
 public class FollowUpVolunteer {
@@ -30,7 +32,8 @@ public class FollowUpVolunteer {
 		this.id = id;
 	}
 	
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false, targetEntity = Program.class)
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false, targetEntity = Program.class)
+	@JsonManagedReference
 	public Program getProgram() {
 		return program;
 	}
@@ -39,7 +42,8 @@ public class FollowUpVolunteer {
 		this.program = program;
 	}
 	
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false, targetEntity = Devotee.class)
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false, targetEntity = Devotee.class)
+	@JsonManagedReference
 	public Devotee getDevotee() {
 		return devotee;
 	}
