@@ -20,7 +20,7 @@ public class DevoteeHistoryMapper {
 		responseData.setRating(devoteeHistory.getRating());
 		responseData.setId(devoteeHistory.getId());
 		if(devoteeHistory.getResponse() != null)
-			responseData.setResponse(devoteeHistory.getResponse().toString());
+			responseData.setResponse(devoteeHistory.getResponse());
 		responseData.setTimeStamp(devoteeHistory.getTimeStamp());
 		if(devoteeHistory.getRatedDevotee() != null) {
 			responseData.setRatedDevoteeId(devoteeHistory.getRatedDevotee().getId());
@@ -42,8 +42,7 @@ public class DevoteeHistoryMapper {
 			devoteeHistory.setRating(requestData.getRating());
 		if(requestData.getResponse()!=null)
 		{
-			Response response = Response.valueOf(requestData.getResponse());
-			devoteeHistory.setResponse(response);
+			devoteeHistory.setResponse(requestData.getResponse());
 		}
 		if(requestData.getTimeStamp()!=null)
 			devoteeHistory.setTimeStamp(devoteeHistory.getTimeStamp());
