@@ -10,4 +10,10 @@ import com.giridhari.preachingassistant.db.model.Program;
 public interface ProgramService {
 	
 	public Page<Program> list(Pageable pageable);
+	
+	public Program get(long programId);
+	
+	public void update(Program program);
+	
+	public void delete(long programId);
 }

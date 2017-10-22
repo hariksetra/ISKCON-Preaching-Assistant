@@ -21,4 +21,19 @@ public class ProgramServiceImpl implements ProgramService{
 		return programRepo.findAll(pageable);
 	}
 	
+	public Program get(long programId)
+	{
+		return programRepo.findOne(programId);
+	}
+	
+	public void update(Program program)
+	{
+		programRepo.save(program);
+	}
+	
+	public void delete(long programId)
+	{
+		programRepo.delete(programId);
+	}
+	
 }

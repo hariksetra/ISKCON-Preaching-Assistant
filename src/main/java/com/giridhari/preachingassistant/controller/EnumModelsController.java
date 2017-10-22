@@ -1,6 +1,7 @@
 package com.giridhari.preachingassistant.controller;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import com.giridhari.preachingassistant.db.model.Type;
 import com.giridhari.preachingassistant.model.CountryCode;
 import com.giridhari.preachingassistant.model.Gender;
 import com.giridhari.preachingassistant.model.IncomeScale;
@@ -18,85 +19,136 @@ import com.giridhari.preachingassistant.model.Response;
 import com.giridhari.preachingassistant.model.SikshaLevel;
 import com.giridhari.preachingassistant.model.TargetAudience;
 import com.giridhari.preachingassistant.model.YatraType;
-import com.giridhari.preachingassistant.db.model.Type;
 
 @RestController
 public class EnumModelsController {
 	
 	@RequestMapping(name = "enumModels", value = "/enumModels", method = RequestMethod.GET)
 	@ResponseBody
-	public HashMap<String, HashMap<String, String>> list(){
+	public HashMap<String, HashMap<String, ArrayList<String>>> list(){
 		
-		HashMap<String, HashMap<String, String>> enumMap = new HashMap<String, HashMap<String, String>>();
-		HashMap<String, String> map = new HashMap<String, String>();
+		HashMap<String, HashMap<String, ArrayList<String>>> enumMap = new HashMap<String, HashMap<String, ArrayList<String>>>();
+		HashMap<String, ArrayList<String>> map = new HashMap<String, ArrayList<String>>();
+		ArrayList<String> enumConstName = new ArrayList<String>();
+		ArrayList<String> enumConstDesc = new ArrayList<String>();
+		
 		for(CountryCode countryCode : CountryCode.values())
 		{
-			map.put(countryCode.name(), countryCode.toString());
+			enumConstName.add(countryCode.name());
+			enumConstDesc.add(countryCode.toString());
 		}
-		enumMap.put("CountryCode", map);
+		map.put("countryCodeName", enumConstName);
+		map.put("countryCodeDesc", enumConstDesc);
+		enumMap.put("countryCode", map);
 		
-		map = new HashMap<String, String>();
+		
+		map = new HashMap<String, ArrayList<String>>();
+		enumConstName = new ArrayList<String>();
+		enumConstDesc = new ArrayList<String>();
 		for(Gender gender: Gender.values())
 		{
-			map.put(gender.name(), gender.toString());
+			enumConstName.add(gender.name());
+			enumConstDesc.add(gender.toString());
 		}
-		enumMap.put("Gender", map);
+		map.put("genderName", enumConstName);
+		map.put("genderDesc", enumConstDesc);
+		enumMap.put("gender", map);
 		
-		map = new HashMap<String, String>();
+		map = new HashMap<String, ArrayList<String>>();
+		enumConstName = new ArrayList<String>();
+		enumConstDesc = new ArrayList<String>();
 		for(IncomeScale incomeScale : IncomeScale.values())
 		{
-			map.put(incomeScale.name(), incomeScale.toString());
+			enumConstName.add(incomeScale.name());
+			enumConstDesc.add(incomeScale.toString());
 		}
-		enumMap.put("IncomeScale", map);
+		map.put("incomeScaleName", enumConstName);
+		map.put("incomeScaleDesc", enumConstDesc);
+		enumMap.put("incomeScale", map);
 		
-		map = new HashMap<String, String>();
+		map = new HashMap<String, ArrayList<String>>();
+		enumConstName = new ArrayList<String>();
+		enumConstDesc = new ArrayList<String>();
 		for(MaritalStatus maritalStatus : MaritalStatus.values())
 		{
-			map.put(maritalStatus.name(), maritalStatus.toString());
+			enumConstName.add(maritalStatus.name());
+			enumConstDesc.add(maritalStatus.toString());
 		}
-		enumMap.put("MaritalStatus", map);
+		map.put("maritalStatusName", enumConstName);
+		map.put("maritalStatusDesc", enumConstDesc);
+		enumMap.put("maritalStatus", map);
 		
-		map = new HashMap<String, String>();
+		map = new HashMap<String, ArrayList<String>>();
+		enumConstName = new ArrayList<String>();
+		enumConstDesc = new ArrayList<String>();
 		for(ProgramType programType : ProgramType.values())
 		{
-			map.put(programType.name(), programType.toString());
+			enumConstName.add(programType.name());
+			enumConstDesc.add(programType.toString());
 		}
-		enumMap.put("ProgramType", map);
+		map.put("programTypeName", enumConstName);
+		map.put("programTypeDesc", enumConstDesc);
+		enumMap.put("programType", map);
 		
-		map = new HashMap<String, String>();
+		map = new HashMap<String, ArrayList<String>>();
+		enumConstName = new ArrayList<String>();
+		enumConstDesc = new ArrayList<String>();
 		for(Response response : Response.values())
 		{
-			map.put(response.name(), response.toString());
+			enumConstName.add(response.name());
+			enumConstDesc.add(response.toString());
 		}
-		enumMap.put("Response", map);
+		map.put("responseName", enumConstName);
+		map.put("responseDesc", enumConstDesc);
+		enumMap.put("response", map);
 		
-		map = new HashMap<String, String>();
+		map = new HashMap<String, ArrayList<String>>();
+		enumConstName = new ArrayList<String>();
+		enumConstDesc = new ArrayList<String>();
 		for(SikshaLevel sikshaLevel : SikshaLevel.values())
 		{
-			map.put(sikshaLevel.name(), sikshaLevel.toString());
+			enumConstName.add(sikshaLevel.name());
+			enumConstDesc.add(sikshaLevel.toString());
 		}
-		enumMap.put("SikshaLevel", map);
+		map.put("sikshaLevelName", enumConstName);
+		map.put("sikshaLevelDesc", enumConstDesc);
+		enumMap.put("sikshaLevel", map);
 		
-		map = new HashMap<String, String>();
+		map = new HashMap<String, ArrayList<String>>();
+		enumConstName = new ArrayList<String>();
+		enumConstDesc = new ArrayList<String>();
 		for(TargetAudience targetAudience : TargetAudience.values())
 		{
-			map.put(targetAudience.name(), targetAudience.toString());
+			enumConstName.add(targetAudience.name());
+			enumConstDesc.add(targetAudience.toString());
 		}
-		enumMap.put("TargetAudience", map);
+		map.put("targetAudienceName", enumConstName);
+		map.put("targetAudienceDesc", enumConstDesc);
+		enumMap.put("targetAudience", map);
 		
-		map = new HashMap<String, String>();
+		map = new HashMap<String, ArrayList<String>>();
+		enumConstName = new ArrayList<String>();
+		enumConstDesc = new ArrayList<String>();
 		for(YatraType yatraType : YatraType.values())
 		{
-			map.put(yatraType.name(), yatraType.toString());
+			enumConstName.add(yatraType.name());
+			enumConstDesc.add(yatraType.toString());
 		}
-		enumMap.put("YatraType", map);
+		map.put("yatraTypeName", enumConstName);
+		map.put("yatraTypeDesc", enumConstDesc);
+		enumMap.put("yatraType", map);
 		
-		map = new HashMap<String, String>();
+		map = new HashMap<String, ArrayList<String>>();
+		enumConstName = new ArrayList<String>();
+		enumConstDesc = new ArrayList<String>();
 		for(Type type : Type.values())
 		{
-			map.put(type.name(), type.toString());
+			enumConstName.add(type.name());
+			enumConstDesc.add(type.toString());
 		}
-		enumMap.put("Type", map);
+		map.put("typeName", enumConstName);
+		map.put("typeDesc", enumConstDesc);
+		enumMap.put("type", map);
 		
 		return enumMap;
 	}
