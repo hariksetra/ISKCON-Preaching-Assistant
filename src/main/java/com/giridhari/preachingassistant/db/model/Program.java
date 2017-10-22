@@ -18,7 +18,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.giridhari.preachingassistant.model.ProgramType;
-import com.giridhari.preachingassistant.model.TargetAudiance;
+import com.giridhari.preachingassistant.model.TargetAudience;
 
 @Entity
 @Table(name = "program", catalog = "preaching_assistant")
@@ -37,7 +37,7 @@ public class Program implements Serializable {
 	private String address;
 	private String mapLocation;
 	private ProgramType type;
-	private TargetAudiance targetAudiance;
+	private TargetAudience targetAudience;
 	private String followupDescription;
 	
 	private Set<ProgramAreaSubscription> areasSubscribed;
@@ -124,13 +124,13 @@ public class Program implements Serializable {
 		this.type = type;
 	}
 
-	@Column(name = "target_audiance", nullable = true)
-	public TargetAudiance getTargetAudiance() {
-		return targetAudiance;
+	@Column(name = "target_audience", nullable = true)
+	public TargetAudience getTargetAudience() {
+		return targetAudience;
 	}
 
-	public void setTargetAudiance(TargetAudiance targetAudiance) {
-		this.targetAudiance = targetAudiance;
+	public void setTargetAudience(TargetAudience targetAudience) {
+		this.targetAudience = targetAudience;
 	}
 	
 	@Column(name = "followup_description", nullable = true)
