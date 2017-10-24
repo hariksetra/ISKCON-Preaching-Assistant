@@ -67,6 +67,25 @@ public class YatraController {
 		return response;
 	}
 	
+	@RequestMapping(name = "listOfYatrasPageByAdminId", value="/yatraPageByAdminId/{adminId}", method = RequestMethod.GET)
+	public BaseListResponse listByAdminId(@PathVariable("adminId") long adminId, Pageable pageable) {
+		Page<Yatra> yatraPage = yatraService.getYatraByAdminId(adminId, pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<YatraDetailResponseEntity> responseData = new ArrayList<>();
+		
+		Paging paging = YatraMapper.setPagingParameters(yatraPage);
+		response.setPaging(paging);
+		
+		List<Yatra> yatraList = yatraPage.getContent();
+		for(Yatra yatra: yatraList) {
+			YatraDetailResponseEntity yatraResponse = YatraMapper.convertYatraToDetailedResponseEntity(yatra);
+			responseData.add(yatraResponse);
+		}
+		response.setData(responseData);
+		
+		return response;
+	}
+	
 	@RequestMapping(name = "yatraDetail", value="/yatra/{id}", method = RequestMethod.GET)
 	public BaseDataResponse getByYatraId(@PathVariable("id") long yatraId) {
 		Yatra yatra = yatraService.getById(yatraId);

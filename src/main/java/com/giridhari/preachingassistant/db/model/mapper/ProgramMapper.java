@@ -15,7 +15,9 @@ public class ProgramMapper {
 		ProgramDetailResponseEntity responseData = new ProgramDetailResponseEntity();
 		responseData.setAddress(program.getAddress());
 		responseData.setDescription(program.getDescription());
-		responseData.setFollowupDescription(program.getFollowupDescription());
+		if (program.getFollowupDescription() != null) {
+			responseData.setFollowupDescription(program.getFollowupDescription().split("~"));
+		}
 		responseData.setId(program.getId());
 		responseData.setMapLocation(program.getMapLocation());
 		if(program.getMentor() != null)
@@ -23,7 +25,7 @@ public class ProgramMapper {
 		responseData.setName(program.getName());
 		if(program.getParentYatra() != null)
 			responseData.setParentYatraId(program.getParentYatra().getId());
-		responseData.setTargetAudiance(program.getTargetAudience());
+		responseData.setTargetAudience(program.getTargetAudience());
 		responseData.setType(program.getType());
 		return responseData;
 	}
@@ -34,8 +36,9 @@ public class ProgramMapper {
 			program.setAddress(requestData.getAddress());
 		if(requestData.getDescription() != null)
 			program.setDescription(requestData.getDescription());
-		if(requestData.getFollowupDescription() != null)
-			program.setFollowupDescription(program.getFollowupDescription());
+		if(requestData.getFollowupDescription() != null) {
+			program.setFollowupDescription(String.join("~", requestData.getFollowupDescription()));
+		}
 		if(requestData.getMapLocation() != null)
 			program.setMapLocation(requestData.getMapLocation());
 		if(requestData.getMentorId() != null)
@@ -45,7 +48,7 @@ public class ProgramMapper {
 			program.setMentor(mentor);
 		}
 		if(requestData.getName() != null)
-			program.setName(program.getName());
+			program.setName(requestData.getName());
 		if(requestData.getParentYatraId() != null)
 		{
 			Yatra yatra = new Yatra();

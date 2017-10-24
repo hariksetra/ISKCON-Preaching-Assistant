@@ -28,6 +28,11 @@ public class YatraServiceImpl implements YatraService {
 	public Page<Yatra> list(Pageable pageable) {
 		return yatraRepo.findAll(pageable);
 	}
+	
+	@Override
+	public Page<Yatra> getYatraByAdminId(long adminId, Pageable pageable) {
+		return yatraRepo.findByYatraAdmin_id(adminId, pageable);
+	}
 
 	@Override
 	public Yatra getById(long yatraId) {

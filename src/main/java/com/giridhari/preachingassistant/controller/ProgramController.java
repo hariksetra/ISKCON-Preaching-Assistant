@@ -24,7 +24,9 @@ import com.giridhari.preachingassistant.rest.model.program.ProgramDetailRequestE
 import com.giridhari.preachingassistant.rest.model.program.ProgramDetailResponseEntity;
 import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
 import com.giridhari.preachingassistant.rest.model.response.BaseListResponse;
+import com.giridhari.preachingassistant.service.DevoteeService;
 import com.giridhari.preachingassistant.service.ProgramService;
+import com.giridhari.preachingassistant.service.YatraService;
 
 @RestController
 public class ProgramController {
@@ -32,10 +34,36 @@ public class ProgramController {
 	@Resource
 	ProgramService programService;
 	
+	@Resource
+	YatraService yatraService;
+	
+	@Resource
+	DevoteeService devoteeService;
+	
 	@RequestMapping(name="programPage", value = "/programPage", method = RequestMethod.GET)
 	public BaseListResponse list(Pageable pageable)
 	{
 		Page<Program> programPage = programService.list(pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<ProgramDetailResponseEntity> responseData = new ArrayList<>();
+		
+		Paging paging = ProgramMapper.setPagingParameters(programPage);
+		response.setPaging(paging);
+		
+		List<Program> programList = programPage.getContent();
+		for(Program program : programList)
+		{
+			ProgramDetailResponseEntity programDetailResponseEntity = ProgramMapper.convertToProgramDetailResponseEntity(program);
+			responseData.add(programDetailResponseEntity);
+		}
+		response.setData(responseData);
+		return response;
+	}
+	
+	@RequestMapping(name="programPageByMentorId", value = "/programPageByMentorId/{mentorId}", method = RequestMethod.GET)
+	public BaseListResponse listByMentorId(@PathVariable("mentorId") long mentorId, Pageable pageable)
+	{
+		Page<Program> programPage = programService.findByMentorId(mentorId, pageable);
 		BaseListResponse response = new BaseListResponse();
 		List<ProgramDetailResponseEntity> responseData = new ArrayList<>();
 		
@@ -73,6 +101,8 @@ public class ProgramController {
 	public ProgramDetailResponseEntity post(@RequestBody ProgramDetailRequestEntity requestData) {
 		Program program = new Program();
 		ProgramMapper.patchProgram(program, requestData);
+		if (requestData.getParentYatraId()!=null) program.setParentYatra(yatraService.getById(requestData.getParentYatraId()));
+		if (requestData.getMentorId()!=null) program.setMentor(devoteeService.get(requestData.getMentorId()));
 		programService.update(program);
 		ProgramDetailResponseEntity responseData = ProgramMapper.convertToProgramDetailResponseEntity(program);
 		return responseData;

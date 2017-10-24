@@ -11,6 +11,8 @@ public interface ProgramService {
 	
 	public Page<Program> list(Pageable pageable);
 	
+	public Page<Program> findByMentorId(long mentorId, Pageable pageable);
+	
 	public Program get(long programId);
 	
 	public void update(Program program);

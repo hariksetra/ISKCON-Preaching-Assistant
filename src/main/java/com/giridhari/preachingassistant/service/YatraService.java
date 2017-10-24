@@ -15,6 +15,8 @@ public interface YatraService {
 	
 	public Page<Yatra> list(Pageable pageable);
 	
+	public Page<Yatra> getYatraByAdminId(long adminId, Pageable pageable);
+	
 	public Yatra getById(long yatraId);
 	
 	public void create(Yatra yatra);

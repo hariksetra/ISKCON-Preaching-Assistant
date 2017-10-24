@@ -18,7 +18,7 @@ import javax.persistence.TemporalType;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name = "program", catalog = "preaching_assistant")
+@Table(name = "program_attendance", catalog = "preaching_assistant")
 public class ProgramAttendance {
 
 	private Long id;

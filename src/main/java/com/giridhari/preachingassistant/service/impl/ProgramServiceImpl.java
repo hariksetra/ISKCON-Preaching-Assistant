@@ -16,23 +16,28 @@ public class ProgramServiceImpl implements ProgramService{
 	@Resource
 	ProgramRepo programRepo;
 	
-	public Page<Program> list(Pageable pageable)
-	{
+	@Override
+	public Page<Program> list(Pageable pageable) {
 		return programRepo.findAll(pageable);
 	}
 	
-	public Program get(long programId)
-	{
+	@Override
+	public Page<Program> findByMentorId(long mentorId, Pageable pageable) {
+		return programRepo.findByMentor_id(mentorId, pageable);
+	}
+	
+	@Override
+	public Program get(long programId) {
 		return programRepo.findOne(programId);
 	}
 	
-	public void update(Program program)
-	{
+	@Override
+	public void update(Program program) {
 		programRepo.save(program);
 	}
 	
-	public void delete(long programId)
-	{
+	@Override
+	public void delete(long programId) {
 		programRepo.delete(programId);
 	}
 	
