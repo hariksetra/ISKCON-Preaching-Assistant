@@ -29,7 +29,7 @@ public class FollowUp {
 	private String comment;
 	private Integer rating;
 	private Date timestamp;
-	private String taskStatus; 
+	private Integer taskStatus; 
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -65,11 +65,11 @@ public class FollowUp {
 	}
 	
 	@Column(name = "response", nullable = false)
-	public Response getStatus() {
+	public Response getResponse() {
 		return response;
 	}
 	
-	public void setStatus(Response response) {
+	public void setResponse(Response response) {
 		this.response = response;
 	}
 	
@@ -102,11 +102,11 @@ public class FollowUp {
 	}
 
 	@Column(name = "task_status", nullable = true)
-	public String getTaskStatus() {
+	public Integer getTaskStatus() {
 		return taskStatus;
 	}
 
-	public void setTaskStatus(String taskStatus) {
+	public void setTaskStatus(Integer taskStatus) {
 		this.taskStatus = taskStatus;
 	}
 }
