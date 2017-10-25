@@ -5,11 +5,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
-import com.giridhari.preachingassistant.db.model.Program;
+import com.giridhari.preachingassistant.db.model.ProgramAreaSubscription;
 
 @Repository
-public interface ProgramRepo extends PagingAndSortingRepository<Program, Long> {
-	
-	public Page<Program> findByMentor_id(long mentorId, Pageable pageable);
-	
+public interface ProgramAreaSubscriptionRepo extends PagingAndSortingRepository<ProgramAreaSubscription,Long> {
+
 }

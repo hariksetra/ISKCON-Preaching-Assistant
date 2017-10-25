@@ -91,7 +91,8 @@ public class ProgramController {
 	public ProgramDetailResponseEntity put(@PathVariable("id") long programId, @RequestBody ProgramDetailRequestEntity requestData) {
 		Program program = programService.get(programId);
 		ProgramMapper.patchProgram(program, requestData);
-		
+		if (requestData.getParentYatraId()!=null) program.setParentYatra(yatraService.getById(requestData.getParentYatraId()));
+		if (requestData.getMentorId()!=null) program.setMentor(devoteeService.get(requestData.getMentorId()));
 		programService.update(program);
 		ProgramDetailResponseEntity responseData = ProgramMapper.convertToProgramDetailResponseEntity(program);
 		return responseData;
