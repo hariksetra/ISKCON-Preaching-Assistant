@@ -22,7 +22,7 @@ public class ProgramAttendanceDetailMapper {
 		return responseData;
 	}
 
-	public static void patchProgram(ProgramAttendance programAttendance, ProgramAttendanceDetailRequestEntity requestData) {
+	public static void patchProgramAttendance(ProgramAttendance programAttendance, ProgramAttendanceDetailRequestEntity requestData) {
 		if (requestData.getId()!=null)
 			programAttendance.setId(requestData.getId());
 		if (requestData.getAttendanceDate()!=null)

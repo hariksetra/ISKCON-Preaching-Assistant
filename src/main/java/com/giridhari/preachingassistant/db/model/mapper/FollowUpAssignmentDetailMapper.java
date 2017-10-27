@@ -22,7 +22,7 @@ public class FollowUpAssignmentDetailMapper {
 		return responseData;
 	}
 
-	public static void patchProgram(FollowUpAssignment followUpAssignment, FollowUpAssignmentDetailRequestEntity requestData) {
+	public static void patchFollowUpAssignment(FollowUpAssignment followUpAssignment, FollowUpAssignmentDetailRequestEntity requestData) {
 		if (requestData.getId() != null)
 			followUpAssignment.setId(requestData.getId());
 		if (requestData.getVolunteerId() != null) {

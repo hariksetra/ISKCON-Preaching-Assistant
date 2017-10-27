@@ -19,7 +19,7 @@ public class ImportantDateDetailMapper {
 		return responseData;
 	}
 
-	public static void patchProgram(ImportantDate importantDate, ImportantDateDetailRequestEntity requestData) {
+	public static void patchImportantDate(ImportantDate importantDate, ImportantDateDetailRequestEntity requestData) {
 		if (requestData.getId()!= null)
 			importantDate.setId(requestData.getId());
 		if (requestData.getDevoteeId()!=null) {

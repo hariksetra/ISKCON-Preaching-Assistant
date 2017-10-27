@@ -24,7 +24,7 @@ public class FollowUpDetailMapper {
 		return responseData;
 	}
 
-	public static void patchProgram(FollowUp followUp, FollowUpDetailRequestEntity requestData) {
+	public static void patchFollowUp(FollowUp followUp, FollowUpDetailRequestEntity requestData) {
 		if (requestData.getId() != null)
 			followUp.setId(requestData.getId());
 		if (requestData.getVolunteerId() != null) {

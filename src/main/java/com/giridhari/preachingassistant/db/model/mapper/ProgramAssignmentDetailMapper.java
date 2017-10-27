@@ -19,7 +19,7 @@ public class ProgramAssignmentDetailMapper {
 		return responseData;
 	}
 
-	public static void patchProgram(ProgramAssignment programAssignment, ProgramAssignmentDetailRequestEntity requestData) {
+	public static void patchProgramAssignment(ProgramAssignment programAssignment, ProgramAssignmentDetailRequestEntity requestData) {
 		if(requestData.getId()!=null)
 			programAssignment.setId(requestData.getId());
 		if (requestData.getProgramId()!=null) {

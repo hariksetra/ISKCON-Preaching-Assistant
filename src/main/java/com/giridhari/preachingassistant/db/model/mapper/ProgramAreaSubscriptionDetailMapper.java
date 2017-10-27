@@ -19,7 +19,7 @@ public class ProgramAreaSubscriptionDetailMapper {
 		return responseData;
 	}
 
-	public static void patchProgram(ProgramAreaSubscription programAreaSubscription, ProgramAreaSubscriptionDetailRequestEntity requestData) {
+	public static void patchProgramAreaSubscription(ProgramAreaSubscription programAreaSubscription, ProgramAreaSubscriptionDetailRequestEntity requestData) {
 		if (requestData.getId() != null)
 			programAreaSubscription.setId(requestData.getId());
 		if (requestData.getProgramId() != null) {
