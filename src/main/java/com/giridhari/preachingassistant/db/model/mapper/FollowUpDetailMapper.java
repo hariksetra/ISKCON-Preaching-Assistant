@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 
 import com.giridhari.preachingassistant.db.model.Devotee;
 import com.giridhari.preachingassistant.db.model.FollowUp;
+import com.giridhari.preachingassistant.db.model.Program;
 import com.giridhari.preachingassistant.rest.model.Paging;
 import com.giridhari.preachingassistant.rest.model.followup.FollowUpDetailRequestEntity;
 import com.giridhari.preachingassistant.rest.model.followup.FollowUpDetailResponseEntity;
@@ -16,6 +17,8 @@ public class FollowUpDetailMapper {
 			responseData.setVolunteerId(followUp.getVolunteer().getId());
 		if (followUp.getAttendee() != null)
 			responseData.setAttendeeId(followUp.getAttendee().getId());
+		if (followUp.getProgram()!=null)
+			responseData.setProgramId(followUp.getProgram().getId());
 		responseData.setResponse(followUp.getResponse());
 		responseData.setComment(followUp.getComment());
 		responseData.setRating(followUp.getRating());
@@ -36,6 +39,11 @@ public class FollowUpDetailMapper {
 			Devotee devotee = new Devotee();
 			devotee.setId(requestData.getAttendeeId());
 			followUp.setAttendee(devotee);
+		}
+		if (requestData.getProgramId()!=null) {
+			Program program = new Program();
+			program.setId(requestData.getProgramId());
+			followUp.setProgram(program);
 		}
 		if (requestData.getResponse() != null)
 			followUp.setResponse(requestData.getResponse());

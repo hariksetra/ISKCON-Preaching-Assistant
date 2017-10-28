@@ -46,6 +46,7 @@ public class Program implements Serializable {
 	private Set<ProgramAssignment> participants;
 	private Set<ProgramAttendance> attendanceRecords;
 	private Set<FollowUpAssignment> followUpAssignments;
+	private Set<FollowUp> followUps;
 	
 	
 	@Id
@@ -183,4 +184,15 @@ public class Program implements Serializable {
 	public void setFollowUpAssignments(Set<FollowUpAssignment> followUpAssignments) {
 		this.followUpAssignments = followUpAssignments;
 	}
+
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy="program")
+	@JsonBackReference
+	public Set<FollowUp> getFollowUps() {
+		return followUps;
+	}
+
+	public void setFollowUps(Set<FollowUp> followUps) {
+		this.followUps = followUps;
+	}
+	
 }

@@ -22,6 +22,7 @@ import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
 import com.giridhari.preachingassistant.rest.model.response.BaseListResponse;
 import com.giridhari.preachingassistant.service.DevoteeService;
 import com.giridhari.preachingassistant.service.FollowUpService;
+import com.giridhari.preachingassistant.service.ProgramService;
 
 @RestController
 public class FollowUpController {
@@ -30,6 +31,9 @@ public class FollowUpController {
 	
 	@Resource
 	DevoteeService devoteeService;
+	
+	@Resource
+	ProgramService programService;
 
 	@RequestMapping(name="followUpPage", value = "/followUpPage", method = RequestMethod.GET)
 	public BaseListResponse list(Pageable pageable)
@@ -64,6 +68,7 @@ public class FollowUpController {
 		FollowUpDetailMapper.patchFollowUp(followUp, requestData);
 		if(requestData.getAttendeeId()!=null) followUp.setAttendee(devoteeService.get(requestData.getAttendeeId()));
 		if(requestData.getVolunteerId()!=null) followUp.setVolunteer(devoteeService.get(requestData.getVolunteerId()));
+		if(requestData.getProgramId()!=null) followUp.setProgram(programService.get(requestData.getProgramId()));
 		followUpService.update(followUp);
 		FollowUpDetailResponseEntity responseData = FollowUpDetailMapper.convertToFollowUpDetailResponseEntity(followUp);
 		return responseData;
@@ -75,6 +80,7 @@ public class FollowUpController {
 		FollowUpDetailMapper.patchFollowUp(followUp, requestData);
 		if(requestData.getAttendeeId()!=null) followUp.setAttendee(devoteeService.get(requestData.getAttendeeId()));
 		if(requestData.getVolunteerId()!=null) followUp.setVolunteer(devoteeService.get(requestData.getVolunteerId()));
+		if(requestData.getProgramId()!=null) followUp.setProgram(programService.get(requestData.getProgramId()));
 		followUpService.update(followUp);
 		FollowUpDetailResponseEntity responseData = FollowUpDetailMapper.convertToFollowUpDetailResponseEntity(followUp);
 		return responseData;

@@ -25,6 +25,7 @@ public class FollowUp {
 	private Long id;
 	private Devotee volunteer;
 	private Devotee attendee;
+	private Program program;
 	private Response response;
 	private String comment;
 	private Integer rating;
@@ -64,6 +65,17 @@ public class FollowUp {
 		this.attendee = attendee;
 	}
 	
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "program_id", columnDefinition = "integer", nullable = false)
+	@JsonManagedReference
+	public Program getProgram() {
+		return program;
+	}
+
+	public void setProgram(Program program) {
+		this.program = program;
+	}
+
 	@Column(name = "response", nullable = false)
 	public Response getResponse() {
 		return response;
