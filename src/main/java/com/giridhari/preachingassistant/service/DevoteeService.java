@@ -17,6 +17,8 @@ public interface DevoteeService {
 	
 	public Devotee get(long devoteeId);
 	
+	public Devotee getByEmail(String email);
+	
 	public void create(Devotee devotee);
 	
 	public void update(Devotee devotee);
@@ -28,6 +30,8 @@ public interface DevoteeService {
 	public Page<Devotee> getMyCapturedList (long devoteeId, Pageable pageable);
 	
 	public Page<Devotee> searchDevotees(String query, Pageable pageable);
+	
+	public Page<Devotee> getAttendeesByProgram(long programId, Pageable pageable);
 	
 	public String getDisplayName(Devotee devotee);
 

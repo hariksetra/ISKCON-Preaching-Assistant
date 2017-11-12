@@ -35,4 +35,8 @@ public interface DevoteeRepo
 	@Query("select distinct d from Devotee d where d not in (select distinct pa.attendee from ProgramAssignment pa)")
 	public Page<Devotee> unassignedDevotees(Pageable pageable);
 	
+	public Devotee findByEmail(String email);
+	
+	public Page<Devotee> findByAttendingPrograms_Program_id(long programId, Pageable pageable);
+	
 }

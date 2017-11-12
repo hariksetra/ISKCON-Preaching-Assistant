@@ -1,6 +1,8 @@
 package com.giridhari.preachingassistant.controller;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -41,6 +43,26 @@ public class ProgramAttendanceController {
 		Page<ProgramAttendance> programAttendancePage = programAttendanceService.list(pageable);
 		BaseListResponse response = new BaseListResponse();
 		List<ProgramAttendanceDetailResponseEntity> responseData = new ArrayList<>();
+		
+		Paging paging = ProgramAttendanceDetailMapper.setPagingParameters(programAttendancePage);
+		response.setPaging(paging);
+		
+		List<ProgramAttendance> programAttendanceList = programAttendancePage.getContent();
+		for(ProgramAttendance programAttendance : programAttendanceList)
+		{
+			ProgramAttendanceDetailResponseEntity programAttendanceDetailResponseEntity = ProgramAttendanceDetailMapper.convertToProgramAttendanceDetailResponseEntity(programAttendance);
+			responseData.add(programAttendanceDetailResponseEntity);
+		}
+		response.setData(responseData);
+		return response;
+	}
+	
+	@RequestMapping(name="programAttendanceQuery", value = "/programAttendanceQuery", method = RequestMethod.POST)
+	public BaseListResponse programAttendanceQuery(@RequestBody HashMap<String, String> requestData, Pageable pageable) throws ParseException
+	{
+		BaseListResponse response = new BaseListResponse();
+		List<ProgramAttendanceDetailResponseEntity> responseData = new ArrayList<>();
+		Page<ProgramAttendance> programAttendancePage = programAttendanceService.programAttendanceQuery(requestData, pageable);
 		
 		Paging paging = ProgramAttendanceDetailMapper.setPagingParameters(programAttendancePage);
 		response.setPaging(paging);

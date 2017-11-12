@@ -1,6 +1,7 @@
 package com.giridhari.preachingassistant.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -13,13 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.giridhari.preachingassistant.db.model.Devotee;
 import com.giridhari.preachingassistant.db.model.Program;
-import com.giridhari.preachingassistant.db.model.mapper.DevoteeMapper;
 import com.giridhari.preachingassistant.db.model.mapper.ProgramMapper;
+import com.giridhari.preachingassistant.model.ProgramType;
+import com.giridhari.preachingassistant.model.TargetAudience;
 import com.giridhari.preachingassistant.rest.model.Paging;
-import com.giridhari.preachingassistant.rest.model.devotee.DevoteeDetailRequestEntity;
-import com.giridhari.preachingassistant.rest.model.devotee.DevoteeDetailResponseEntity;
 import com.giridhari.preachingassistant.rest.model.program.ProgramDetailRequestEntity;
 import com.giridhari.preachingassistant.rest.model.program.ProgramDetailResponseEntity;
 import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
@@ -41,7 +40,7 @@ public class ProgramController {
 	DevoteeService devoteeService;
 	
 	@RequestMapping(name="programPage", value = "/programPage", method = RequestMethod.GET)
-	public BaseListResponse list(Pageable pageable)
+	public BaseListResponse page(Pageable pageable)
 	{
 		Page<Program> programPage = programService.list(pageable);
 		BaseListResponse response = new BaseListResponse();
@@ -61,7 +60,7 @@ public class ProgramController {
 	}
 	
 	@RequestMapping(name="programPageByMentorId", value = "/programPageByMentorId/{mentorId}", method = RequestMethod.GET)
-	public BaseListResponse listByMentorId(@PathVariable("mentorId") long mentorId, Pageable pageable)
+	public BaseListResponse pageByMentorId(@PathVariable("mentorId") long mentorId, Pageable pageable)
 	{
 		Page<Program> programPage = programService.findByMentorId(mentorId, pageable);
 		BaseListResponse response = new BaseListResponse();
@@ -80,12 +79,135 @@ public class ProgramController {
 		return response;
 	}
 	
+	@RequestMapping(name="programPageByYatraId", value = "/programPageByYatraId/{yatraId}", method = RequestMethod.GET)
+	public BaseListResponse pageByYatraId(@PathVariable("yatraId") long yatraId, Pageable pageable)
+	{
+		Page<Program> programPage = programService.findByYatraId(yatraId, pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<ProgramDetailResponseEntity> responseData = new ArrayList<>();
+		
+		Paging paging = ProgramMapper.setPagingParameters(programPage);
+		response.setPaging(paging);
+		
+		List<Program> programList = programPage.getContent();
+		for(Program program : programList)
+		{
+			ProgramDetailResponseEntity programDetailResponseEntity = ProgramMapper.convertToProgramDetailResponseEntity(program);
+			responseData.add(programDetailResponseEntity);
+		}
+		response.setData(responseData);
+		return response;
+	}
+	
+	@RequestMapping(name="programPageByProgramType", value = "/programPageByProgramType/{programType}", method = RequestMethod.GET)
+	public BaseListResponse pageByProgramType(@PathVariable("programType") String programType, Pageable pageable)
+	{
+		Page<Program> programPage = programService.findByProgramType(ProgramType.valueOf(programType), pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<ProgramDetailResponseEntity> responseData = new ArrayList<>();
+		
+		Paging paging = ProgramMapper.setPagingParameters(programPage);
+		response.setPaging(paging);
+		
+		List<Program> programList = programPage.getContent();
+		for(Program program : programList)
+		{
+			ProgramDetailResponseEntity programDetailResponseEntity = ProgramMapper.convertToProgramDetailResponseEntity(program);
+			responseData.add(programDetailResponseEntity);
+		}
+		response.setData(responseData);
+		return response;
+	}
+	
+	@RequestMapping(name="programPageByTargetAudience", value = "/programPageByTargetAudience/{targetAudience}", method = RequestMethod.GET)
+	public BaseListResponse pageByTargetAudience(@PathVariable("targetAudience") String targetAudience, Pageable pageable)
+	{
+		Page<Program> programPage = programService.findByTargetAudience(TargetAudience.valueOf(targetAudience), pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<ProgramDetailResponseEntity> responseData = new ArrayList<>();
+		
+		Paging paging = ProgramMapper.setPagingParameters(programPage);
+		response.setPaging(paging);
+		
+		List<Program> programList = programPage.getContent();
+		for(Program program : programList)
+		{
+			ProgramDetailResponseEntity programDetailResponseEntity = ProgramMapper.convertToProgramDetailResponseEntity(program);
+			responseData.add(programDetailResponseEntity);
+		}
+		response.setData(responseData);
+		return response;
+	}
+	
+	@RequestMapping(name="programPageByZipPostalCode", value = "/programPageByZipPostalCode/{zipPostalCode}", method = RequestMethod.GET)
+	public BaseListResponse pageByPinCode(@PathVariable("zipPostalCode") String zipPostalCode, Pageable pageable)
+	{
+		Page<Program> programPage = programService.findByZipPostalCode(zipPostalCode, pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<ProgramDetailResponseEntity> responseData = new ArrayList<>();
+		
+		Paging paging = ProgramMapper.setPagingParameters(programPage);
+		response.setPaging(paging);
+		
+		List<Program> programList = programPage.getContent();
+		for(Program program : programList)
+		{
+			ProgramDetailResponseEntity programDetailResponseEntity = ProgramMapper.convertToProgramDetailResponseEntity(program);
+			responseData.add(programDetailResponseEntity);
+		}
+		response.setData(responseData);
+		return response;
+	}
+	
+	@RequestMapping(name="programPageByAttendee", value = "/programPageByAttendee/{attendeeId}", method = RequestMethod.GET)
+	public BaseListResponse pageByAttendeeId(@PathVariable("attendeeId") long attendeeId, Pageable pageable)
+	{
+		Page<Program> programPage = programService.findByAttendee(attendeeId, pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<ProgramDetailResponseEntity> responseData = new ArrayList<>();
+		
+		Paging paging = ProgramMapper.setPagingParameters(programPage);
+		response.setPaging(paging);
+		
+		List<Program> programList = programPage.getContent();
+		for(Program program : programList)
+		{
+			ProgramDetailResponseEntity programDetailResponseEntity = ProgramMapper.convertToProgramDetailResponseEntity(program);
+			responseData.add(programDetailResponseEntity);
+		}
+		response.setData(responseData);
+		return response;
+	}
+	
+	@RequestMapping(name = "searchProgram", value = "/searchProgram", method = RequestMethod.POST)
+	public BaseListResponse searchProgram(@RequestBody HashMap<String, String> requestData, Pageable pageable)
+	{
+		System.out.println("Message is: " + requestData);
+		BaseListResponse response = new BaseListResponse();
+		List<ProgramDetailResponseEntity> responseData = new ArrayList<>();
+		Page<Program> programPage = programService.searchProgram(requestData, pageable);
+		
+		Paging paging = ProgramMapper.setPagingParameters(programPage);
+		response.setPaging(paging);
+		
+		List<Program> programList = programPage.getContent();
+		for(Program program : programList)
+		{
+			ProgramDetailResponseEntity programDetailResponseEntity = ProgramMapper.convertToProgramDetailResponseEntity(program);
+			responseData.add(programDetailResponseEntity);
+		}
+		
+		response.setData(responseData);
+		return response;
+	}
+	
 	@RequestMapping(name = "programDetail", value="/programs/{id}", method = RequestMethod.GET)
 	public BaseDataResponse get(@PathVariable("id") long programId) {
 		Program program = programService.get(programId);
 		ProgramDetailResponseEntity responseData = ProgramMapper.convertToProgramDetailResponseEntity(program);
 		return new BaseDataResponse(responseData);
 	}
+	
 
 	@RequestMapping(name = "programUpdate", value="/programs/{id}", method = RequestMethod.PUT)
 	public ProgramDetailResponseEntity put(@PathVariable("id") long programId, @RequestBody ProgramDetailRequestEntity requestData) {

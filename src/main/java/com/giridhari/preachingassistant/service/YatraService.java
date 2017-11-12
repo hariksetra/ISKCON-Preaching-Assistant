@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.giridhari.preachingassistant.db.model.Yatra;
+import com.giridhari.preachingassistant.db.model.QYatra;
 
 @Service
 public interface YatraService {
@@ -25,4 +26,5 @@ public interface YatraService {
 	
 	public void delete(long yatraId);
 	
+	public Page<Yatra> getYatraByNameAndAddress(String name, String address, Pageable pageable);
 }

@@ -66,6 +66,14 @@ public class DevoteeController {
 		DevoteeDetailResponseEntity responseData = DevoteeMapper.convertToDevoteeDetailResponseEntity(devotee);
 		return new BaseDataResponse(responseData);
 	}
+	
+	@RequestMapping(name = "devoteeSearchByEmail", value="/devoteeByEmail/{email}", method = RequestMethod.GET)
+	public BaseDataResponse findByEmail(@PathVariable("email") String email)
+	{
+		Devotee devotee = devoteeService.getByEmail(email);
+		DevoteeDetailResponseEntity responseData = DevoteeMapper.convertToDevoteeDetailResponseEntity(devotee);
+		return new BaseDataResponse(responseData);
+	}
 
 	@RequestMapping(name = "devoteeUpdate", value="/devotees/{id}", method = RequestMethod.PUT)
 	public DevoteeDetailResponseEntity put(@PathVariable("id") long devoteeId, @RequestBody DevoteeDetailRequestEntity requestData) {
@@ -104,6 +112,24 @@ public class DevoteeController {
 	@RequestMapping(name = "myCapturedListPage", value="/myCapturedListPage/{id}", method = RequestMethod.GET)
 	public BaseListResponse list(@PathVariable("id") long devoteeId, Pageable pageable) {
 		Page<Devotee> devoteePage = devoteeService.getMyCapturedList(devoteeId, pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<DevoteeOverviewEntity> responseData = new ArrayList<>();
+		
+		Paging paging = DevoteeMapper.setPagingParameters(devoteePage);
+		response.setPaging(paging);
+		
+		List<Devotee> devoteeList = devoteePage.getContent();
+		for(Devotee devotee: devoteeList) {
+			DevoteeOverviewEntity devoteeOverviewEntity = DevoteeMapper.convertToDevoteeOverviewEntity(devotee);
+			responseData.add(devoteeOverviewEntity);
+		}
+		response.setData(responseData);
+		return response;
+	}
+	
+	@RequestMapping(name = "findAttendeesByProgramId", value="/findAttendeesByProgramId/{id}", method = RequestMethod.GET)
+	public BaseListResponse findAttendeesByProgramId(@PathVariable("id") long programId, Pageable pageable) {
+		Page<Devotee> devoteePage = devoteeService.getAttendeesByProgram(programId, pageable);
 		BaseListResponse response = new BaseListResponse();
 		List<DevoteeOverviewEntity> responseData = new ArrayList<>();
 		

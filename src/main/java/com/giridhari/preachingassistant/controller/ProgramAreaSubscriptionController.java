@@ -57,6 +57,25 @@ public class ProgramAreaSubscriptionController {
 		ProgramAreaSubscriptionDetailResponseEntity responseData = ProgramAreaSubscriptionDetailMapper.convertToProgramAreaSubscriptionDetailResponseEntity(programAreaSubscription);
 		return new BaseDataResponse(responseData);
 	}
+	
+	@RequestMapping(name = "programAreaSubscriptionByProgramId", value="/programAreaSubscriptionByProgramId/{id}", method = RequestMethod.GET)
+	public BaseListResponse getPinCodes(@PathVariable("id") long programId, Pageable pageable){
+		Page<ProgramAreaSubscription> programAreaSubscriptionPage = programAreaSubscriptionService.getByProgramId(programId, pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<ProgramAreaSubscriptionDetailResponseEntity> responseData = new ArrayList<>();
+		
+		Paging paging = ProgramAreaSubscriptionDetailMapper.setPagingParameters(programAreaSubscriptionPage);
+		response.setPaging(paging);
+		
+		List<ProgramAreaSubscription> programAreaSubscriptionList = programAreaSubscriptionPage.getContent();
+		for(ProgramAreaSubscription programAreaSubscription : programAreaSubscriptionList)
+		{
+			ProgramAreaSubscriptionDetailResponseEntity programAreaSubscriptionDetailResponseEntity = ProgramAreaSubscriptionDetailMapper.convertToProgramAreaSubscriptionDetailResponseEntity(programAreaSubscription);
+			responseData.add(programAreaSubscriptionDetailResponseEntity);
+		}
+		response.setData(responseData);
+		return response;
+	}
 
 	@RequestMapping(name = "programAreaSubscriptionUpdate", value="/programAreaSubscription/{id}", method = RequestMethod.PUT)
 	public ProgramAreaSubscriptionDetailResponseEntity put(@PathVariable("id") long programAreaSubscriptionId, @RequestBody ProgramAreaSubscriptionDetailRequestEntity requestData) {

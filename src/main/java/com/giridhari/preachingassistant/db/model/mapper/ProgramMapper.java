@@ -8,6 +8,7 @@ import com.giridhari.preachingassistant.db.model.Yatra;
 import com.giridhari.preachingassistant.rest.model.Paging;
 import com.giridhari.preachingassistant.rest.model.program.ProgramDetailRequestEntity;
 import com.giridhari.preachingassistant.rest.model.program.ProgramDetailResponseEntity;
+import com.giridhari.preachingassistant.util.CollectionUtils;
 
 public class ProgramMapper {
 	public static ProgramDetailResponseEntity convertToProgramDetailResponseEntity(Program program)
@@ -37,7 +38,7 @@ public class ProgramMapper {
 		if(requestData.getDescription() != null)
 			program.setDescription(requestData.getDescription());
 		if(requestData.getFollowupDescription() != null) {
-			program.setFollowupDescription(String.join("~", requestData.getFollowupDescription()));
+			program.setFollowupDescription(CollectionUtils.strJoin(requestData.getFollowupDescription(), "~"));
 		}
 		if(requestData.getMapLocation() != null)
 			program.setMapLocation(requestData.getMapLocation());

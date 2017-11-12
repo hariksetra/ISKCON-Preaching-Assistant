@@ -33,7 +33,12 @@ public class DevoteeServiceImpl implements DevoteeService {
 	public Devotee get(long devoteeId) {
 		return devoteeRepo.findOne(devoteeId);
 	}
-
+	
+	@Override
+	public Devotee getByEmail(String email)
+	{
+		return devoteeRepo.findByEmail(email);
+	}
 	@Override
 	public void create(Devotee devotee) {
 		devoteeRepo.save(devotee);
@@ -58,7 +63,12 @@ public class DevoteeServiceImpl implements DevoteeService {
 	public Page<Devotee> getMyCapturedList(long devoteeId, Pageable pageable) {
 		return devoteeRepo.findByCapturedBy(devoteeId, pageable);
 	}
-
+	
+	@Override
+	public Page<Devotee> getAttendeesByProgram(long programId, Pageable pageable){
+		return devoteeRepo.findByAttendingPrograms_Program_id(programId, pageable);
+	}
+	
 	@Override
 	public Page<Devotee> searchDevotees(String query, Pageable pageable) {
 		return devoteeRepo.findByQuery(query, pageable);

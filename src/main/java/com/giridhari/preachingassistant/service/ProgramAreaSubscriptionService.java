@@ -11,6 +11,8 @@ public interface ProgramAreaSubscriptionService {
 	
 	public Page<ProgramAreaSubscription> list(Pageable pageable);
 	
+	public Page<ProgramAreaSubscription> getByProgramId(long programId, Pageable pageable);
+	
 	public ProgramAreaSubscription get(long subscriptionId);
 	
 	public void update(ProgramAreaSubscription programAreaSubscription);
