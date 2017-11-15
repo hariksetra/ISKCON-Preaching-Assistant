@@ -9,5 +9,5 @@ import com.giridhari.preachingassistant.db.model.ProgramAreaSubscription;
 
 @Repository
 public interface ProgramAreaSubscriptionRepo extends PagingAndSortingRepository<ProgramAreaSubscription,Long> {
-
+	Page<ProgramAreaSubscription> findByProgramId_id(long programId, Pageable pageable);
 }

@@ -50,6 +50,26 @@ public class ProgramAreaSubscriptionController {
 		response.setData(responseData);
 		return response;
 	}
+	
+	@RequestMapping(name="programAreaSubscriptionByProgramIdPage", value = "/programAreaSubscriptionByProgramPage/{programId}", method = RequestMethod.GET)
+	public BaseListResponse list(@PathVariable("programId") long programId, Pageable pageable)
+	{
+		Page<ProgramAreaSubscription> programAreaSubscriptionPage = programAreaSubscriptionService.findByProgramId(programId, pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<ProgramAreaSubscriptionDetailResponseEntity> responseData = new ArrayList<>();
+		
+		Paging paging = ProgramAreaSubscriptionDetailMapper.setPagingParameters(programAreaSubscriptionPage);
+		response.setPaging(paging);
+		
+		List<ProgramAreaSubscription> programAreaSubscriptionList = programAreaSubscriptionPage.getContent();
+		for(ProgramAreaSubscription programAreaSubscription : programAreaSubscriptionList)
+		{
+			ProgramAreaSubscriptionDetailResponseEntity programAreaSubscriptionDetailResponseEntity = ProgramAreaSubscriptionDetailMapper.convertToProgramAreaSubscriptionDetailResponseEntity(programAreaSubscription);
+			responseData.add(programAreaSubscriptionDetailResponseEntity);
+		}
+		response.setData(responseData);
+		return response;
+	}
 
 	@RequestMapping(name = "programAreaSubscriptionDetail", value="/programAreaSubscription/{id}", method = RequestMethod.GET)
 	public BaseDataResponse get(@PathVariable("id") long programAreaSubscriptionId) {
@@ -68,19 +88,59 @@ public class ProgramAreaSubscriptionController {
 		return responseData;
 	}
 
+	//TODO: Same country code cannot be subscribed twice by a any program.
 	@RequestMapping(name="programAreaSubscriptionCreate", value="/programAreaSubscription", method=RequestMethod.POST)
-	public ProgramAreaSubscriptionDetailResponseEntity post(@RequestBody ProgramAreaSubscriptionDetailRequestEntity requestData) {
+	public BaseListResponse post(@RequestBody ProgramAreaSubscriptionDetailRequestEntity requestData, Pageable pageable) {
+		Long programId = requestData.getProgramId();
 		ProgramAreaSubscription programAreaSubscription = new ProgramAreaSubscription();
 		ProgramAreaSubscriptionDetailMapper.patchProgramAreaSubscription(programAreaSubscription, requestData);
 		if (requestData.getProgramId()!=null) programAreaSubscription.setProgramId(programService.get(requestData.getProgramId()));
 		programAreaSubscriptionService.update(programAreaSubscription);
-		ProgramAreaSubscriptionDetailResponseEntity responseData = ProgramAreaSubscriptionDetailMapper.convertToProgramAreaSubscriptionDetailResponseEntity(programAreaSubscription);
-		return responseData;
+
+		//Copied from list of subscriptions by program id - optimize later
+		Page<ProgramAreaSubscription> programAreaSubscriptionPage = programAreaSubscriptionService.findByProgramId(programId, pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<ProgramAreaSubscriptionDetailResponseEntity> responseData = new ArrayList<>();
+		
+		Paging paging = ProgramAreaSubscriptionDetailMapper.setPagingParameters(programAreaSubscriptionPage);
+		response.setPaging(paging);
+		
+		List<ProgramAreaSubscription> programAreaSubscriptionList = programAreaSubscriptionPage.getContent();
+		for(ProgramAreaSubscription pas : programAreaSubscriptionList)
+		{
+			ProgramAreaSubscriptionDetailResponseEntity programAreaSubscriptionDetailResponseEntity = ProgramAreaSubscriptionDetailMapper.convertToProgramAreaSubscriptionDetailResponseEntity(pas);
+			responseData.add(programAreaSubscriptionDetailResponseEntity);
+		}
+		response.setData(responseData);
+		return response;
 	}
 
 	@RequestMapping(name="programAreaSubscriptionDelete", value="/programAreaSubscription/{id}", method=RequestMethod.DELETE)
 	public void delete(@PathVariable("id") long programAreaSubscriptionId)
 	{
 		programAreaSubscriptionService.delete(programAreaSubscriptionId);
+	}
+	
+	@RequestMapping(name="programAreaSubscriptionDeleteAndReturnList", value="/programAreaSubscriptionWithProgram/{programId}/{id}", method=RequestMethod.DELETE)
+	public BaseListResponse delete(@PathVariable("programId") long programId, @PathVariable("id") long programAreaSubscriptionId, Pageable pageable)
+	{
+		programAreaSubscriptionService.delete(programAreaSubscriptionId);
+		
+		//Copied from list of subscriptions by program id - optimize later
+		Page<ProgramAreaSubscription> programAreaSubscriptionPage = programAreaSubscriptionService.findByProgramId(programId, pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<ProgramAreaSubscriptionDetailResponseEntity> responseData = new ArrayList<>();
+		
+		Paging paging = ProgramAreaSubscriptionDetailMapper.setPagingParameters(programAreaSubscriptionPage);
+		response.setPaging(paging);
+		
+		List<ProgramAreaSubscription> programAreaSubscriptionList = programAreaSubscriptionPage.getContent();
+		for(ProgramAreaSubscription programAreaSubscription : programAreaSubscriptionList)
+		{
+			ProgramAreaSubscriptionDetailResponseEntity programAreaSubscriptionDetailResponseEntity = ProgramAreaSubscriptionDetailMapper.convertToProgramAreaSubscriptionDetailResponseEntity(programAreaSubscription);
+			responseData.add(programAreaSubscriptionDetailResponseEntity);
+		}
+		response.setData(responseData);
+		return response;
 	}
 }

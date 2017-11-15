@@ -20,7 +20,12 @@ public class ProgramAreaSubscriptionServiceImpl implements ProgramAreaSubscripti
 	public Page<ProgramAreaSubscription> list(Pageable pageable) {
 		return programAreaSubscriptionRepo.findAll(pageable);
 	}
-
+	
+	@Override
+	public Page<ProgramAreaSubscription> findByProgramId(long programId, Pageable pageable) {
+		return programAreaSubscriptionRepo.findByProgramId_id(programId, pageable);
+	}
+	
 	@Override
 	public ProgramAreaSubscription get(long subscriptionId) {
 		return programAreaSubscriptionRepo.findOne(subscriptionId);
