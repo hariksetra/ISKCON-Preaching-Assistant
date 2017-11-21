@@ -13,8 +13,14 @@ public class FollowUpVolunteerDetailMapper {
 	public static FollowUpVolunteerDetailResponseEntity convertToFollowUpVolunteerDetailResponseEntity(FollowUpVolunteer followUpVolunteer) {
 		FollowUpVolunteerDetailResponseEntity responseData = new FollowUpVolunteerDetailResponseEntity();
 		responseData.setId(followUpVolunteer.getId());
-		responseData.setProgramId(followUpVolunteer.getProgram().getId());
+		if (followUpVolunteer.getProgram()!= null) {
+			responseData.setProgramId(followUpVolunteer.getProgram().getId());
+			responseData.setProgramName(followUpVolunteer.getProgram().getName());
+		}
 		responseData.setDevoteeId(followUpVolunteer.getDevotee().getId());
+		responseData.setDevoteeName(
+				(followUpVolunteer.getDevotee().getInitiatedName()!=null)?followUpVolunteer.getDevotee().getInitiatedName():followUpVolunteer.getDevotee().getLegalName()
+		);
 		return responseData;
 	}
 

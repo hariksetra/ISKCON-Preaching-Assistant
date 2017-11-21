@@ -83,13 +83,8 @@ public class Devotee implements Serializable {
 	private Set<FollowUp> volunteeredFollowUps;
 	private Set<FollowUp> attendedFollowUps;
 	
-	
 	private Set<ImportantDate> importantDates;
 	
-	
-	
-	
-
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id", columnDefinition = "integer", nullable = false)

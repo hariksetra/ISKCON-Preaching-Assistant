@@ -37,4 +37,14 @@ public class ProgramAssignmentServiceImpl implements ProgramAssignmentService {
 		programAssignmentRepo.delete(assignmentId);
 	}
 
+	@Override
+	public Page<ProgramAssignment> findByProgram(long programId, Pageable pageable) {
+		return programAssignmentRepo.findByProgram_id(programId, pageable);
+	}
+
+	@Override
+	public Page<ProgramAssignment> findByAttendee(long devoteeId, Pageable pageable) {
+		return programAssignmentRepo.findByAttendee_id(devoteeId, pageable);
+	}
+
 }

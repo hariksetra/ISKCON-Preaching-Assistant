@@ -72,5 +72,10 @@ public class DevoteeServiceImpl implements DevoteeService {
 			return devotee.getLegalName();
 		}
 	}
+
+	@Override
+	public Devotee findByEmail(String email) {
+		return devoteeRepo.findByEmail(email);
+	}
 	
 }

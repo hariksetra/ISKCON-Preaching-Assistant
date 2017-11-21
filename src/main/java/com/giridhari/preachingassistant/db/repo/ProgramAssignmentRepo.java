@@ -13,11 +13,7 @@ import com.giridhari.preachingassistant.db.model.ProgramAssignment;
 
 @Repository
 public interface ProgramAssignmentRepo extends PagingAndSortingRepository<ProgramAssignment, Long> {
-	
-	@Query("select pa from ProgramAssignment pa where pa.attendee = ?1")
-	public Page<ProgramAssignment> findByAttendee(@Param("attendee") Devotee attendee, Pageable pageable);
-	
-	@Query("select pa from ProgramAssignment pa where pa.program = ?1")
-	public Page<ProgramAssignment> findByProgram(@Param("program") Program program, Pageable pageable);
+	public Page<ProgramAssignment> findByProgram_id(long programId, Pageable pageable);
+	public Page<ProgramAssignment> findByAttendee_id(long devoteeId, Pageable pageable);
 	
 }

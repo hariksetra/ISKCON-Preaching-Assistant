@@ -54,6 +54,26 @@ public class ProgramAssignmentController {
 		response.setData(responseData);
 		return response;
 	}
+	
+	@RequestMapping(name="programAssignmentByProgramPage", value = "/programAssignmentByProgramPage/{programId}", method = RequestMethod.GET)
+	public BaseListResponse listByProgram(@PathVariable("programId") long programId, Pageable pageable)
+	{
+		Page<ProgramAssignment> programAssignmentPage = programAssignmentService.findByProgram(programId, pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<ProgramAssignmentDetailResponseEntity> responseData = new ArrayList<>();
+		
+		Paging paging = ProgramAssignmentDetailMapper.setPagingParameters(programAssignmentPage);
+		response.setPaging(paging);
+		
+		List<ProgramAssignment> programAssignmentList = programAssignmentPage.getContent();
+		for(ProgramAssignment programAssignment : programAssignmentList)
+		{
+			ProgramAssignmentDetailResponseEntity programAssignmentDetailResponseEntity = ProgramAssignmentDetailMapper.convertToProgramAssignmentDetailResponseEntity(programAssignment);
+			responseData.add(programAssignmentDetailResponseEntity);
+		}
+		response.setData(responseData);
+		return response;
+	}
 
 	@RequestMapping(name = "programAssignmentDetail", value="/programAssignment/{id}", method = RequestMethod.GET)
 	public BaseDataResponse get(@PathVariable("id") long programAssignmentId) {
@@ -74,19 +94,57 @@ public class ProgramAssignmentController {
 	}
 
 	@RequestMapping(name="programAssignmentCreate", value="/programAssignment", method=RequestMethod.POST)
-	public ProgramAssignmentDetailResponseEntity post(@RequestBody ProgramAssignmentDetailRequestEntity requestData) {
+	public BaseListResponse post(@RequestBody ProgramAssignmentDetailRequestEntity requestData, Pageable pageable) {
 		ProgramAssignment programAssignment = new ProgramAssignment();
 		ProgramAssignmentDetailMapper.patchProgramAssignment(programAssignment, requestData);
 		if (requestData.getAttendeeId()!=null) programAssignment.setAttendee(devoteeService.get(requestData.getAttendeeId()));
 		if (requestData.getProgramId()!=null) programAssignment.setProgram(programService.get(requestData.getProgramId()));
 		programAssignmentService.update(programAssignment);
-		ProgramAssignmentDetailResponseEntity responseData = ProgramAssignmentDetailMapper.convertToProgramAssignmentDetailResponseEntity(programAssignment);
-		return responseData;
+	
+		long programId = requestData.getProgramId();
+		
+		Page<ProgramAssignment> programAssignmentPage = programAssignmentService.findByProgram(programId, pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<ProgramAssignmentDetailResponseEntity> responseData = new ArrayList<>();
+		
+		Paging paging = ProgramAssignmentDetailMapper.setPagingParameters(programAssignmentPage);
+		response.setPaging(paging);
+		
+		List<ProgramAssignment> programAssignmentList = programAssignmentPage.getContent();
+		for(ProgramAssignment programAssignmentData : programAssignmentList)
+		{
+			ProgramAssignmentDetailResponseEntity programAssignmentDetailResponseEntity = ProgramAssignmentDetailMapper.convertToProgramAssignmentDetailResponseEntity(programAssignmentData);
+			responseData.add(programAssignmentDetailResponseEntity);
+		}
+		response.setData(responseData);
+		return response;
 	}
 
 	@RequestMapping(name="programAssignmentDelete", value="/programAssignment/{id}", method=RequestMethod.DELETE)
 	public void delete(@PathVariable("id") long programAssignmentId)
 	{
 		programAssignmentService.delete(programAssignmentId);
+	}
+	
+	@RequestMapping(name="programAssignmentDeleteAndReturn", value="/programAssignment/{programId}/{id}", method=RequestMethod.DELETE)
+	public BaseListResponse delete(@PathVariable("programId") long programId, @PathVariable("id") long programAssignmentId, Pageable pageable)
+	{
+		programAssignmentService.delete(programAssignmentId);
+		
+		Page<ProgramAssignment> programAssignmentPage = programAssignmentService.findByProgram(programId, pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<ProgramAssignmentDetailResponseEntity> responseData = new ArrayList<>();
+		
+		Paging paging = ProgramAssignmentDetailMapper.setPagingParameters(programAssignmentPage);
+		response.setPaging(paging);
+		
+		List<ProgramAssignment> programAssignmentList = programAssignmentPage.getContent();
+		for(ProgramAssignment programAssignment : programAssignmentList)
+		{
+			ProgramAssignmentDetailResponseEntity programAssignmentDetailResponseEntity = ProgramAssignmentDetailMapper.convertToProgramAssignmentDetailResponseEntity(programAssignment);
+			responseData.add(programAssignmentDetailResponseEntity);
+		}
+		response.setData(responseData);
+		return response;
 	}
 }

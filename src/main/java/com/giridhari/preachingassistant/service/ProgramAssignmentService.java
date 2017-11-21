@@ -13,6 +13,10 @@ public interface ProgramAssignmentService {
 	
 	public ProgramAssignment get(long assignmentId);
 	
+	public Page<ProgramAssignment> findByProgram(long programId, Pageable pageable);
+	
+	public Page<ProgramAssignment> findByAttendee(long devoteeId, Pageable pageable);
+	
 	public void update(ProgramAssignment programAssignment);
 	
 	public void delete(long assignmentId);

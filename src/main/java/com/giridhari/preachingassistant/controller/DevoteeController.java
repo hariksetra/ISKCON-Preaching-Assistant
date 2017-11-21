@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.giridhari.preachingassistant.db.model.Devotee;
@@ -65,6 +66,15 @@ public class DevoteeController {
 		Devotee devotee = devoteeService.get(devoteeId);
 		DevoteeDetailResponseEntity responseData = DevoteeMapper.convertToDevoteeDetailResponseEntity(devotee);
 		return new BaseDataResponse(responseData);
+	}
+	
+	@RequestMapping(name = "devoteeDetailByEmail", value="/devoteeByEmail", method = RequestMethod.GET)
+	public BaseDataResponse getByEmail(@RequestParam("email") String email) {
+		Devotee devotee = devoteeService.findByEmail(email);
+		if (devotee !=null) {
+		DevoteeDetailResponseEntity responseData = DevoteeMapper.convertToDevoteeDetailResponseEntity(devotee);
+		return new BaseDataResponse(responseData);
+		} else return null;
 	}
 
 	@RequestMapping(name = "devoteeUpdate", value="/devotees/{id}", method = RequestMethod.PUT)

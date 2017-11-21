@@ -22,6 +22,11 @@ public class FollowUpVolunteerServiceImpl implements FollowUpVolunteerService {
 	}
 
 	@Override
+	public Page<FollowUpVolunteer> findByProgram(long programId, Pageable pageable) {
+		return followUpVolunteerRepo.findByProgram_id(programId, pageable);
+	}
+	
+	@Override
 	public FollowUpVolunteer get(long id) {
 		return followUpVolunteerRepo.findOne(id);
 	}

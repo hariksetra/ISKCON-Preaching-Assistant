@@ -13,9 +13,14 @@ public class ProgramAssignmentDetailMapper {
 	public static ProgramAssignmentDetailResponseEntity convertToProgramAssignmentDetailResponseEntity(ProgramAssignment programAssignment) {
 		ProgramAssignmentDetailResponseEntity responseData = new ProgramAssignmentDetailResponseEntity();
 		responseData.setId(programAssignment.getId());
-		if (programAssignment.getProgram()!=null)
+		if (programAssignment.getProgram()!=null) {
 			responseData.setProgramId(programAssignment.getProgram().getId());
+			responseData.setProgramName(programAssignment.getProgram().getName());
+		}
 		responseData.setAttendeeId(programAssignment.getAttendee().getId());
+		responseData.setAttendeeName(
+				(programAssignment.getAttendee().getInitiatedName()!=null)?programAssignment.getAttendee().getInitiatedName():programAssignment.getAttendee().getLegalName()
+		);
 		return responseData;
 	}
 

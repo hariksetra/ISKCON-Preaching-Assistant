@@ -11,6 +11,8 @@ public interface FollowUpVolunteerService {
 
 	public Page<FollowUpVolunteer> list(Pageable pageable);
 	
+	public Page<FollowUpVolunteer> findByProgram(long programId, Pageable pageable);
+	
 	public FollowUpVolunteer get(long id);
 	
 	public void update(FollowUpVolunteer followUpVolunteer);

@@ -30,5 +30,7 @@ public interface DevoteeService {
 	public Page<Devotee> searchDevotees(String query, Pageable pageable);
 	
 	public String getDisplayName(Devotee devotee);
+	
+	public Devotee findByEmail(String email);
 
 }

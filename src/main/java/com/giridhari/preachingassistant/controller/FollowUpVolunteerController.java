@@ -54,7 +54,28 @@ public class FollowUpVolunteerController {
 		response.setData(responseData);
 		return response;
 	}
+	
+	@RequestMapping(name="followUpVolunteerByProgramPage", value = "/followUpVolunteerByProgramPage/{programId}", method = RequestMethod.GET)
+	public BaseListResponse listByProgram(@PathVariable("programId") long programId, Pageable pageable)
+	{
+		Page<FollowUpVolunteer> followUpVolunteerPage = followUpVolunteerService.findByProgram(programId, pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<FollowUpVolunteerDetailResponseEntity> responseData = new ArrayList<>();
+		
+		Paging paging = FollowUpVolunteerDetailMapper.setPagingParameters(followUpVolunteerPage);
+		response.setPaging(paging);
+		
+		List<FollowUpVolunteer> followUpVolunteerList = followUpVolunteerPage.getContent();
+		for(FollowUpVolunteer followUpVolunteer : followUpVolunteerList)
+		{
+			FollowUpVolunteerDetailResponseEntity followUpVolunteerDetailResponseEntity = FollowUpVolunteerDetailMapper.convertToFollowUpVolunteerDetailResponseEntity(followUpVolunteer);
+			responseData.add(followUpVolunteerDetailResponseEntity);
+		}
+		response.setData(responseData);
+		return response;
+	}
 
+	//This end point may not be used
 	@RequestMapping(name = "followUpVolunteerDetail", value="/followUpVolunteer/{id}", method = RequestMethod.GET)
 	public BaseDataResponse get(@PathVariable("id") long followUpVolunteerId) {
 		FollowUpVolunteer followUpVolunteer = followUpVolunteerService.get(followUpVolunteerId);
@@ -62,6 +83,7 @@ public class FollowUpVolunteerController {
 		return new BaseDataResponse(responseData);
 	}
 
+	//This end point may not be used
 	@RequestMapping(name = "followUpVolunteerUpdate", value="/followUpVolunteer/{id}", method = RequestMethod.PUT)
 	public FollowUpVolunteerDetailResponseEntity put(@PathVariable("id") long followUpVolunteerId, @RequestBody FollowUpVolunteerDetailRequestEntity requestData) {
 		FollowUpVolunteer followUpVolunteer = followUpVolunteerService.get(followUpVolunteerId);
@@ -74,19 +96,58 @@ public class FollowUpVolunteerController {
 	}
 
 	@RequestMapping(name="followUpVolunteerCreate", value="/followUpVolunteer", method=RequestMethod.POST)
-	public FollowUpVolunteerDetailResponseEntity post(@RequestBody FollowUpVolunteerDetailRequestEntity requestData) {
+	public BaseListResponse post(@RequestBody FollowUpVolunteerDetailRequestEntity requestData, Pageable pageable) {
+		long programId = requestData.getProgramId();
 		FollowUpVolunteer followUpVolunteer = new FollowUpVolunteer();
 		FollowUpVolunteerDetailMapper.patchFollowUpVolunteer(followUpVolunteer, requestData);
 		if (requestData.getDevoteeId()!=null) followUpVolunteer.setDevotee(devoteeService.get(requestData.getDevoteeId()));
 		if (requestData.getProgramId()!=null) followUpVolunteer.setProgram(programService.get(requestData.getProgramId()));
 		followUpVolunteerService.update(followUpVolunteer);
-		FollowUpVolunteerDetailResponseEntity responseData = FollowUpVolunteerDetailMapper.convertToFollowUpVolunteerDetailResponseEntity(followUpVolunteer);
-		return responseData;
+		
+		//Copied from list by program optimize later
+		Page<FollowUpVolunteer> followUpVolunteerPage = followUpVolunteerService.findByProgram(programId, pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<FollowUpVolunteerDetailResponseEntity> responseData = new ArrayList<>();
+		
+		Paging paging = FollowUpVolunteerDetailMapper.setPagingParameters(followUpVolunteerPage);
+		response.setPaging(paging);
+		
+		List<FollowUpVolunteer> followUpVolunteerList = followUpVolunteerPage.getContent();
+		for(FollowUpVolunteer followUpVolunteerItem : followUpVolunteerList)
+		{
+			FollowUpVolunteerDetailResponseEntity followUpVolunteerDetailResponseEntity = FollowUpVolunteerDetailMapper.convertToFollowUpVolunteerDetailResponseEntity(followUpVolunteerItem);
+			responseData.add(followUpVolunteerDetailResponseEntity);
+		}
+		response.setData(responseData);
+		return response;
 	}
 
 	@RequestMapping(name="followUpVolunteerDelete", value="/followUpVolunteer/{id}", method=RequestMethod.DELETE)
 	public void delete(@PathVariable("id") long followUpVolunteerId)
 	{
 		followUpVolunteerService.delete(followUpVolunteerId);
+	}
+	
+	@RequestMapping(name="followUpVolunteerDeleteAndReturnList", value="/followUpVolunteer/{programId}/{id}", method=RequestMethod.DELETE)
+	public BaseListResponse delete(@PathVariable("programId") long programId, @PathVariable("id") long assignmentId, Pageable pageable)
+	{
+		followUpVolunteerService.delete(assignmentId);
+		
+		//Copied from list by program optimize later
+		Page<FollowUpVolunteer> followUpVolunteerPage = followUpVolunteerService.findByProgram(programId, pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<FollowUpVolunteerDetailResponseEntity> responseData = new ArrayList<>();
+		
+		Paging paging = FollowUpVolunteerDetailMapper.setPagingParameters(followUpVolunteerPage);
+		response.setPaging(paging);
+		
+		List<FollowUpVolunteer> followUpVolunteerList = followUpVolunteerPage.getContent();
+		for(FollowUpVolunteer followUpVolunteer : followUpVolunteerList)
+		{
+			FollowUpVolunteerDetailResponseEntity followUpVolunteerDetailResponseEntity = FollowUpVolunteerDetailMapper.convertToFollowUpVolunteerDetailResponseEntity(followUpVolunteer);
+			responseData.add(followUpVolunteerDetailResponseEntity);
+		}
+		response.setData(responseData);
+		return response;
 	}
 }
