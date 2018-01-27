@@ -15,10 +15,18 @@ public class FollowUpAssignmentDetailMapper {
 		responseData.setId(followUpAssignment.getId());
 		if (followUpAssignment.getVolunteer() != null)
 			responseData.setVolunteerId(followUpAssignment.getVolunteer().getId());
-		if (followUpAssignment.getAttendee() != null)
+		if (followUpAssignment.getAttendee() != null) {
 			responseData.setAttendeeId(followUpAssignment.getAttendee().getId());
-		if (followUpAssignment.getProgram() != null)
+			if (followUpAssignment.getAttendee().getInitiatedName() != null && followUpAssignment.getAttendee().getInitiatedName() != "") {
+				responseData.setAttendeeName(followUpAssignment.getAttendee().getInitiatedName());
+			} else {
+				responseData.setAttendeeName(followUpAssignment.getAttendee().getLegalName());
+			}
+		}
+		if (followUpAssignment.getProgram() != null) {
 			responseData.setProgramId(followUpAssignment.getProgram().getId());
+			responseData.setProgramName(followUpAssignment.getProgram().getName());
+		}
 		return responseData;
 	}
 

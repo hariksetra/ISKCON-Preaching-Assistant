@@ -4,12 +4,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.giridhari.preachingassistant.db.model.Devotee;
 import com.giridhari.preachingassistant.db.model.FollowUpAssignment;
+import com.giridhari.preachingassistant.db.model.Program;
 
 @Service
 public interface FollowUpAssignmentService {
 
 	public Page<FollowUpAssignment> list(Pageable pageable);
+	
+	public Page<FollowUpAssignment> listByVolunteer(Devotee volunteer, Pageable pageable);
+	
+	public Page<FollowUpAssignment> listByVolunteerAndProgram(Devotee volunteer, Program program, Pageable pageable);
 	
 	public FollowUpAssignment get(long assignmentId);
 	

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.giridhari.preachingassistant.db.model.Devotee;
 import com.giridhari.preachingassistant.db.model.FollowUpAssignment;
 import com.giridhari.preachingassistant.db.model.mapper.FollowUpAssignmentDetailMapper;
 import com.giridhari.preachingassistant.rest.model.Paging;
@@ -28,7 +29,7 @@ import com.giridhari.preachingassistant.service.ProgramService;
 public class FollowUpAssignmentController {
 	@Resource
 	FollowUpAssignmentService followUpAssignmentService;
-	
+		
 	@Resource
 	DevoteeService devoteeService;
 	
@@ -39,6 +40,46 @@ public class FollowUpAssignmentController {
 	public BaseListResponse list(Pageable pageable)
 	{
 		Page<FollowUpAssignment> followUpAssignmentPage = followUpAssignmentService.list(pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<FollowUpAssignmentDetailResponseEntity> responseData = new ArrayList<>();
+		
+		Paging paging = FollowUpAssignmentDetailMapper.setPagingParameters(followUpAssignmentPage);
+		response.setPaging(paging);
+		
+		List<FollowUpAssignment> followUpAssignmentList = followUpAssignmentPage.getContent();
+		for(FollowUpAssignment followUpAssignment : followUpAssignmentList)
+		{
+			FollowUpAssignmentDetailResponseEntity followUpAssignmentDetailResponseEntity = FollowUpAssignmentDetailMapper.convertToFollowUpAssignmentDetailResponseEntity(followUpAssignment);
+			responseData.add(followUpAssignmentDetailResponseEntity);
+		}
+		response.setData(responseData);
+		return response;
+	}
+	
+	@RequestMapping(name="followUpAssignmentByVolunteerPage", value = "/followUpAssignmentByVolunteerPage/{volunteerId}", method = RequestMethod.GET)
+	public BaseListResponse listByVolunteer(@PathVariable("volunteerId") long volunteerId, Pageable pageable)
+	{
+		Page<FollowUpAssignment> followUpAssignmentPage = followUpAssignmentService.listByVolunteer(devoteeService.get(volunteerId), pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<FollowUpAssignmentDetailResponseEntity> responseData = new ArrayList<>();
+		
+		Paging paging = FollowUpAssignmentDetailMapper.setPagingParameters(followUpAssignmentPage);
+		response.setPaging(paging);
+		
+		List<FollowUpAssignment> followUpAssignmentList = followUpAssignmentPage.getContent();
+		for(FollowUpAssignment followUpAssignment : followUpAssignmentList)
+		{
+			FollowUpAssignmentDetailResponseEntity followUpAssignmentDetailResponseEntity = FollowUpAssignmentDetailMapper.convertToFollowUpAssignmentDetailResponseEntity(followUpAssignment);
+			responseData.add(followUpAssignmentDetailResponseEntity);
+		}
+		response.setData(responseData);
+		return response;
+	}
+	
+	@RequestMapping(name="followUpAssignmentAttendeesForVolunteerByProgramPage", value = "/followUpAssignmentAttendeesForVolunteerByProgramPage/{volunteerId}/{programId}", method = RequestMethod.GET)
+	public BaseListResponse listOfAttendeesForVolunteerByProgram(@PathVariable("volunteerId") long volunteerId, @PathVariable("programId") long programId, Pageable pageable)
+	{
+		Page<FollowUpAssignment> followUpAssignmentPage = followUpAssignmentService.listByVolunteerAndProgram(devoteeService.get(volunteerId), programService.get(programId), pageable);
 		BaseListResponse response = new BaseListResponse();
 		List<FollowUpAssignmentDetailResponseEntity> responseData = new ArrayList<>();
 		
