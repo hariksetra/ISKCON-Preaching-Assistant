@@ -95,6 +95,46 @@ public class FollowUpAssignmentController {
 		response.setData(responseData);
 		return response;
 	}
+	
+	@RequestMapping(name="followUpAssignmentsByProgramPage", value = "/followUpAssignmentsByProgramPage/{programId}", method = RequestMethod.GET)
+	public BaseListResponse listOfFollowupAssignmentsByProgram(@PathVariable("programId") long programId, Pageable pageable)
+	{
+		Page<FollowUpAssignment> followUpAssignmentPage = followUpAssignmentService.listByProgram(programService.get(programId), pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<FollowUpAssignmentDetailResponseEntity> responseData = new ArrayList<>();
+		
+		Paging paging = FollowUpAssignmentDetailMapper.setPagingParameters(followUpAssignmentPage);
+		response.setPaging(paging);
+		
+		List<FollowUpAssignment> followUpAssignmentList = followUpAssignmentPage.getContent();
+		for(FollowUpAssignment followUpAssignment : followUpAssignmentList)
+		{
+			FollowUpAssignmentDetailResponseEntity followUpAssignmentDetailResponseEntity = FollowUpAssignmentDetailMapper.convertToFollowUpAssignmentDetailResponseEntity(followUpAssignment);
+			responseData.add(followUpAssignmentDetailResponseEntity);
+		}
+		response.setData(responseData);
+		return response;
+	}
+	
+//	@RequestMapping(name="followUpProgramsForVolunteerPage", value = "/followUpProgramsForVolunteerPage/{volunteerId}", method = RequestMethod.GET)
+//	public BaseListResponse listOfProgramsForVolunteer(@PathVariable("volunteerId") long volunteerId, Pageable pageable)
+//	{
+//		Page<FollowUpAssignment> followUpAssignmentPage = followUpAssignmentService.listByVolunteerAndProgram(devoteeService.get(volunteerId), programService.get(programId), pageable);
+//		BaseListResponse response = new BaseListResponse();
+//		List<FollowUpAssignmentDetailResponseEntity> responseData = new ArrayList<>();
+//		
+//		Paging paging = FollowUpAssignmentDetailMapper.setPagingParameters(followUpAssignmentPage);
+//		response.setPaging(paging);
+//		
+//		List<FollowUpAssignment> followUpAssignmentList = followUpAssignmentPage.getContent();
+//		for(FollowUpAssignment followUpAssignment : followUpAssignmentList)
+//		{
+//			FollowUpAssignmentDetailResponseEntity followUpAssignmentDetailResponseEntity = FollowUpAssignmentDetailMapper.convertToFollowUpAssignmentDetailResponseEntity(followUpAssignment);
+//			responseData.add(followUpAssignmentDetailResponseEntity);
+//		}
+//		response.setData(responseData);
+//		return response;
+//	}
 
 	@RequestMapping(name = "followUpAssignmentDetail", value="/followUpAssignment/{id}", method = RequestMethod.GET)
 	public BaseDataResponse get(@PathVariable("id") long followUpAssignmentId) {

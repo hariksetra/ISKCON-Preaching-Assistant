@@ -32,6 +32,17 @@ public class FollowUpAssignmentServiceImpl implements FollowUpAssignmentService 
 	public Page<FollowUpAssignment> listByVolunteerAndProgram(Devotee volunteer, Program program, Pageable pageable) {
 		return followupAssignmentRepo.findByVolunteerAndProgram(volunteer, program, pageable);
 	}
+	
+	@Override
+	public Page<FollowUpAssignment> listByProgram(Program program, Pageable pageable) {
+		return followupAssignmentRepo.findByProgram(program, pageable);
+	}
+	
+//	@Override
+//	public Page<FollowUpAssignment> listOfProgramsForVolunteer(Devotee volunteer, Pageable pageable) {
+//		Page<FollowUpAssignment> currentPage = listByVolunteer(volunteer, pageable);
+//		return currentPage;
+//	}
 
 	@Override
 	public FollowUpAssignment get(long assignmentId) {

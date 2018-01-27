@@ -17,6 +17,10 @@ public interface FollowUpAssignmentService {
 	
 	public Page<FollowUpAssignment> listByVolunteerAndProgram(Devotee volunteer, Program program, Pageable pageable);
 	
+	public Page<FollowUpAssignment> listByProgram(Program program, Pageable pageable);
+	
+//	public Page<FollowUpAssignment> listOfProgramsForVolunteer(Devotee volunteer, Pageable pageable);
+	
 	public FollowUpAssignment get(long assignmentId);
 	
 	public void update(FollowUpAssignment followUpAssignment);
