@@ -1,5 +1,7 @@
 package com.giridhari.preachingassistant.db.repo;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -11,6 +13,8 @@ import com.giridhari.preachingassistant.db.model.Program;
 
 @Repository
 public interface FollowUpAssignmentRepo extends PagingAndSortingRepository<FollowUpAssignment, Long> {
+	public List<FollowUpAssignment> findByVolunteer(Devotee volunteer);
+
 	public Page<FollowUpAssignment> findByVolunteer(Devotee volunteer, Pageable pageable);
 	
 	public Page<FollowUpAssignment> findByVolunteerAndProgram(Devotee volunteer, Program program, Pageable pageable);

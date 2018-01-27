@@ -1,5 +1,11 @@
 package com.giridhari.preachingassistant.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import javax.annotation.Resource;
 
 import org.springframework.data.domain.Page;
@@ -38,11 +44,29 @@ public class FollowUpAssignmentServiceImpl implements FollowUpAssignmentService 
 		return followupAssignmentRepo.findByProgram(program, pageable);
 	}
 	
-//	@Override
-//	public Page<FollowUpAssignment> listOfProgramsForVolunteer(Devotee volunteer, Pageable pageable) {
-//		Page<FollowUpAssignment> currentPage = listByVolunteer(volunteer, pageable);
-//		return currentPage;
-//	}
+	@Override
+	public List<FollowUpAssignment> listOfProgramsForVolunteer(Devotee volunteer) {
+		List<FollowUpAssignment> listOfFollowUpAssignments = followupAssignmentRepo.findByVolunteer(volunteer);
+		
+		// extract only the unique programs from this list
+		Set<Long> includedProgramIds = new HashSet<Long>();
+		// defining list of followup assignments having distinct programs
+		List<FollowUpAssignment> listOfDistinctFollowUpAssignments = new ArrayList<FollowUpAssignment>();
+		
+		Iterator<FollowUpAssignment> iterator = listOfFollowUpAssignments.iterator();
+		
+		FollowUpAssignment curFollowUpAssignment;
+		while (iterator.hasNext()) {
+			curFollowUpAssignment = iterator.next();
+			long programId = curFollowUpAssignment.getProgram().getId();
+			if (includedProgramIds.contains(programId)) {
+				continue;
+			}
+			includedProgramIds.add(programId);
+			listOfDistinctFollowUpAssignments.add(curFollowUpAssignment);
+		}
+		return listOfDistinctFollowUpAssignments;
+	}
 
 	@Override
 	public FollowUpAssignment get(long assignmentId) {

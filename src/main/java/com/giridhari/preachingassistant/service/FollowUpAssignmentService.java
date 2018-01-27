@@ -1,5 +1,7 @@
 package com.giridhari.preachingassistant.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,7 +21,7 @@ public interface FollowUpAssignmentService {
 	
 	public Page<FollowUpAssignment> listByProgram(Program program, Pageable pageable);
 	
-//	public Page<FollowUpAssignment> listOfProgramsForVolunteer(Devotee volunteer, Pageable pageable);
+	public List<FollowUpAssignment> listOfProgramsForVolunteer(Devotee volunteer);
 	
 	public FollowUpAssignment get(long assignmentId);
 	
