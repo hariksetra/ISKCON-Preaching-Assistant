@@ -1,7 +1,9 @@
 package com.giridhari.preachingassistant.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.lang.Math;
 
 import javax.annotation.Resource;
 
@@ -13,9 +15,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.giridhari.preachingassistant.db.model.Devotee;
+import com.giridhari.preachingassistant.db.model.FollowUp;
 import com.giridhari.preachingassistant.db.model.FollowUpAssignment;
+import com.giridhari.preachingassistant.db.model.FollowUpVolunteer;
+import com.giridhari.preachingassistant.db.model.ProgramAssignment;
 import com.giridhari.preachingassistant.db.model.mapper.FollowUpAssignmentDetailMapper;
 import com.giridhari.preachingassistant.rest.model.Paging;
 import com.giridhari.preachingassistant.rest.model.followupassignment.FollowUpAssignmentDetailRequestEntity;
@@ -24,7 +30,10 @@ import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
 import com.giridhari.preachingassistant.rest.model.response.BaseListResponse;
 import com.giridhari.preachingassistant.service.DevoteeService;
 import com.giridhari.preachingassistant.service.FollowUpAssignmentService;
+import com.giridhari.preachingassistant.service.ProgramAssignmentService;
 import com.giridhari.preachingassistant.service.ProgramService;
+import com.giridhari.preachingassistant.service.FollowUpService;
+import com.giridhari.preachingassistant.service.FollowUpVolunteerService;
 
 @RestController
 public class FollowUpAssignmentController {
@@ -36,6 +45,12 @@ public class FollowUpAssignmentController {
 	
 	@Resource
 	ProgramService programService;
+	
+	@Resource
+	ProgramAssignmentService programAssignmentService;
+	
+	@Resource
+	FollowUpVolunteerService followUpVolunteerService;
 
 	@RequestMapping(name="followUpAssignmentPage", value = "/followUpAssignmentPage", method = RequestMethod.GET)
 	public BaseListResponse list(Pageable pageable)
@@ -80,7 +95,9 @@ public class FollowUpAssignmentController {
 	@RequestMapping(name="followUpAssignmentAttendeesForVolunteerByProgramPage", value = "/followUpAssignmentAttendeesForVolunteerByProgramPage/{volunteerId}/{programId}", method = RequestMethod.GET)
 	public BaseListResponse listOfAttendeesForVolunteerByProgram(@PathVariable("volunteerId") long volunteerId, @PathVariable("programId") long programId, Pageable pageable)
 	{
+		//TODO: followUpAssignmentService.listByVolunteerAndProgram NOT WORKING
 		Page<FollowUpAssignment> followUpAssignmentPage = followUpAssignmentService.listByVolunteerAndProgram(devoteeService.get(volunteerId), programService.get(programId), pageable);
+		//Page<FollowUpAssignment> followUpAssignmentPage = followUpAssignmentService.listByVolunteer(devoteeService.get(volunteerId), pageable);
 		BaseListResponse response = new BaseListResponse();
 		List<FollowUpAssignmentDetailResponseEntity> responseData = new ArrayList<>();
 		
@@ -183,5 +200,96 @@ public class FollowUpAssignmentController {
 	public void delete(@PathVariable("id") long followUpAssignmentId)
 	{
 		followUpAssignmentService.delete(followUpAssignmentId);
+	}
+	  
+	@Transactional
+	@RequestMapping(name="followUpAssignmentDeleteForProgram", value="/followUpAssignmentDeleteForProgram/{programId}", method=RequestMethod.DELETE)
+	public void deleteAssignmentsOfProgram(@PathVariable("programId") long programId)
+	{
+		followUpAssignmentService.deleteAssignmentsOfProgram(programService.get(programId));
+	}
+	
+	@Transactional
+	@RequestMapping(name="autoFollowUpAssignment", value="/autoFollowUpAssignment/{programId}", method=RequestMethod.GET)
+	public void autoAssign(@PathVariable("programId") long programId)
+	{
+		//Auto Assign Logic
+		ArrayList<FollowUpAssignment> followUpAssignments = new ArrayList<FollowUpAssignment>();
+		ArrayList<ProgramAssignment> programAssignments = new ArrayList<ProgramAssignment>();
+		ArrayList<ProgramAssignment> unassignedParticipants = new ArrayList<ProgramAssignment>();
+		ArrayList<ProgramAssignment> removalList = new ArrayList<ProgramAssignment>();
+		ArrayList<FollowUpVolunteer> followUpVolunteer = new ArrayList<FollowUpVolunteer>(); 
+		HashMap<Long, Long> assignmentCount = new HashMap<Long, Long>(); 
+		
+		int totalParticipants;
+		int totalVolunteers;
+		int noOfAssignmentsToVolunteer;
+		
+		followUpAssignments = (ArrayList<FollowUpAssignment>) followUpAssignmentService.listOfAssignmentsOfProgram(programService.get(programId));
+		programAssignments = (ArrayList<ProgramAssignment>) programAssignmentService.findByProgram(programService.get(programId));
+		followUpVolunteer = (ArrayList<FollowUpVolunteer>) followUpVolunteerService.findByProgram(programService.get(programId));
+		
+		totalParticipants = programAssignments.size();
+		totalVolunteers = followUpVolunteer.size();
+		noOfAssignmentsToVolunteer = (int) Math.ceil(totalParticipants/totalVolunteers);
+		
+		System.out.println("1: Total Participants : " + totalParticipants + " Total Volunteers : " + totalVolunteers + " Max Assignments : " + noOfAssignmentsToVolunteer);
+		
+		//Gather the unassigned participants
+		for (ProgramAssignment participant: programAssignments) {
+			boolean alreadyAssigned = false;
+			for (FollowUpAssignment assignedParticipant: followUpAssignments) {
+				if (participant.getAttendee().getId() == assignedParticipant.getAttendee().getId()) {
+					alreadyAssigned = true;
+					break;
+				}
+			}
+			if (alreadyAssigned == false) {
+				unassignedParticipants.add(participant);
+			}
+		}
+		
+		System.out.println("2: Unassigned Participants : " + unassignedParticipants.size() + unassignedParticipants.toString());
+		
+		//Count how many attendees are already assigned to each volunteer
+		for (FollowUpAssignment assignedVolunteer: followUpAssignments) {
+			Long count =  assignmentCount.get(assignedVolunteer.getVolunteer().getId());
+			if (count != null) {
+				assignmentCount.put(assignedVolunteer.getVolunteer().getId(), count++);
+			} else assignmentCount.put(assignedVolunteer.getVolunteer().getId(), new Long(1));
+		}
+		
+		System.out.println("3: Assignment Count Map : " + assignmentCount.toString());
+		
+		//Assign attendees to volunteers
+		for (FollowUpVolunteer volunteer: followUpVolunteer) {
+			Long count =  assignmentCount.get(volunteer.getDevotee().getId());
+			if (count == null) count = new Long(0);
+			removalList = new ArrayList<ProgramAssignment>();
+			
+			for (ProgramAssignment participantAssignment: unassignedParticipants) {
+				System.out.println("START(" + volunteer.getDevotee().getId() + ") count : " + count + " max : " + noOfAssignmentsToVolunteer);
+				if (count >= noOfAssignmentsToVolunteer) break;
+				FollowUpAssignment followUpAssignment = new FollowUpAssignment();
+				followUpAssignment.setAttendee(participantAssignment.getAttendee());
+				followUpAssignment.setProgram(programService.get(programId));
+				followUpAssignment.setVolunteer(volunteer.getDevotee());
+				
+				System.out.println("About to make a DB call " + followUpAssignment.getVolunteer().getId() + ":" + followUpAssignment.getAttendee().getId());
+				//Make DB call to add new assignment
+				followUpAssignmentService.update(followUpAssignment);
+				
+				//Remove from Unassigned list
+				removalList.add(participantAssignment);
+				
+				//Increase the count of assignees for this volunteer
+				count++;
+				assignmentCount.put(volunteer.getDevotee().getId(), count);
+				System.out.println("END(" + volunteer.getDevotee().getId() + ") count : " + count + " max : " + noOfAssignmentsToVolunteer);
+			}
+			for (ProgramAssignment toBeRemoved: removalList) {
+				unassignedParticipants.remove(toBeRemoved);
+			}
+		}
 	}
 }

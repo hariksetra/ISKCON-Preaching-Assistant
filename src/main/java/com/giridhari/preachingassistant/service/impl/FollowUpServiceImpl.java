@@ -1,12 +1,16 @@
 package com.giridhari.preachingassistant.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.giridhari.preachingassistant.db.model.Devotee;
 import com.giridhari.preachingassistant.db.model.FollowUp;
+import com.giridhari.preachingassistant.db.model.Program;
 import com.giridhari.preachingassistant.db.repo.FollowUpRepo;
 import com.giridhari.preachingassistant.service.FollowUpService;
 
@@ -35,6 +39,21 @@ public class FollowUpServiceImpl implements FollowUpService {
 	@Override
 	public void delete(long followUpId) {
 		followUpRepo.delete(followUpId);
+	}
+
+	@Override
+	public long clearFollowupOfProgram(Program program) {
+		return followUpRepo.deleteByProgram(program);
+	}
+
+	@Override
+	public FollowUp getFollowUpRecord(Program program, Devotee attendee, Devotee volunteer) {
+		return followUpRepo.findTop1ByProgramAndAttendeeAndVolunteer(program, attendee, volunteer);
+	}
+
+	@Override
+	public List<FollowUp> findByProgram(Program program) {
+		return followUpRepo.findByProgram(program);
 	}
 
 }

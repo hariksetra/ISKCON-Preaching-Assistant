@@ -22,6 +22,7 @@ public class FollowUpAssignmentDetailMapper {
 			} else {
 				responseData.setAttendeeName(followUpAssignment.getAttendee().getLegalName());
 			}
+			responseData.setAttendeePhone(followUpAssignment.getAttendee().getSmsPhone());
 		}
 		if (followUpAssignment.getProgram() != null) {
 			responseData.setProgramId(followUpAssignment.getProgram().getId());

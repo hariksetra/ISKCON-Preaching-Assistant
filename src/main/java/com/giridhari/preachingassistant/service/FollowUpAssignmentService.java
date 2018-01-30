@@ -23,9 +23,13 @@ public interface FollowUpAssignmentService {
 	
 	public List<FollowUpAssignment> listOfProgramsForVolunteer(Devotee volunteer);
 	
+	public List<FollowUpAssignment> listOfAssignmentsOfProgram(Program program);
+	
 	public FollowUpAssignment get(long assignmentId);
 	
 	public void update(FollowUpAssignment followUpAssignment);
 	
 	public void delete(long assignmentId);
+	
+	public Long deleteAssignmentsOfProgram(Program program);
 }

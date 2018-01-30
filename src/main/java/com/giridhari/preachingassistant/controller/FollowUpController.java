@@ -61,6 +61,13 @@ public class FollowUpController {
 		FollowUpDetailResponseEntity responseData = FollowUpDetailMapper.convertToFollowUpDetailResponseEntity(followUp);
 		return new BaseDataResponse(responseData);
 	}
+	
+	@RequestMapping(name = "followUpDetailSpecific", value="/specificFollowUpRecord/{programId}/{attendeeId}/{volunteerId}", method = RequestMethod.GET)
+	public BaseDataResponse getFollowUpRecord(@PathVariable("programId") long programId, @PathVariable("attendeeId") long attendeeId, @PathVariable("volunteerId") long volunteerId) {
+		FollowUp followUp = followUpService.getFollowUpRecord(programService.get(programId), devoteeService.get(attendeeId), devoteeService.get(volunteerId));
+		FollowUpDetailResponseEntity responseData = FollowUpDetailMapper.convertToFollowUpDetailResponseEntity(followUp);
+		return new BaseDataResponse(responseData);
+	}
 
 	@RequestMapping(name = "followUpUpdate", value="/followUp/{id}", method = RequestMethod.PUT)
 	public FollowUpDetailResponseEntity put(@PathVariable("id") long followUpId, @RequestBody FollowUpDetailRequestEntity requestData) {
@@ -90,5 +97,11 @@ public class FollowUpController {
 	public void delete(@PathVariable("id") long followUpId)
 	{
 		followUpService.delete(followUpId);
+	}
+	
+	@RequestMapping(name="followUpDelete", value="/deleteFollowUpOfProgram/{programId}", method=RequestMethod.DELETE)
+	public void clearFollowupOfProgram(@PathVariable("programId") long programId)
+	{
+		followUpService.clearFollowupOfProgram(programService.get(programId));
 	}
 }

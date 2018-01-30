@@ -13,12 +13,18 @@ public class FollowUpDetailMapper {
 	public static FollowUpDetailResponseEntity convertToFollowUpDetailResponseEntity(FollowUp followUp) {
 		FollowUpDetailResponseEntity responseData = new FollowUpDetailResponseEntity();
 		responseData.setId(followUp.getId());
-		if (followUp.getVolunteer() != null)
+		if (followUp.getVolunteer() != null) {
 			responseData.setVolunteerId(followUp.getVolunteer().getId());
-		if (followUp.getAttendee() != null)
+			responseData.setVolunteerName(followUp.getVolunteer().getLegalName());
+		}
+		if (followUp.getAttendee() != null) {
 			responseData.setAttendeeId(followUp.getAttendee().getId());
-		if (followUp.getProgram()!=null)
+			responseData.setAttendeeName(followUp.getAttendee().getLegalName());
+		}
+		if (followUp.getProgram()!=null) {
 			responseData.setProgramId(followUp.getProgram().getId());
+			responseData.setProgramName(followUp.getProgram().getName());
+		}
 		responseData.setResponse(followUp.getResponse());
 		responseData.setComment(followUp.getComment());
 		responseData.setRating(followUp.getRating());
