@@ -233,8 +233,6 @@ public class FollowUpAssignmentController {
 		totalVolunteers = followUpVolunteer.size();
 		noOfAssignmentsToVolunteer = (int) Math.ceil(totalParticipants/totalVolunteers);
 		
-		System.out.println("1: Total Participants : " + totalParticipants + " Total Volunteers : " + totalVolunteers + " Max Assignments : " + noOfAssignmentsToVolunteer);
-		
 		//Gather the unassigned participants
 		for (ProgramAssignment participant: programAssignments) {
 			boolean alreadyAssigned = false;
@@ -249,8 +247,6 @@ public class FollowUpAssignmentController {
 			}
 		}
 		
-		System.out.println("2: Unassigned Participants : " + unassignedParticipants.size() + unassignedParticipants.toString());
-		
 		//Count how many attendees are already assigned to each volunteer
 		for (FollowUpAssignment assignedVolunteer: followUpAssignments) {
 			Long count =  assignmentCount.get(assignedVolunteer.getVolunteer().getId());
@@ -259,8 +255,6 @@ public class FollowUpAssignmentController {
 			} else assignmentCount.put(assignedVolunteer.getVolunteer().getId(), new Long(1));
 		}
 		
-		System.out.println("3: Assignment Count Map : " + assignmentCount.toString());
-		
 		//Assign attendees to volunteers
 		for (FollowUpVolunteer volunteer: followUpVolunteer) {
 			Long count =  assignmentCount.get(volunteer.getDevotee().getId());
@@ -268,14 +262,12 @@ public class FollowUpAssignmentController {
 			removalList = new ArrayList<ProgramAssignment>();
 			
 			for (ProgramAssignment participantAssignment: unassignedParticipants) {
-				System.out.println("START(" + volunteer.getDevotee().getId() + ") count : " + count + " max : " + noOfAssignmentsToVolunteer);
 				if (count >= noOfAssignmentsToVolunteer) break;
 				FollowUpAssignment followUpAssignment = new FollowUpAssignment();
 				followUpAssignment.setAttendee(participantAssignment.getAttendee());
 				followUpAssignment.setProgram(programService.get(programId));
 				followUpAssignment.setVolunteer(volunteer.getDevotee());
 				
-				System.out.println("About to make a DB call " + followUpAssignment.getVolunteer().getId() + ":" + followUpAssignment.getAttendee().getId());
 				//Make DB call to add new assignment
 				followUpAssignmentService.update(followUpAssignment);
 				
