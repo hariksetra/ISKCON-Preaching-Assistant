@@ -277,7 +277,6 @@ public class FollowUpAssignmentController {
 				//Increase the count of assignees for this volunteer
 				count++;
 				assignmentCount.put(volunteer.getDevotee().getId(), count);
-				System.out.println("END(" + volunteer.getDevotee().getId() + ") count : " + count + " max : " + noOfAssignmentsToVolunteer);
 			}
 			for (ProgramAssignment toBeRemoved: removalList) {
 				unassignedParticipants.remove(toBeRemoved);
