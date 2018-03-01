@@ -1,5 +1,7 @@
 package com.giridhari.preachingassistant.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.data.domain.Page;
@@ -7,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.giridhari.preachingassistant.db.model.FollowUpVolunteer;
+import com.giridhari.preachingassistant.db.model.Program;
 import com.giridhari.preachingassistant.db.repo.FollowUpVolunteerRepo;
 import com.giridhari.preachingassistant.service.FollowUpVolunteerService;
 
@@ -40,6 +43,11 @@ public class FollowUpVolunteerServiceImpl implements FollowUpVolunteerService {
 	@Override
 	public void delete(long id) {
 		followUpVolunteerRepo.delete(id);
+	}
+
+	@Override
+	public List<FollowUpVolunteer> findByProgram(Program program) {
+		return followUpVolunteerRepo.findByProgram(program);
 	}
 
 }

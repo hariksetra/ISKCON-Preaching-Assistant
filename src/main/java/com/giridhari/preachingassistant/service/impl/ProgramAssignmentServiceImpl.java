@@ -1,11 +1,14 @@
 package com.giridhari.preachingassistant.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.giridhari.preachingassistant.db.model.Program;
 import com.giridhari.preachingassistant.db.model.ProgramAssignment;
 import com.giridhari.preachingassistant.db.repo.ProgramAssignmentRepo;
 import com.giridhari.preachingassistant.service.ProgramAssignmentService;
@@ -45,6 +48,11 @@ public class ProgramAssignmentServiceImpl implements ProgramAssignmentService {
 	@Override
 	public Page<ProgramAssignment> findByAttendee(long devoteeId, Pageable pageable) {
 		return programAssignmentRepo.findByAttendee_id(devoteeId, pageable);
+	}
+
+	@Override
+	public List<ProgramAssignment> findByProgram(Program program) {
+		return programAssignmentRepo.findByProgram(program);
 	}
 
 }

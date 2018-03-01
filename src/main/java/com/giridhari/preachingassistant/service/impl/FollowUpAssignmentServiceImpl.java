@@ -84,4 +84,14 @@ public class FollowUpAssignmentServiceImpl implements FollowUpAssignmentService 
 		followupAssignmentRepo.delete(assignmentId);
 	}
 
+	@Override
+	public Long deleteAssignmentsOfProgram(Program program) {
+		return followupAssignmentRepo.deleteByProgram(program);
+	}
+
+	@Override
+	public List<FollowUpAssignment> listOfAssignmentsOfProgram(Program program) {
+		return followupAssignmentRepo.findByProgram(program);
+	}
+
 }

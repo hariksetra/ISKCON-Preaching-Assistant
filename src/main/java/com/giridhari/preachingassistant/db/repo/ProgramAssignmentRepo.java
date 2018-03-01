@@ -1,5 +1,7 @@
 package com.giridhari.preachingassistant.db.repo;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -16,4 +18,5 @@ public interface ProgramAssignmentRepo extends PagingAndSortingRepository<Progra
 	public Page<ProgramAssignment> findByProgram_id(long programId, Pageable pageable);
 	public Page<ProgramAssignment> findByAttendee_id(long devoteeId, Pageable pageable);
 	
+	public List<ProgramAssignment> findByProgram(Program program);
 }

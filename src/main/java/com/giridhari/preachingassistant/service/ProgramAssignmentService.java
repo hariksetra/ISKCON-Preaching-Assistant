@@ -1,9 +1,12 @@
 package com.giridhari.preachingassistant.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.giridhari.preachingassistant.db.model.Program;
 import com.giridhari.preachingassistant.db.model.ProgramAssignment;;
 
 @Service
@@ -20,4 +23,6 @@ public interface ProgramAssignmentService {
 	public void update(ProgramAssignment programAssignment);
 	
 	public void delete(long assignmentId);
+	
+	public List<ProgramAssignment> findByProgram(Program program);
 }
