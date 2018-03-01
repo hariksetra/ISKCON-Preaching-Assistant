@@ -33,6 +33,7 @@ public class Yatra implements Serializable {
 	private YatraType yatraType;
 	private Devotee yatraAdmin;
 	private Set<Program> programsInYatra;
+	private Set<Devotee> devoteesInYatra;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -91,5 +92,15 @@ public class Yatra implements Serializable {
 
 	public void setProgramsInYatra(Set<Program> programsInYatra) {
 		this.programsInYatra = programsInYatra;
+	}
+
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy="yatra")
+	@JsonBackReference
+	public Set<Devotee> getDevoteesInYatra() {
+		return devoteesInYatra;
+	}
+
+	public void setDevoteesInYatra(Set<Devotee> devoteesInYatra) {
+		this.devoteesInYatra = devoteesInYatra;
 	}
 }

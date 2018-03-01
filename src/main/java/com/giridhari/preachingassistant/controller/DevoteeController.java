@@ -1,6 +1,7 @@
 package com.giridhari.preachingassistant.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.giridhari.preachingassistant.db.model.CaptureContact;
 import com.giridhari.preachingassistant.db.model.Devotee;
 import com.giridhari.preachingassistant.db.model.mapper.DevoteeMapper;
 import com.giridhari.preachingassistant.rest.model.devotee.DevoteeDetailRequestEntity;
@@ -22,6 +24,7 @@ import com.giridhari.preachingassistant.rest.model.devotee.DevoteeOverviewEntity
 import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
 import com.giridhari.preachingassistant.rest.model.response.BaseListResponse;
 import com.giridhari.preachingassistant.rest.model.Paging;
+import com.giridhari.preachingassistant.service.CaptureContactService;
 import com.giridhari.preachingassistant.service.DevoteeService;
 
 @RestController
@@ -29,6 +32,9 @@ public class DevoteeController {
 
 	@Resource
 	private DevoteeService devoteeService;
+	
+	@Resource
+	private CaptureContactService captureContactService;
 
 	@RequestMapping(name = "/devotees", value="/devotees", method = RequestMethod.GET)
 	public BaseListResponse list() {
@@ -81,8 +87,6 @@ public class DevoteeController {
 	public DevoteeDetailResponseEntity put(@PathVariable("id") long devoteeId, @RequestBody DevoteeDetailRequestEntity requestData) {
 		Devotee devotee = devoteeService.get(devoteeId);
 		DevoteeMapper.patchDevotee(devotee, requestData);
-		if (requestData.getCapturedBy() != null)
-			devotee.setCapturedBy(devoteeService.get(requestData.getCapturedBy())); //Without this line update fails!!
 		
 		devoteeService.update(devotee);
 		DevoteeDetailResponseEntity responseData = DevoteeMapper.convertToDevoteeDetailResponseEntity(devotee);
@@ -92,40 +96,31 @@ public class DevoteeController {
 	@RequestMapping(name="devoteeCreate", value="/devotees", method=RequestMethod.POST)
 	public DevoteeDetailResponseEntity post(@RequestBody DevoteeDetailRequestEntity requestData) {
 		Devotee devotee = new Devotee();
-		DevoteeMapper.patchDevotee(devotee, requestData);
-		devoteeService.update(devotee);
+		
+		//Find if devotee already exist (SMS Phone Matching)
+		//TODO: Later we may have to match email too
+		Devotee existingDevotee = devoteeService.findBySmsPhone(requestData.getSmsPhone());
+		if (existingDevotee==null) {
+			//Add the devotee if not there
+			DevoteeMapper.patchDevotee(devotee, requestData);
+			devoteeService.update(devotee);
+		} else {
+			//TODO: Match any extra fields are there, update the fields
+			devotee = existingDevotee;
+		}
+		
+		//Update Capture Contact
+		Devotee capturedByDevotee = devoteeService.get(requestData.getCapturedBy());
+		CaptureContact captureContact = captureContactService.findByCapturedByAndCapturedDevotee(capturedByDevotee, devotee);
+		if (captureContact == null) {
+			captureContact = new CaptureContact();
+			captureContact.setCapturedBy(capturedByDevotee);
+			captureContact.setCapturedDevotee(devotee);
+			captureContact.setTimestamp(new Date());
+			captureContactService.update(captureContact);
+		}
+		
 		DevoteeDetailResponseEntity responseData = DevoteeMapper.convertToDevoteeDetailResponseEntity(devotee);
 		return responseData;
-	}
-	
-	@RequestMapping(name = "myCapturedList", value="/myCapturedList/{id}", method = RequestMethod.GET)
-	public BaseListResponse list(@PathVariable("id") long devoteeId) {
-		BaseListResponse response = new BaseListResponse();
-		List<Devotee> devoteeList = devoteeService.getMyCapturedList(devoteeId);
-		List<DevoteeOverviewEntity> responseData = new ArrayList<>();
-		for(Devotee devotee: devoteeList) {
-			DevoteeOverviewEntity devoteeOverviewEntity = DevoteeMapper.convertToDevoteeOverviewEntity(devotee);
-			responseData.add(devoteeOverviewEntity);
-		}
-		response.setData(responseData);
-		return response;
-	}
-	
-	@RequestMapping(name = "myCapturedListPage", value="/myCapturedListPage/{id}", method = RequestMethod.GET)
-	public BaseListResponse list(@PathVariable("id") long devoteeId, Pageable pageable) {
-		Page<Devotee> devoteePage = devoteeService.getMyCapturedList(devoteeId, pageable);
-		BaseListResponse response = new BaseListResponse();
-		List<DevoteeOverviewEntity> responseData = new ArrayList<>();
-		
-		Paging paging = DevoteeMapper.setPagingParameters(devoteePage);
-		response.setPaging(paging);
-		
-		List<Devotee> devoteeList = devoteePage.getContent();
-		for(Devotee devotee: devoteeList) {
-			DevoteeOverviewEntity devoteeOverviewEntity = DevoteeMapper.convertToDevoteeOverviewEntity(devotee);
-			responseData.add(devoteeOverviewEntity);
-		}
-		response.setData(responseData);
-		return response;
 	}
 }

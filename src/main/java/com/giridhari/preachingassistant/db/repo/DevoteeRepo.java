@@ -23,18 +23,9 @@ public interface DevoteeRepo
 			@Param(value = "query") String query, 
 			Pageable pageable);
 	
-	
-	@Query("select distinct d from Devotee d where d.capturedBy.id = ?1")
-	public List<Devotee> findByCapturedBy(
-			@Param(value = "captured_by") long devoteeId);
-	
-	@Query("select distinct d from Devotee d where d.capturedBy.id = ?1")
-	public Page<Devotee> findByCapturedBy(
-			@Param(value = "captured_by") long devoteeId, Pageable pageable);
-	
 	@Query("select distinct d from Devotee d where d not in (select distinct pa.attendee from ProgramAssignment pa)")
 	public Page<Devotee> unassignedDevotees(Pageable pageable);
 	
 	public Devotee findByEmail(String email);
-	
+	public Devotee findBySmsPhone(String smsPhone);	
 }

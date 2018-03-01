@@ -13,6 +13,8 @@ public interface ProgramService {
 	
 	public Page<Program> findByMentorId(long mentorId, Pageable pageable);
 	
+	public Page<Program> findByYatraId(long yatraId, Pageable pageable);
+	
 	public Program get(long programId);
 	
 	public void update(Program program);

@@ -27,6 +27,11 @@ public class ProgramServiceImpl implements ProgramService{
 	}
 	
 	@Override
+	public Page<Program> findByYatraId(long yatraId, Pageable pageable) {
+		return programRepo.findByParentYatra_id(yatraId, pageable);
+	}
+	
+	@Override
 	public Program get(long programId) {
 		return programRepo.findOne(programId);
 	}

@@ -80,6 +80,26 @@ public class ProgramController {
 		return response;
 	}
 	
+	@RequestMapping(name="programPageByYatraId", value = "/programPageByYatraId/{yatraId}", method = RequestMethod.GET)
+	public BaseListResponse listByYatraId(@PathVariable("yatraId") long yatraId, Pageable pageable)
+	{
+		Page<Program> programPage = programService.findByYatraId(yatraId, pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<ProgramDetailResponseEntity> responseData = new ArrayList<>();
+		
+		Paging paging = ProgramMapper.setPagingParameters(programPage);
+		response.setPaging(paging);
+		
+		List<Program> programList = programPage.getContent();
+		for(Program program : programList)
+		{
+			ProgramDetailResponseEntity programDetailResponseEntity = ProgramMapper.convertToProgramDetailResponseEntity(program);
+			responseData.add(programDetailResponseEntity);
+		}
+		response.setData(responseData);
+		return response;
+	}
+	
 	@RequestMapping(name = "programDetail", value="/programs/{id}", method = RequestMethod.GET)
 	public BaseDataResponse get(@PathVariable("id") long programId) {
 		Program program = programService.get(programId);
