@@ -2,6 +2,7 @@ package com.giridhari.preachingassistant.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -25,6 +26,7 @@ import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
 import com.giridhari.preachingassistant.rest.model.response.BaseListResponse;
 import com.giridhari.preachingassistant.service.DevoteeService;
 import com.giridhari.preachingassistant.service.FollowUpAssignmentService;
+import com.giridhari.preachingassistant.service.FollowUpAutoAssigner;
 import com.giridhari.preachingassistant.service.FollowUpVolunteerService;
 import com.giridhari.preachingassistant.service.ProgramAssignmentService;
 import com.giridhari.preachingassistant.service.ProgramService;
@@ -45,6 +47,9 @@ public class FollowUpAssignmentController {
 	
 	@Resource
 	FollowUpVolunteerService followUpVolunteerService;
+	
+	@Resource
+	FollowUpAutoAssigner followUpAutoAssigner;
 
 	@RequestMapping(name="followUpAssignmentPage", value = "/followUpAssignmentPage", method = RequestMethod.GET)
 	public BaseListResponse list(Pageable pageable)
@@ -203,8 +208,13 @@ public class FollowUpAssignmentController {
 		followUpAssignmentService.deleteAssignmentsOfProgram(programService.get(programId));
 	}
 	
+	@RequestMapping(name="listAutoAssignmentStrategies", value="/followUpAssignment/auto/strategies", method=RequestMethod.GET)
+	public Set<String> listAutoAssignStrategies() {
+		return followUpAutoAssigner.getStrategies();
+	}
+	
 	@Transactional
-	@RequestMapping(name="autoFollowUpAssignment", value="/autoFollowUpAssignment/{programId}", method=RequestMethod.POST)
+	@RequestMapping(name="autoFollowUpAssignment", value="/followUpAssignment/auto/{programId}", method=RequestMethod.POST)
 	public void autoAssign(@PathVariable("programId") long programId) throws AssignerNotFoundException {
 		followUpAssignmentService.autoAssign(programService.get(programId), "default");
 	}
