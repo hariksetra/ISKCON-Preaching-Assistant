@@ -48,16 +48,6 @@ public class DevoteeServiceImpl implements DevoteeService {
 	public void delete(long devoteeId) {
 		devoteeRepo.delete(devoteeId);
 	}
-	
-	@Override
-	public List<Devotee> getMyCapturedList(long devoteeId) {
-		return (List<Devotee>) CollectionUtils.makeCollection(devoteeRepo.findByCapturedBy(devoteeId));
-	}
-	
-	@Override
-	public Page<Devotee> getMyCapturedList(long devoteeId, Pageable pageable) {
-		return devoteeRepo.findByCapturedBy(devoteeId, pageable);
-	}
 
 	@Override
 	public Page<Devotee> searchDevotees(String query, Pageable pageable) {
@@ -78,4 +68,8 @@ public class DevoteeServiceImpl implements DevoteeService {
 		return devoteeRepo.findByEmail(email);
 	}
 	
+	@Override
+	public Devotee findBySmsPhone(String smsPhone) {
+		return devoteeRepo.findBySmsPhone(smsPhone);
+	}
 }

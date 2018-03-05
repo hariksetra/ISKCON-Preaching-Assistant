@@ -1,5 +1,7 @@
 package com.giridhari.preachingassistant.db.model.mapper;
 
+import java.util.ArrayList;
+
 import org.springframework.data.domain.Page;
 
 import com.giridhari.preachingassistant.db.model.Devotee;
@@ -17,7 +19,7 @@ public class ProgramMapper {
 		responseData.setDescription(program.getDescription());
 		if (program.getFollowupDescription() != null) {
 			responseData.setFollowupDescription(program.getFollowupDescription().split("~"));
-		}
+		}else responseData.setFollowupDescription(new String[0]);
 		responseData.setId(program.getId());
 		responseData.setMapLocation(program.getMapLocation());
 		if(program.getMentor() != null)

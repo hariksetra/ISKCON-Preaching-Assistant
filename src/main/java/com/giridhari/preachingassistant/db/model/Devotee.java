@@ -54,7 +54,6 @@ public class Devotee implements Serializable {
 	private Date introDate;
 	private String preferredLanguage;
 	private String description;
-	private Devotee capturedBy;
 	private String area;
 	private String address;
 	private CountryCode countryCode;
@@ -64,9 +63,8 @@ public class Devotee implements Serializable {
 	private String booksRead;
 	private Integer monthlyContribution;
 	private SikshaLevel sikshaLevel; //TODO: create an enum for siksha level
+	private Yatra yatra;
 	private UserAccount userAccount;
-	
-	private Set<Devotee> capturedDevotees;
 	
 	private Set<DevoteeHistory> ratedDevoteeHistory;
 	private Set<DevoteeHistory> commentedByDevoteeHistory;
@@ -84,6 +82,9 @@ public class Devotee implements Serializable {
 	private Set<FollowUp> attendedFollowUps;
 	
 	private Set<ImportantDate> importantDates;
+	
+	private Set<CaptureContact> capturedBy;
+	private Set<CaptureContact> capturedDevotees;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -233,16 +234,6 @@ public class Devotee implements Serializable {
 		this.description = description;
 	}
 	
-	@ManyToOne(optional =true, targetEntity = Devotee.class, cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-	@JoinColumn(name = "captured_by", columnDefinition = "integer", nullable = true)
-	@JsonManagedReference
-	public Devotee getCapturedBy() {
-		return capturedBy;
-	}
-	
-	public void setCapturedBy(Devotee capturedBy) {
-		this.capturedBy = capturedBy;
-	}
 
 	@Column(name="area", nullable = true)
 	public String getArea() {
@@ -334,16 +325,6 @@ public class Devotee implements Serializable {
 	
 	public void setUserAccount(UserAccount userAccount) {
 		this.userAccount = userAccount;
-	}
-	
-	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "capturedBy")
-	@JsonBackReference
-	public Set<Devotee> getCapturedDevotees() {
-		return capturedDevotees;
-	}
-	
-	public void setCapturedDevotees(Set<Devotee> capturedDevotees) {
-		this.capturedDevotees = capturedDevotees;
 	}
 	
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "yatraAdmin")
@@ -465,5 +446,37 @@ public class Devotee implements Serializable {
 	public void setFollowUps(Set<FollowUpVolunteer> followUps) {
 		this.followUps = followUps;
 	}
+
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+	@JoinColumn(name = "yatra_id", columnDefinition = "integer" )
+	@JsonManagedReference
+	public Yatra getYatra() {
+		return yatra;
+	}
+
+	public void setYatra(Yatra yatra) {
+		this.yatra = yatra;
+	}
+
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "capturedBy")
+	@JsonBackReference
+	public Set<CaptureContact> getCapturedBy() {
+		return capturedBy;
+	}
+
+	public void setCapturedBy(Set<CaptureContact> capturedBy) {
+		this.capturedBy = capturedBy;
+	}
+
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "capturedDevotee")
+	@JsonBackReference
+	public Set<CaptureContact> getCapturedDevotees() {
+		return capturedDevotees;
+	}
+
+	public void setCapturedDevotees(Set<CaptureContact> capturedDevotees) {
+		this.capturedDevotees = capturedDevotees;
+	}
+	
 	
 }

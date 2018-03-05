@@ -12,4 +12,6 @@ public interface ProgramRepo extends PagingAndSortingRepository<Program, Long> {
 	
 	public Page<Program> findByMentor_id(long mentorId, Pageable pageable);
 	
+	public Page<Program> findByParentYatra_id(long yatraId, Pageable pageable);
+	
 }

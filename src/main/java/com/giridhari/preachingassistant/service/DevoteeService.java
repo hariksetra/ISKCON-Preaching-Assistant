@@ -23,14 +23,11 @@ public interface DevoteeService {
 	
 	public void delete(long devoteeId);
 	
-	public List<Devotee> getMyCapturedList (long devoteeId);
-	
-	public Page<Devotee> getMyCapturedList (long devoteeId, Pageable pageable);
-	
 	public Page<Devotee> searchDevotees(String query, Pageable pageable);
 	
 	public String getDisplayName(Devotee devotee);
 	
 	public Devotee findByEmail(String email);
 
+	public Devotee findBySmsPhone(String smsPhone);
 }

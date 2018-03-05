@@ -2,6 +2,7 @@ package com.giridhari.preachingassistant.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 import javax.annotation.Resource;
 
@@ -13,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.giridhari.preachingassistant.db.model.Devotee;
 import com.giridhari.preachingassistant.db.model.FollowUp;
+import com.giridhari.preachingassistant.db.model.Program;
 import com.giridhari.preachingassistant.db.model.mapper.FollowUpDetailMapper;
+import com.giridhari.preachingassistant.model.Response;
 import com.giridhari.preachingassistant.rest.model.Paging;
 import com.giridhari.preachingassistant.rest.model.followup.FollowUpDetailRequestEntity;
 import com.giridhari.preachingassistant.rest.model.followup.FollowUpDetailResponseEntity;
@@ -64,7 +68,21 @@ public class FollowUpController {
 	
 	@RequestMapping(name = "followUpDetailSpecific", value="/specificFollowUpRecord/{programId}/{attendeeId}/{volunteerId}", method = RequestMethod.GET)
 	public BaseDataResponse getFollowUpRecord(@PathVariable("programId") long programId, @PathVariable("attendeeId") long attendeeId, @PathVariable("volunteerId") long volunteerId) {
-		FollowUp followUp = followUpService.getFollowUpRecord(programService.get(programId), devoteeService.get(attendeeId), devoteeService.get(volunteerId));
+		Program program = programService.get(programId);
+		Devotee attendee = devoteeService.get(attendeeId);
+		Devotee volunteer = devoteeService.get(volunteerId);
+		FollowUp followUp = followUpService.getFollowUpRecord(program, attendee, volunteer);
+		if (followUp == null) {
+			System.out.println("Creating New Followup Record");
+			followUp = new FollowUp();
+			followUp.setAttendee(attendee);
+			followUp.setProgram(program);
+			followUp.setVolunteer(volunteer);
+			followUp.setRating(0);
+			followUp.setResponse(Response.CALL_AGAIN);
+			followUp.setTimestamp(new Date());
+			followUpService.update(followUp);
+		}
 		FollowUpDetailResponseEntity responseData = FollowUpDetailMapper.convertToFollowUpDetailResponseEntity(followUp);
 		return new BaseDataResponse(responseData);
 	}
