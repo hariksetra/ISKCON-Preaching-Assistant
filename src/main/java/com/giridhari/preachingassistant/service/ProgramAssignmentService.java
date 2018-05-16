@@ -7,7 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.giridhari.preachingassistant.db.model.Program;
-import com.giridhari.preachingassistant.db.model.ProgramAssignment;;
+import com.giridhari.preachingassistant.db.model.ProgramAssignment;
+import com.giridhari.preachingassistant.db.model.Yatra;;
 
 @Service
 public interface ProgramAssignmentService {
@@ -25,4 +26,12 @@ public interface ProgramAssignmentService {
 	public void delete(long assignmentId);
 	
 	public List<ProgramAssignment> findByProgram(Program program);
+	
+	public Page<ProgramAssignment>
+	findProgramAssignmentTypeAheadByProgram
+	(String typeText, Program program, Pageable pageable);
+	
+	public Page<ProgramAssignment>
+	findProgramAssignmentTypeAheadByYatra
+	(String typeText, Yatra yatra, Pageable pageable);
 }

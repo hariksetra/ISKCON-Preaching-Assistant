@@ -66,6 +66,24 @@ public class DevoteeController {
 		response.setData(responseData);
 		return response;
 	}
+	
+	@RequestMapping(name = "/devoteeGlobalSearchPage", value="/devoteeGlobalSearchPage/{typeText}", method = RequestMethod.GET)
+	public BaseListResponse devoteeTypeAhead(@PathVariable("typeText") String typeText, Pageable pageable) {
+		Page<Devotee> devoteePage = devoteeService.globalDevoteeSearchTypeAhead(typeText, pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<DevoteeOverviewEntity> responseData = new ArrayList<>();
+		
+		Paging paging = DevoteeMapper.setPagingParameters(devoteePage);
+		response.setPaging(paging);
+		
+		List<Devotee> devoteeList = devoteePage.getContent();
+		for(Devotee devotee: devoteeList) {
+			DevoteeOverviewEntity devoteeOverviewEntity = DevoteeMapper.convertToDevoteeOverviewEntity(devotee);
+			responseData.add(devoteeOverviewEntity);
+		}
+		response.setData(responseData);
+		return response;
+	}
 
 	@RequestMapping(name = "devoteeDetail", value="/devotees/{id}", method = RequestMethod.GET)
 	public BaseDataResponse get(@PathVariable("id") long devoteeId) {

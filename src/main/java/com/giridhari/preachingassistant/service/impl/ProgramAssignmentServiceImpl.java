@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.giridhari.preachingassistant.db.model.Program;
 import com.giridhari.preachingassistant.db.model.ProgramAssignment;
+import com.giridhari.preachingassistant.db.model.Yatra;
 import com.giridhari.preachingassistant.db.repo.ProgramAssignmentRepo;
 import com.giridhari.preachingassistant.service.ProgramAssignmentService;
 
@@ -53,6 +54,18 @@ public class ProgramAssignmentServiceImpl implements ProgramAssignmentService {
 	@Override
 	public List<ProgramAssignment> findByProgram(Program program) {
 		return programAssignmentRepo.findByProgram(program);
+	}
+
+	@Override
+	public Page<ProgramAssignment> findProgramAssignmentTypeAheadByProgram(String typeText, Program program,
+			Pageable pageable) {
+		return programAssignmentRepo.findAllByAttendeeLegalNameContainingOrAttendeeInitiatedNameContainingOrAttendeeSmsPhoneContainingOrAttendeeEmailContainingAndProgram(typeText, typeText, typeText, typeText, program, pageable);
+	}
+
+	@Override
+	public Page<ProgramAssignment> findProgramAssignmentTypeAheadByYatra(String typeText, Yatra yatra,
+			Pageable pageable) {
+		return programAssignmentRepo.findAllByAttendeeLegalNameContainingOrAttendeeInitiatedNameContainingOrAttendeeSmsPhoneContainingOrAttendeeEmailContainingAndProgramParentYatra(typeText, typeText, typeText, typeText, yatra, pageable);
 	}
 
 }

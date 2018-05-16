@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.giridhari.preachingassistant.db.model.ProgramAssignment;
 import com.giridhari.preachingassistant.db.model.mapper.ProgramAssignmentDetailMapper;
+import com.giridhari.preachingassistant.db.model.mapper.DevoteeMapper;
 import com.giridhari.preachingassistant.rest.model.Paging;
+import com.giridhari.preachingassistant.rest.model.devotee.DevoteeOverviewEntity;
 import com.giridhari.preachingassistant.rest.model.programassignment.ProgramAssignmentDetailRequestEntity;
 import com.giridhari.preachingassistant.rest.model.programassignment.ProgramAssignmentDetailResponseEntity;
 import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
@@ -23,6 +25,7 @@ import com.giridhari.preachingassistant.rest.model.response.BaseListResponse;
 import com.giridhari.preachingassistant.service.DevoteeService;
 import com.giridhari.preachingassistant.service.ProgramAssignmentService;
 import com.giridhari.preachingassistant.service.ProgramService;
+import com.giridhari.preachingassistant.service.YatraService;
 
 @RestController
 public class ProgramAssignmentController {
@@ -34,6 +37,9 @@ public class ProgramAssignmentController {
 	
 	@Resource
 	ProgramService programService;
+	
+	@Resource
+	YatraService yatraService;
 
 	@RequestMapping(name="programAssignmentPage", value = "/programAssignmentPage", method = RequestMethod.GET)
 	public BaseListResponse list(Pageable pageable)
@@ -70,6 +76,46 @@ public class ProgramAssignmentController {
 		{
 			ProgramAssignmentDetailResponseEntity programAssignmentDetailResponseEntity = ProgramAssignmentDetailMapper.convertToProgramAssignmentDetailResponseEntity(programAssignment);
 			responseData.add(programAssignmentDetailResponseEntity);
+		}
+		response.setData(responseData);
+		return response;
+	}
+	
+	@RequestMapping(name="devoteeSearchTypeAheadByProgramPage", value = "/devoteeSearchTypeAheadByProgramPage/{typeText}/{programId}", method = RequestMethod.GET)
+	public BaseListResponse typeAheadByProgram(@PathVariable("typeText") String typeText, @PathVariable("programId") long programId, Pageable pageable)
+	{
+		Page<ProgramAssignment> programAssignmentPage = programAssignmentService.findProgramAssignmentTypeAheadByProgram(typeText, programService.get(programId), pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<DevoteeOverviewEntity> responseData = new ArrayList<>();
+		
+		Paging paging = ProgramAssignmentDetailMapper.setPagingParameters(programAssignmentPage);
+		response.setPaging(paging);
+		
+		List<ProgramAssignment> programAssignmentList = programAssignmentPage.getContent();
+		for(ProgramAssignment programAssignment : programAssignmentList)
+		{
+			DevoteeOverviewEntity devoteeOverviewEntity = DevoteeMapper.convertToDevoteeOverviewEntity(programAssignment.getAttendee());
+			responseData.add(devoteeOverviewEntity);
+		}
+		response.setData(responseData);
+		return response;
+	}
+	
+	@RequestMapping(name="devoteeSearchTypeAheadByYatraPage", value = "/devoteeSearchTypeAheadByYatraPage/{typeText}/{yatraId}", method = RequestMethod.GET)
+	public BaseListResponse typeAheadByYatra(@PathVariable("typeText") String typeText, @PathVariable("yatraId") long yatraId, Pageable pageable)
+	{
+		Page<ProgramAssignment> programAssignmentPage = programAssignmentService.findProgramAssignmentTypeAheadByYatra(typeText, yatraService.getById(yatraId), pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<DevoteeOverviewEntity> responseData = new ArrayList<>();
+		
+		Paging paging = ProgramAssignmentDetailMapper.setPagingParameters(programAssignmentPage);
+		response.setPaging(paging);
+		
+		List<ProgramAssignment> programAssignmentList = programAssignmentPage.getContent();
+		for(ProgramAssignment programAssignment : programAssignmentList)
+		{
+			DevoteeOverviewEntity devoteeOverviewEntity = DevoteeMapper.convertToDevoteeOverviewEntity(programAssignment.getAttendee());
+			responseData.add(devoteeOverviewEntity);
 		}
 		response.setData(responseData);
 		return response;

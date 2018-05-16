@@ -28,4 +28,14 @@ public interface DevoteeRepo
 	
 	public Devotee findByEmail(String email);
 	public Devotee findBySmsPhone(String smsPhone);	
+	
+	/*Query for finding devotees not attending any of the program*/
+	//public List<Devotee>
+	//findAllByLegalNameContainingOrInitiatedNameContainingOrSmsPhoneContainingAndAttendingPrograms
+	//(String legalName, String initiatedName, String smsPhone, null);
+	
+	/*Query for global devotee search*/
+	public Page<Devotee>
+	findAllByLegalNameContainingOrInitiatedNameContainingOrSmsPhoneContainingOrEmailContaining
+	(String legalName, String initiatedName, String smsPhone, String email, Pageable pageable);
 }

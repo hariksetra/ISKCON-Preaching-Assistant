@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.giridhari.preachingassistant.db.model.Devotee;
 import com.giridhari.preachingassistant.db.model.Program;
 import com.giridhari.preachingassistant.db.model.ProgramAssignment;
+import com.giridhari.preachingassistant.db.model.Yatra;
 
 @Repository
 public interface ProgramAssignmentRepo extends PagingAndSortingRepository<ProgramAssignment, Long> {
@@ -19,4 +20,13 @@ public interface ProgramAssignmentRepo extends PagingAndSortingRepository<Progra
 	public Page<ProgramAssignment> findByAttendee_id(long devoteeId, Pageable pageable);
 	
 	public List<ProgramAssignment> findByProgram(Program program);
+	
+	public Page<ProgramAssignment>
+	findAllByAttendeeLegalNameContainingOrAttendeeInitiatedNameContainingOrAttendeeSmsPhoneContainingOrAttendeeEmailContainingAndProgram
+	(String legalName, String initiatedName, String smsPhone, String email, Program program, Pageable pageable);
+	
+	public Page<ProgramAssignment>
+	findAllByAttendeeLegalNameContainingOrAttendeeInitiatedNameContainingOrAttendeeSmsPhoneContainingOrAttendeeEmailContainingAndProgramParentYatra
+	(String legalName, String initiatedName, String smsPhone, String email, Yatra yatra, Pageable pageable);
+
 }

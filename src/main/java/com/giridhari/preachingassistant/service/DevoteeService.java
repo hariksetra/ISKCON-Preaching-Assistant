@@ -30,4 +30,6 @@ public interface DevoteeService {
 	public Devotee findByEmail(String email);
 
 	public Devotee findBySmsPhone(String smsPhone);
+	
+	public Page<Devotee> globalDevoteeSearchTypeAhead(String typeText, Pageable pageable);
 }

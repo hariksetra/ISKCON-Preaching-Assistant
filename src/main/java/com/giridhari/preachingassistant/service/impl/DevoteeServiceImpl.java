@@ -72,4 +72,9 @@ public class DevoteeServiceImpl implements DevoteeService {
 	public Devotee findBySmsPhone(String smsPhone) {
 		return devoteeRepo.findBySmsPhone(smsPhone);
 	}
+
+	@Override
+	public Page<Devotee> globalDevoteeSearchTypeAhead(String typeText, Pageable pageable) {
+		return devoteeRepo.findAllByLegalNameContainingOrInitiatedNameContainingOrSmsPhoneContainingOrEmailContaining(typeText, typeText, typeText, typeText, pageable);
+	}
 }

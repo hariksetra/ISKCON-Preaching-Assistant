@@ -61,6 +61,7 @@ public class DevoteeMapper {
 			devoteeOverviewEntity.setName(devotee.getLegalName());
 		}
 		devoteeOverviewEntity.setPhone(devotee.getSmsPhone());
+		devoteeOverviewEntity.setEmail(devotee.getEmail());
 		devoteeOverviewEntity.setIntroDate(devotee.getIntroDate());
 		devoteeOverviewEntity.setPreferredLanguage(devotee.getPreferredLanguage());
 
