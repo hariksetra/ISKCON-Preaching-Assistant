@@ -21,6 +21,8 @@ public class ProgramAssignmentDetailMapper {
 		responseData.setAttendeeName(
 				(programAssignment.getAttendee().getInitiatedName()!=null)?programAssignment.getAttendee().getInitiatedName():programAssignment.getAttendee().getLegalName()
 		);
+		responseData.setAttendeePhone(programAssignment.getAttendee().getSmsPhone());
+		responseData.setAttendeeEmail(programAssignment.getAttendee().getEmail());
 		return responseData;
 	}
 
