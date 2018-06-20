@@ -1,11 +1,14 @@
 package com.giridhari.preachingassistant.service.impl;
 
+import java.util.Date;
+
 import javax.annotation.Resource;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.giridhari.preachingassistant.db.model.Program;
 import com.giridhari.preachingassistant.db.model.ProgramAttendance;
 import com.giridhari.preachingassistant.db.repo.ProgramAttendanceRepo;
 import com.giridhari.preachingassistant.service.ProgramAttendanceService;
@@ -36,6 +39,11 @@ public class ProgramAttendanceServiceImpl implements ProgramAttendanceService {
 	public void delete(long attendanceId) {
 		programAttendanceRepo.delete(attendanceId);
 
+	}
+
+	@Override
+	public Page<ProgramAttendance> attendanceByProgramAndDate(Program program, Date attendanceDate, Pageable pageable) {
+		return programAttendanceRepo.findByProgramIdAndAttendanceDate(program, attendanceDate, pageable);
 	}
 
 }

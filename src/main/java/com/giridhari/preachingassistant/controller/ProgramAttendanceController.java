@@ -1,6 +1,7 @@
 package com.giridhari.preachingassistant.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -14,10 +15,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.giridhari.preachingassistant.db.model.ProgramAttendance;
+import com.giridhari.preachingassistant.db.model.mapper.DevoteeMapper;
 import com.giridhari.preachingassistant.db.model.mapper.ProgramAttendanceDetailMapper;
 import com.giridhari.preachingassistant.rest.model.Paging;
+import com.giridhari.preachingassistant.rest.model.devotee.DevoteeOverviewEntity;
 import com.giridhari.preachingassistant.rest.model.programattendance.ProgramAttendanceDetailRequestEntity;
 import com.giridhari.preachingassistant.rest.model.programattendance.ProgramAttendanceDetailResponseEntity;
+import com.giridhari.preachingassistant.rest.model.programattendance.ProgramAttendanceId;
+import com.giridhari.preachingassistant.rest.model.programattendance.ProgramAttendanceSpecificDetailResponseEntity;
 import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
 import com.giridhari.preachingassistant.rest.model.response.BaseListResponse;
 import com.giridhari.preachingassistant.service.DevoteeService;
@@ -51,6 +56,50 @@ public class ProgramAttendanceController {
 			ProgramAttendanceDetailResponseEntity programAttendanceDetailResponseEntity = ProgramAttendanceDetailMapper.convertToProgramAttendanceDetailResponseEntity(programAttendance);
 			responseData.add(programAttendanceDetailResponseEntity);
 		}
+		response.setData(responseData);
+		return response;
+	}
+	
+	@RequestMapping(name="programAttendanceByProgramAndDatePage", value = "/programAttendanceByProgramAndDatePage/{programId}/{attendanceDate}", method = RequestMethod.GET)
+	public BaseListResponse programAttendanceByProgramAndDatePage(@PathVariable("programId") long programId, @PathVariable("attendanceDate") Date attendanceDate, Pageable pageable)
+	{
+		Page<ProgramAttendance> programAttendancePage = programAttendanceService.attendanceByProgramAndDate(programService.get(programId), attendanceDate, pageable);
+		BaseListResponse response = new BaseListResponse();
+		
+		//This function responds with one record for all the attendance of the specified program
+		//Within that one record there is a list of devotee overview entity, as this can be 
+		//readily used by front end
+		//That one record also have a list of {attendanceId, devoteeId}, which facilitates
+		//easy deletion of a attendance by the front end
+		List<ProgramAttendanceSpecificDetailResponseEntity> responseData = new ArrayList<>();
+		ProgramAttendanceSpecificDetailResponseEntity responseDataContent = new ProgramAttendanceSpecificDetailResponseEntity(); 
+		List<ProgramAttendanceId> attendanceIdRecord = new  ArrayList<>();
+		List<DevoteeOverviewEntity> devoteeList = new ArrayList<>();
+				
+		Paging paging = ProgramAttendanceDetailMapper.setPagingParameters(programAttendancePage);
+		response.setPaging(paging);
+		
+		List<ProgramAttendance> programAttendanceList = programAttendancePage.getContent();
+		boolean isFirstEntry = true;
+		for(ProgramAttendance programAttendance : programAttendanceList)
+		{
+			if (isFirstEntry) {
+				responseDataContent.setProgramId(programAttendance.getProgramId().getId());
+				responseDataContent.setAttendanceDate(programAttendance.getAttendanceDate());
+				responseDataContent.setTopic(programAttendance.getTopic());
+				isFirstEntry = false;
+			}
+			DevoteeOverviewEntity devotee = DevoteeMapper.convertToDevoteeOverviewEntity(programAttendance.getDevoteeId());
+			devoteeList.add(devotee);
+			ProgramAttendanceId programAttendanceId = new ProgramAttendanceId();
+			programAttendanceId.setAttendanceId(programAttendance.getId());
+			programAttendanceId.setDevoteeId(programAttendance.getDevoteeId().getId());
+			attendanceIdRecord.add(programAttendanceId);
+		}
+		
+		responseDataContent.setAttendanceId(attendanceIdRecord);
+		responseDataContent.setDevoteeList(devoteeList);
+		responseData.add(responseDataContent);
 		response.setData(responseData);
 		return response;
 	}
