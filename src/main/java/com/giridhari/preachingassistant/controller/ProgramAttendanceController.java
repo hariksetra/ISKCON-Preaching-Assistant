@@ -28,6 +28,7 @@ import com.giridhari.preachingassistant.rest.model.response.BaseListResponse;
 import com.giridhari.preachingassistant.service.DevoteeService;
 import com.giridhari.preachingassistant.service.ProgramAttendanceService;
 import com.giridhari.preachingassistant.service.ProgramService;
+import com.giridhari.preachingassistant.service.ProgramSessionService;
 
 @RestController
 public class ProgramAttendanceController {
@@ -39,6 +40,9 @@ public class ProgramAttendanceController {
 	
 	@Resource
 	ProgramService programService;
+	
+	@Resource
+	ProgramSessionService programSessionService;
 
 	@RequestMapping(name="programAttendancePage", value = "/programAttendancePage", method = RequestMethod.GET)
 	public BaseListResponse list(Pageable pageable)
@@ -60,10 +64,10 @@ public class ProgramAttendanceController {
 		return response;
 	}
 	
-	@RequestMapping(name="programAttendanceByProgramAndDatePage", value = "/programAttendanceByProgramAndDatePage/{programId}/{attendanceDate}", method = RequestMethod.GET)
-	public BaseListResponse programAttendanceByProgramAndDatePage(@PathVariable("programId") long programId, @PathVariable("attendanceDate") Date attendanceDate, Pageable pageable)
+	@RequestMapping(name="programAttendanceBySessionPage", value = "/programAttendanceBySessionPage/{sessionId}", method = RequestMethod.GET)
+	public BaseListResponse programAttendanceBySessionPage(@PathVariable("sessionId") long sessionId, Pageable pageable)
 	{
-		Page<ProgramAttendance> programAttendancePage = programAttendanceService.attendanceByProgramAndDate(programService.get(programId), attendanceDate, pageable);
+		Page<ProgramAttendance> programAttendancePage = programAttendanceService.attendanceBySession(programSessionService.get(sessionId), pageable);
 		BaseListResponse response = new BaseListResponse();
 		
 		//This function responds with one record for all the attendance of the specified program
@@ -80,20 +84,13 @@ public class ProgramAttendanceController {
 		response.setPaging(paging);
 		
 		List<ProgramAttendance> programAttendanceList = programAttendancePage.getContent();
-		boolean isFirstEntry = true;
 		for(ProgramAttendance programAttendance : programAttendanceList)
 		{
-			if (isFirstEntry) {
-				responseDataContent.setProgramId(programAttendance.getProgramId().getId());
-				responseDataContent.setAttendanceDate(programAttendance.getAttendanceDate());
-				responseDataContent.setTopic(programAttendance.getTopic());
-				isFirstEntry = false;
-			}
-			DevoteeOverviewEntity devotee = DevoteeMapper.convertToDevoteeOverviewEntity(programAttendance.getDevoteeId());
+			DevoteeOverviewEntity devotee = DevoteeMapper.convertToDevoteeOverviewEntity(programAttendance.getDevotee());
 			devoteeList.add(devotee);
 			ProgramAttendanceId programAttendanceId = new ProgramAttendanceId();
 			programAttendanceId.setAttendanceId(programAttendance.getId());
-			programAttendanceId.setDevoteeId(programAttendance.getDevoteeId().getId());
+			programAttendanceId.setDevoteeId(programAttendance.getDevotee().getId());
 			attendanceIdRecord.add(programAttendanceId);
 		}
 		
@@ -115,8 +112,7 @@ public class ProgramAttendanceController {
 	public ProgramAttendanceDetailResponseEntity put(@PathVariable("id") long programAttendanceId, @RequestBody ProgramAttendanceDetailRequestEntity requestData) {
 		ProgramAttendance programAttendance = programAttendanceService.get(programAttendanceId);
 		ProgramAttendanceDetailMapper.patchProgramAttendance(programAttendance, requestData);
-		if (requestData.getDevoteeId()!=null) programAttendance.setDevoteeId(devoteeService.get(requestData.getDevoteeId()));
-		if (requestData.getProgramId()!=null) programAttendance.setProgramId(programService.get(requestData.getProgramId()));
+		if (requestData.getDevoteeId()!=null) programAttendance.setDevotee(devoteeService.get(requestData.getDevoteeId()));
 		programAttendanceService.update(programAttendance);
 		ProgramAttendanceDetailResponseEntity responseData = ProgramAttendanceDetailMapper.convertToProgramAttendanceDetailResponseEntity(programAttendance);
 		return responseData;
@@ -126,8 +122,7 @@ public class ProgramAttendanceController {
 	public ProgramAttendanceDetailResponseEntity post(@RequestBody ProgramAttendanceDetailRequestEntity requestData) {
 		ProgramAttendance programAttendance = new ProgramAttendance();
 		ProgramAttendanceDetailMapper.patchProgramAttendance(programAttendance, requestData);
-		if (requestData.getDevoteeId()!=null) programAttendance.setDevoteeId(devoteeService.get(requestData.getDevoteeId()));
-		if (requestData.getProgramId()!=null) programAttendance.setProgramId(programService.get(requestData.getProgramId()));
+		if (requestData.getDevoteeId()!=null) programAttendance.setDevotee(devoteeService.get(requestData.getDevoteeId()));
 		programAttendanceService.update(programAttendance);
 		ProgramAttendanceDetailResponseEntity responseData = ProgramAttendanceDetailMapper.convertToProgramAttendanceDetailResponseEntity(programAttendance);
 		return responseData;

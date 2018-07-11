@@ -44,9 +44,9 @@ public class Program implements Serializable {
 	
 	private Set<ProgramAreaSubscription> areasSubscribed;
 	private Set<ProgramAssignment> participants;
-	private Set<ProgramAttendance> attendanceRecords;
 	private Set<FollowUpAssignment> followUpAssignments;
 	private Set<FollowUp> followUps;
+	private Set<ProgramSession> sessions;
 	
 	
 	@Id
@@ -164,16 +164,6 @@ public class Program implements Serializable {
 	public void setParticipants(Set<ProgramAssignment> participants) {
 		this.participants = participants;
 	}
-	
-	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy="programId")
-	@JsonBackReference
-	public Set<ProgramAttendance> getAttendanceRecords() {
-		return attendanceRecords;
-	}
-
-	public void setAttendanceRecords(Set<ProgramAttendance> attendanceRecords) {
-		this.attendanceRecords = attendanceRecords;
-	}
 
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy="program")
 	@JsonBackReference
@@ -194,5 +184,16 @@ public class Program implements Serializable {
 	public void setFollowUps(Set<FollowUp> followUps) {
 		this.followUps = followUps;
 	}
+
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy="program")
+	@JsonBackReference
+	public Set<ProgramSession> getSessions() {
+		return sessions;
+	}
+
+	public void setSessions(Set<ProgramSession> sessions) {
+		this.sessions = sessions;
+	}
+	
 	
 }

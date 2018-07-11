@@ -23,6 +23,7 @@ public class FollowUpVolunteer {
 	private Long id;
 	private Program program;
 	private Devotee devotee;
+	private boolean isFollowupVolunteer;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -53,6 +54,15 @@ public class FollowUpVolunteer {
 	
 	public void setDevotee(Devotee devotee) {
 		this.devotee = devotee;
+	}
+
+	@Column(name = "is_followup_volunteer", nullable = false)
+	public boolean isFollowupVolunteer() {
+		return isFollowupVolunteer;
+	}
+
+	public void setFollowupVolunteer(boolean isFollowupVolunteer) {
+		this.isFollowupVolunteer = isFollowupVolunteer;
 	}
 	
 }

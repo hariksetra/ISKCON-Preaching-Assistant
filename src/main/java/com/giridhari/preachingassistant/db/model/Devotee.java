@@ -347,7 +347,7 @@ public class Devotee implements Serializable {
 		this.programs = programs;
 	}
 	
-	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "program")
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "attendee")
 	@JsonBackReference
 	public Set<ProgramAssignment> getAttendingPrograms() {
 		return attendingPrograms;
@@ -357,7 +357,7 @@ public class Devotee implements Serializable {
 		this.attendingPrograms = attendingPrograms;
 	}
 
-	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "programId")
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "devotee")
 	@JsonBackReference
 	public Set<ProgramAttendance> getMyAttendanceRecords() {
 		return myAttendanceRecords;

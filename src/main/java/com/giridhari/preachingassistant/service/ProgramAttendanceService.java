@@ -8,13 +8,14 @@ import org.springframework.stereotype.Service;
 
 import com.giridhari.preachingassistant.db.model.Program;
 import com.giridhari.preachingassistant.db.model.ProgramAttendance;
+import com.giridhari.preachingassistant.db.model.ProgramSession;
 
 @Service
 public interface ProgramAttendanceService {
 
 	public Page<ProgramAttendance> list(Pageable pageable);
 	
-	public Page<ProgramAttendance> attendanceByProgramAndDate(Program program, Date attendanceDate, Pageable pageable);
+	public Page<ProgramAttendance> attendanceBySession(ProgramSession session, Pageable pageable);
 	
 	public ProgramAttendance get(long attendanceId);
 	

@@ -56,7 +56,7 @@ public class ImportantDate {
 	}
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="date", columnDefinition="date", nullable = true)
+	@Column(name="date", columnDefinition="date", nullable = false)
 	public Date getDate() {
 		return date;
 	}

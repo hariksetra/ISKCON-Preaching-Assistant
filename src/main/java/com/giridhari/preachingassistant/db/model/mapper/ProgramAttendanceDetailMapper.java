@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import com.giridhari.preachingassistant.db.model.Devotee;
 import com.giridhari.preachingassistant.db.model.Program;
 import com.giridhari.preachingassistant.db.model.ProgramAttendance;
+import com.giridhari.preachingassistant.db.model.ProgramSession;
 import com.giridhari.preachingassistant.rest.model.Paging;
 import com.giridhari.preachingassistant.rest.model.programattendance.ProgramAttendanceDetailRequestEntity;
 import com.giridhari.preachingassistant.rest.model.programattendance.ProgramAttendanceDetailResponseEntity;
@@ -13,32 +14,26 @@ public class ProgramAttendanceDetailMapper {
 	public static ProgramAttendanceDetailResponseEntity convertToProgramAttendanceDetailResponseEntity(ProgramAttendance programAttendance) {
 		ProgramAttendanceDetailResponseEntity responseData = new ProgramAttendanceDetailResponseEntity();
 		responseData.setId(programAttendance.getId());
-		responseData.setAttendanceDate(programAttendance.getAttendanceDate());
-		if (programAttendance.getProgramId()!=null)
-			responseData.setProgramId(programAttendance.getProgramId().getId());
-		if (programAttendance.getDevoteeId()!=null)
-			responseData.setDevoteeId(programAttendance.getDevoteeId().getId());
-		responseData.setTopic(programAttendance.getTopic());
+		if (programAttendance.getSession()!=null)
+			responseData.setSessionId(programAttendance.getSession().getId());
+		if (programAttendance.getDevotee()!=null)
+			responseData.setDevoteeId(programAttendance.getDevotee().getId());
 		return responseData;
 	}
 
 	public static void patchProgramAttendance(ProgramAttendance programAttendance, ProgramAttendanceDetailRequestEntity requestData) {
 		if (requestData.getId()!=null)
 			programAttendance.setId(requestData.getId());
-		if (requestData.getAttendanceDate()!=null)
-			programAttendance.setAttendanceDate(requestData.getAttendanceDate());
-		if (requestData.getProgramId()!=null) {
-			Program program = new Program();
-			program.setId(requestData.getProgramId());
-			programAttendance.setProgramId(program);
+		if (requestData.getSessionId()!=null) {
+			ProgramSession session = new ProgramSession();
+			session.setId(requestData.getSessionId());
+			programAttendance.setSession(session);
 		}
 		if (requestData.getDevoteeId()!=null) {
 			Devotee devotee = new Devotee();
 			devotee.setId(requestData.getDevoteeId());
-			programAttendance.setDevoteeId(devotee);
+			programAttendance.setDevotee(devotee);
 		}
-		if (requestData.getTopic()!= null)
-			programAttendance.setTopic(requestData.getTopic());
 	}
 
 	public static Paging setPagingParameters(Page<ProgramAttendance> programAttendancePage) {

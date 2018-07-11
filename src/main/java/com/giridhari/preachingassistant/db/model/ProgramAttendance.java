@@ -1,7 +1,5 @@
 package com.giridhari.preachingassistant.db.model;
 
-import java.util.Date;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,20 +10,20 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name = "program_attendance", catalog = "preaching_assistant")
+@Table(name = "program_attendance", catalog = "preaching_assistant",
+	uniqueConstraints={
+	    @UniqueConstraint(columnNames = {"session_id", "devotee_id"})
+	})
 public class ProgramAttendance {
 
 	private Long id;
-	private Date attendanceDate;
-	private Program programId;
-	private Devotee devoteeId;
-	private String topic;
+	private ProgramSession session;
+	private Devotee devotee;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,44 +36,26 @@ public class ProgramAttendance {
 		this.id = id;
 	}
 	
-	@Temporal(TemporalType.DATE)
-	@Column(name="attendance_date", columnDefinition="date", nullable = true)
-	public Date getAttendanceDate() {
-		return attendanceDate;
-	}
-	
-	public void setAttendanceDate(Date attendanceDate) {
-		this.attendanceDate = attendanceDate;
-	}
 	
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "program_id", columnDefinition = "integer")
+	@JoinColumn(name = "session_id", columnDefinition = "integer")
 	@JsonManagedReference
-	public Program getProgramId() {
-		return programId;
+	public ProgramSession getSession() {
+		return session;
 	}
 	
-	public void setProgramId(Program programId) {
-		this.programId = programId;
+	public void setSession(ProgramSession session) {
+		this.session = session;
 	}
 	
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "devotee_id", columnDefinition = "integer")
 	@JsonManagedReference
-	public Devotee getDevoteeId() {
-		return devoteeId;
+	public Devotee getDevotee() {
+		return devotee;
 	}
 	
-	public void setDevoteeId(Devotee devoteeId) {
-		this.devoteeId = devoteeId;
-	}
-	
-	@Column(name="legal_name", nullable=true)
-	public String getTopic() {
-		return topic;
-	}
-	
-	public void setTopic(String topic) {
-		this.topic = topic;
+	public void setDevotee(Devotee devotee) {
+		this.devotee = devotee;
 	}
 }
