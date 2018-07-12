@@ -23,7 +23,7 @@ import com.giridhari.preachingassistant.model.TargetAudience;
 
 @Entity
 @Table(name = "program", catalog = "preaching_assistant",
-uniqueConstraints=@UniqueConstraint(columnNames={"name"}))
+uniqueConstraints=@UniqueConstraint(columnNames={"name", "parent_yatra_id"}))
 public class Program implements Serializable {
 
 	/**
