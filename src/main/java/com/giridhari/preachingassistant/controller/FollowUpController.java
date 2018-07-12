@@ -71,7 +71,10 @@ public class FollowUpController {
 		Program program = programService.get(programId);
 		Devotee attendee = devoteeService.get(attendeeId);
 		Devotee volunteer = devoteeService.get(volunteerId);
-		FollowUp followUp = followUpService.getFollowUpRecord(program, attendee, volunteer);
+		
+		//If there is no followup session is been assigned return error 
+		if (program.getCurrentFollowupSession() == null) return null;
+		FollowUp followUp = followUpService.getFollowUpRecord(program, attendee, volunteer, program.getCurrentFollowupSession());
 		if (followUp == null) {
 			System.out.println("Creating New Followup Record");
 			followUp = new FollowUp();
@@ -81,9 +84,12 @@ public class FollowUpController {
 			followUp.setRating(0);
 			followUp.setResponse(Response.CALL_AGAIN);
 			followUp.setTimestamp(new Date());
+			followUp.setFollowupForSession(program.getCurrentFollowupSession());
 			followUpService.update(followUp);
 		}
 		FollowUpDetailResponseEntity responseData = FollowUpDetailMapper.convertToFollowUpDetailResponseEntity(followUp);
+		responseData.setFollowupForSessionDate(followUp.getFollowupForSession().getSessionDate());
+		responseData.setFollowupForSessionTopic(program.getCurrentFollowupSession().getTopic());
 		return new BaseDataResponse(responseData);
 	}
 

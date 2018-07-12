@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 
 import com.giridhari.preachingassistant.db.model.Devotee;
 import com.giridhari.preachingassistant.db.model.Program;
+import com.giridhari.preachingassistant.db.model.ProgramSession;
 import com.giridhari.preachingassistant.db.model.Yatra;
 import com.giridhari.preachingassistant.rest.model.Paging;
 import com.giridhari.preachingassistant.rest.model.program.ProgramDetailRequestEntity;
@@ -29,6 +30,11 @@ public class ProgramMapper {
 			responseData.setParentYatraId(program.getParentYatra().getId());
 		responseData.setTargetAudience(program.getTargetAudience());
 		responseData.setType(program.getType());
+		if (program.getCurrentFollowupSession() != null) {
+			responseData.setCurrentFollowupSession(program.getCurrentFollowupSession().getId());
+			responseData.setCurrentFollowupSessionDate(program.getCurrentFollowupSession().getSessionDate());
+			responseData.setCurrentFollowupSessionTopic(program.getCurrentFollowupSession().getTopic());
+		}
 		return responseData;
 	}
 	
@@ -54,13 +60,20 @@ public class ProgramMapper {
 		if(requestData.getParentYatraId() != null)
 		{
 			Yatra yatra = new Yatra();
-			yatra.setId(requestData.getId());
+			yatra.setId(requestData.getParentYatraId());
 			program.setParentYatra(yatra);
 		}
 		if(requestData.getTargetAudience() != null)
 			program.setTargetAudience(requestData.getTargetAudience());
 		if(requestData.getType() != null)
 			program.setType(requestData.getType());
+		if (requestData.getCurrentFollowupSession() != null) {
+			ProgramSession currentFollowupSession = new ProgramSession();
+			currentFollowupSession.setId(requestData.getCurrentFollowupSession());
+			program.setCurrentFollowupSession(currentFollowupSession);
+		} else {
+			program.setCurrentFollowupSession(null);
+		}
 	}
 	
 	public static Paging setPagingParameters(Page<Program> programPage)

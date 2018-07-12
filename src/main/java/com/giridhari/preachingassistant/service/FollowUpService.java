@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.giridhari.preachingassistant.db.model.Devotee;
 import com.giridhari.preachingassistant.db.model.FollowUp;
 import com.giridhari.preachingassistant.db.model.Program;
+import com.giridhari.preachingassistant.db.model.ProgramSession;
 
 @Service
 public interface FollowUpService {
@@ -23,7 +24,7 @@ public interface FollowUpService {
 	
 	public long clearFollowupOfProgram(Program program);
 	
-	public FollowUp getFollowUpRecord(Program program, Devotee attendee, Devotee volunteer);
+	public FollowUp getFollowUpRecord(Program program, Devotee attendee, Devotee volunteer, ProgramSession programSession);
 	
 	public List<FollowUp> findByProgram(Program program);
 }

@@ -10,8 +10,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -32,7 +34,9 @@ public class ProgramSession {
 	private Date sessionDate;
 	private String topic;
 	
+	private Program programForCurrentFollowup;
 	private Set<ProgramAttendance> attendanceForSession;
+	private Set<FollowUp> followupsForSession;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -79,5 +83,21 @@ public class ProgramSession {
 		this.attendanceForSession = attendanceForSession;
 	}
 	
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy="followupForSession")
+	@JsonBackReference
+	public Set<FollowUp> getFollowupsForSession() {
+		return followupsForSession;
+	}
+	public void setFollowupsForSession(Set<FollowUp> followupsForSession) {
+		this.followupsForSession = followupsForSession;
+	}
 	
+	@OneToOne(cascade = CascadeType.ALL, 
+            fetch = FetchType.LAZY, optional = false, mappedBy = "currentFollowupSession")
+	public Program getProgramForCurrentFollowup() {
+		return programForCurrentFollowup;
+	}
+	public void setProgramForCurrentFollowup(Program programForCurrentFollowup) {
+		this.programForCurrentFollowup = programForCurrentFollowup;
+	}
 }
