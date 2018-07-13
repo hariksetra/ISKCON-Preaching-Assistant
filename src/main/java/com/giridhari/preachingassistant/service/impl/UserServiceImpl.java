@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.giridhari.preachingassistant.service.impl;
 
@@ -21,10 +21,19 @@ public class UserServiceImpl implements UserService {
 
 	@Resource
 	private UserAccountRepo userRepo;
-	
+
 	@Override
 	public UserAccount get(String username) {
 		return userRepo.findByUsername(username);
 	}
 
+	@Override
+	public UserAccount getByDevoteeId(long devoteeId) {
+		return userRepo.findByProfile_id(devoteeId);
+	}
+
+	@Override
+	public void update(UserAccount userAccount) {
+		userRepo.save(userAccount);
+	}
 }
