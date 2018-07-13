@@ -85,14 +85,14 @@ public class FollowUpVolunteerController {
 
 	//This end point may not be used
 	@RequestMapping(name = "followUpVolunteerUpdate", value="/followUpVolunteer/{id}", method = RequestMethod.PUT)
-	public FollowUpVolunteerDetailResponseEntity put(@PathVariable("id") long followUpVolunteerId, @RequestBody FollowUpVolunteerDetailRequestEntity requestData) {
+	public BaseDataResponse put(@PathVariable("id") long followUpVolunteerId, @RequestBody FollowUpVolunteerDetailRequestEntity requestData) {
 		FollowUpVolunteer followUpVolunteer = followUpVolunteerService.get(followUpVolunteerId);
 		FollowUpVolunteerDetailMapper.patchFollowUpVolunteer(followUpVolunteer, requestData);
 		if (requestData.getDevoteeId()!=null) followUpVolunteer.setDevotee(devoteeService.get(requestData.getDevoteeId()));
 		if (requestData.getProgramId()!=null) followUpVolunteer.setProgram(programService.get(requestData.getProgramId()));
 		followUpVolunteerService.update(followUpVolunteer);
 		FollowUpVolunteerDetailResponseEntity responseData = FollowUpVolunteerDetailMapper.convertToFollowUpVolunteerDetailResponseEntity(followUpVolunteer);
-		return responseData;
+		return new BaseDataResponse(responseData);
 	}
 
 	@RequestMapping(name="followUpVolunteerCreate", value="/followUpVolunteer", method=RequestMethod.POST)
