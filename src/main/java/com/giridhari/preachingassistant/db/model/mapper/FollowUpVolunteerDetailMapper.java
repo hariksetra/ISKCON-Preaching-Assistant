@@ -16,6 +16,7 @@ public class FollowUpVolunteerDetailMapper {
 		if (followUpVolunteer.getProgram()!= null) {
 			responseData.setProgramId(followUpVolunteer.getProgram().getId());
 			responseData.setProgramName(followUpVolunteer.getProgram().getName());
+			responseData.setProgramArea(followUpVolunteer.getProgram().getAddress());
 		}
 		responseData.setDevoteeId(followUpVolunteer.getDevotee().getId());
 		responseData.setDevoteeName(
