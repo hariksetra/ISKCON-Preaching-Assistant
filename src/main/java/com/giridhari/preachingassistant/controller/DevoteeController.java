@@ -100,6 +100,16 @@ public class DevoteeController {
 		return new BaseDataResponse(responseData);
 		} else return null;
 	}
+	
+	@RequestMapping(name = "devoteeDetailByPhone", value="/devoteeByPhone/{phone}", method = RequestMethod.GET)
+	public BaseDataResponse getByPhone(@PathVariable("phone") String phone) {
+		Devotee devotee = devoteeService.findBySmsPhone(phone);
+		
+		if (devotee !=null) {
+			DevoteeDetailResponseEntity responseData = DevoteeMapper.convertToDevoteeDetailResponseEntity(devotee);
+			return new BaseDataResponse(responseData);
+		} else return null;
+	}
 
 	@RequestMapping(name = "devoteeUpdate", value="/devotees/{id}", method = RequestMethod.PUT)
 	public DevoteeDetailResponseEntity put(@PathVariable("id") long devoteeId, @RequestBody DevoteeDetailRequestEntity requestData) {
@@ -112,7 +122,7 @@ public class DevoteeController {
 	}
 
 	@RequestMapping(name="devoteeCreate", value="/devotees", method=RequestMethod.POST)
-	public DevoteeDetailResponseEntity post(@RequestBody DevoteeDetailRequestEntity requestData) {
+	public BaseDataResponse post(@RequestBody DevoteeDetailRequestEntity requestData) {
 		Devotee devotee = new Devotee();
 		
 		//Find if devotee already exist (SMS Phone Matching)
@@ -139,6 +149,6 @@ public class DevoteeController {
 		}
 		
 		DevoteeDetailResponseEntity responseData = DevoteeMapper.convertToDevoteeDetailResponseEntity(devotee);
-		return responseData;
+		return new BaseDataResponse(responseData);
 	}
 }

@@ -74,6 +74,26 @@ public class FollowUpVolunteerController {
 		response.setData(responseData);
 		return response;
 	}
+	
+	@RequestMapping(name="followUpProgramsByVolunteerPage", value = "/followUpProgramsByVolunteerPage/{volunteerId}", method = RequestMethod.GET)
+	public BaseListResponse listByVolunteer(@PathVariable("volunteerId") long volunteerId, Pageable pageable)
+	{
+		Page<FollowUpVolunteer> followUpVolunteerPage = followUpVolunteerService.findByVolunteer(volunteerId, pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<FollowUpVolunteerDetailResponseEntity> responseData = new ArrayList<>();
+		
+		Paging paging = FollowUpVolunteerDetailMapper.setPagingParameters(followUpVolunteerPage);
+		response.setPaging(paging);
+		
+		List<FollowUpVolunteer> followUpVolunteerList = followUpVolunteerPage.getContent();
+		for(FollowUpVolunteer followUpVolunteer : followUpVolunteerList)
+		{
+			FollowUpVolunteerDetailResponseEntity followUpVolunteerDetailResponseEntity = FollowUpVolunteerDetailMapper.convertToFollowUpVolunteerDetailResponseEntity(followUpVolunteer);
+			responseData.add(followUpVolunteerDetailResponseEntity);
+		}
+		response.setData(responseData);
+		return response;
+	}
 
 	//This end point may not be used
 	@RequestMapping(name = "followUpVolunteerDetail", value="/followUpVolunteer/{id}", method = RequestMethod.GET)
