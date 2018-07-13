@@ -23,6 +23,7 @@ import com.giridhari.preachingassistant.model.Response;
 public class FollowUp {
 	
 	private Long id;
+	private ProgramSession followupForSession;
 	private Devotee volunteer;
 	private Devotee attendee;
 	private Program program;
@@ -41,6 +42,17 @@ public class FollowUp {
 	
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "followup_for_session_id", columnDefinition = "integer", nullable = false)
+	@JsonManagedReference
+	public ProgramSession getFollowupForSession() {
+		return followupForSession;
+	}
+
+	public void setFollowupForSession(ProgramSession followupForSession) {
+		this.followupForSession = followupForSession;
 	}
 	
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false)

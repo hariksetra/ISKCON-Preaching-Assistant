@@ -32,6 +32,11 @@ public class ProgramServiceImpl implements ProgramService{
 	}
 	
 	@Override
+	public Program findByCurrentFollowupSession(long sessionId) {
+		return programRepo.findByCurrentFollowupSession_id(sessionId);
+	}
+	
+	@Override
 	public Program get(long programId) {
 		return programRepo.findOne(programId);
 	}

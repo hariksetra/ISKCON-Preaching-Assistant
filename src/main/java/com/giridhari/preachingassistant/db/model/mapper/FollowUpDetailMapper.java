@@ -17,6 +17,7 @@ public class FollowUpDetailMapper {
 			responseData.setVolunteerId(followUp.getVolunteer().getId());
 			responseData.setVolunteerName(followUp.getVolunteer().getLegalName());
 		}
+		
 		if (followUp.getAttendee() != null) {
 			responseData.setAttendeeId(followUp.getAttendee().getId());
 			responseData.setAttendeeName(followUp.getAttendee().getLegalName());

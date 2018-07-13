@@ -15,6 +15,8 @@ public interface ProgramService {
 	
 	public Page<Program> findByYatraId(long yatraId, Pageable pageable);
 	
+	public Program findByCurrentFollowupSession(long sessionId);
+	
 	public Program get(long programId);
 	
 	public void update(Program program);

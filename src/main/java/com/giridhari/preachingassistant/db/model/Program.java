@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -41,6 +42,7 @@ public class Program implements Serializable {
 	private ProgramType type;
 	private TargetAudience targetAudience;
 	private String followupDescription;
+	private ProgramSession currentFollowupSession;
 	
 	private Set<ProgramAreaSubscription> areasSubscribed;
 	private Set<ProgramAssignment> participants;
@@ -193,6 +195,15 @@ public class Program implements Serializable {
 
 	public void setSessions(Set<ProgramSession> sessions) {
 		this.sessions = sessions;
+	}
+
+	@OneToOne(fetch = FetchType.LAZY)
+	public ProgramSession getCurrentFollowupSession() {
+		return currentFollowupSession;
+	}
+
+	public void setCurrentFollowupSession(ProgramSession currentFollowupSession) {
+		this.currentFollowupSession = currentFollowupSession;
 	}
 	
 	

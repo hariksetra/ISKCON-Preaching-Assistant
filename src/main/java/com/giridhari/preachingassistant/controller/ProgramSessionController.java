@@ -109,6 +109,10 @@ public class ProgramSessionController {
 	@RequestMapping(name="programSessionDelete", value="/programSession/{id}", method=RequestMethod.DELETE)
 	public void delete(@PathVariable("id") long programSessionId)
 	{
+		if(programService.findByCurrentFollowupSession(programSessionId) == null) {
+			//throw IllegalStateException;
+			return;
+		}
 		programSessionService.delete(programSessionId);
 	}
 }

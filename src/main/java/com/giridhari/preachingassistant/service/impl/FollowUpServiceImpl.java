@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.giridhari.preachingassistant.db.model.Devotee;
 import com.giridhari.preachingassistant.db.model.FollowUp;
 import com.giridhari.preachingassistant.db.model.Program;
+import com.giridhari.preachingassistant.db.model.ProgramSession;
 import com.giridhari.preachingassistant.db.repo.FollowUpRepo;
 import com.giridhari.preachingassistant.service.FollowUpService;
 
@@ -47,8 +48,8 @@ public class FollowUpServiceImpl implements FollowUpService {
 	}
 
 	@Override
-	public FollowUp getFollowUpRecord(Program program, Devotee attendee, Devotee volunteer) {
-		return followUpRepo.findTop1ByProgramAndAttendeeAndVolunteer(program, attendee, volunteer);
+	public FollowUp getFollowUpRecord(Program program, Devotee attendee, Devotee volunteer, ProgramSession programSession) {
+		return followUpRepo.findTop1ByProgramAndAttendeeAndVolunteerAndFollowupForSession(program, attendee, volunteer, programSession);
 	}
 
 	@Override
