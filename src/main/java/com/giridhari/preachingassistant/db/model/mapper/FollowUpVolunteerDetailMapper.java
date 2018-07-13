@@ -21,7 +21,7 @@ public class FollowUpVolunteerDetailMapper {
 		responseData.setDevoteeName(
 				(followUpVolunteer.getDevotee().getInitiatedName()!=null)?followUpVolunteer.getDevotee().getInitiatedName():followUpVolunteer.getDevotee().getLegalName()
 		);
-		responseData.setFollwupVolunteer(followUpVolunteer.isFollowupVolunteer());
+		responseData.setFollowupVolunteer(followUpVolunteer.isFollowupVolunteer());
 		return responseData;
 	}
 
@@ -37,7 +37,7 @@ public class FollowUpVolunteerDetailMapper {
 			Devotee devotee = new Devotee();
 			devotee.setId(requestData.getDevoteeId());
 		}
-		followUpVolunteer.setFollowupVolunteer(requestData.isFollwupVolunteer());
+		followUpVolunteer.setFollowupVolunteer(requestData.isFollowupVolunteer());
 	}
 
 	public static Paging setPagingParameters(Page<FollowUpVolunteer> followUpVolunteerPage) {
