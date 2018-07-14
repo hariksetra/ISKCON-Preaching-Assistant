@@ -31,4 +31,6 @@ public interface FollowUpAssignmentRepo extends PagingAndSortingRepository<Follo
 	
 	public long countByProgramAndVolunteer(Program program, Devotee devotee);
 	
+	public FollowUpAssignment findByAttendeeAndProgram(Devotee attendee, Program program);
+	
 }

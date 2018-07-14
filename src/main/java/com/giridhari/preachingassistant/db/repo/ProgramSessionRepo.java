@@ -1,6 +1,7 @@
 package com.giridhari.preachingassistant.db.repo;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.domain.Page;
@@ -12,4 +13,6 @@ public interface ProgramSessionRepo extends PagingAndSortingRepository<ProgramSe
 	public Page<ProgramSession> findAllByProgram(Program program, Pageable pageable);
 	
 	public ProgramSession findByProgramAndSessionDate(Program program, Date sessionDate);
+	
+	public List<ProgramSession> findByProgram(Program program);
 }

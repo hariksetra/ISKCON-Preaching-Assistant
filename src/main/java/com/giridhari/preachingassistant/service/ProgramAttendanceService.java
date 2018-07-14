@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.giridhari.preachingassistant.db.model.Program;
 import com.giridhari.preachingassistant.db.model.ProgramAttendance;
 import com.giridhari.preachingassistant.db.model.ProgramSession;
+import com.giridhari.preachingassistant.rest.model.programattendance.ProgramAttendanceGeneralReport;
 
 @Service
 public interface ProgramAttendanceService {
@@ -22,4 +23,6 @@ public interface ProgramAttendanceService {
 	public void update(ProgramAttendance programAttendance);
 	
 	public void delete(long attendanceId);
+	
+	public ProgramAttendanceGeneralReport getProgramAttendanceGeneralReport(Program program);
 }
