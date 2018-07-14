@@ -9,9 +9,10 @@ import com.giridhari.preachingassistant.db.model.UserAccount;
 
 @Repository
 public interface UserAccountRepo extends CrudRepository<UserAccount, Long> {
-	
-	@Query("select ua from UserAccount ua where ua.username = ?1")
-	public UserAccount findByUsername(@Param(value="username") String username);
-	
+
+	public UserAccount findByUsername(String username);
+
+	public UserAccount findById(long id);
+
 	public UserAccount findByProfile_id(long devoteeId);
 }

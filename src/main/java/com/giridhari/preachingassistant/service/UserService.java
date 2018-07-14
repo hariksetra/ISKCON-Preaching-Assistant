@@ -11,6 +11,8 @@ import com.giridhari.preachingassistant.db.model.UserAccount;
 public interface UserService {
 	public UserAccount get(String username);
 
+	public UserAccount getById(long userAccountId);
+
 	public UserAccount getByDevoteeId(long devoteeId);
 
 	public void update(UserAccount userAccount);

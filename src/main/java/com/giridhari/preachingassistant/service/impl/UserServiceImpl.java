@@ -29,6 +29,11 @@ public class UserServiceImpl implements UserService {
 		return userRepo.findByUsername(username);
 	}
 
+        @Override
+	public UserAccount getById(long userAccountId) {
+		return userRepo.findById(userAccountId);
+	}
+
 	@Override
 	public UserAccount getByDevoteeId(long devoteeId) {
 		return userRepo.findByProfile_id(devoteeId);

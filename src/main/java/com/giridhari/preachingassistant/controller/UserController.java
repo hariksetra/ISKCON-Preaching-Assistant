@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,6 +21,7 @@ import com.giridhari.preachingassistant.service.DevoteeService;
 import com.giridhari.preachingassistant.service.UserService;
 import com.giridhari.preachingassistant.util.BadRequestException;
 import com.giridhari.preachingassistant.util.ForbiddenException;
+import com.giridhari.preachingassistant.util.NotFoundException;
 
 @RestController
 public class UserController {
@@ -30,8 +32,8 @@ public class UserController {
 	@Resource
 	private DevoteeService devoteeService;
 
-	@RequestMapping(name = "devoteeDetail", value="/login/{username}", method = RequestMethod.GET)
-	public BaseDataResponse get(@PathVariable("username") String username) {
+	@RequestMapping(name = "devoteeDetail", value="/login", method = RequestMethod.GET)
+	public BaseDataResponse get(@RequestParam("username") String username) {
 		UserAccount userAccount;
 		Devotee devotee;
 
@@ -78,6 +80,7 @@ public class UserController {
 
 		Devotee devotee = devoteeService.get(devoteeId);
 		String email = requestData.getEmail();
+                // TODO - put this password in a constant somewhere
 		String password = "harekrishna";
 		String type = requestData.getType();
 		UserAccount userAccount = userService.createForDevotee(devotee, email, password, type);
@@ -86,6 +89,24 @@ public class UserController {
 		devotee.setEmail(email);
 		devoteeService.update(devotee);
 
+		UserLoginResponseEntity responseData = UserAccountMapper.convertToLoginUserResponseEntity(userAccount, devotee);
+		return new BaseDataResponse(responseData);
+	}
+
+	@RequestMapping(name = "resetPassword", value="/resetPassword/{userAccountId}", method = RequestMethod.PUT)
+	public BaseDataResponse resetPassword(@PathVariable("userAccountId") long userAccountId) {
+		UserAccount userAccount = userService.getById(userAccountId);
+
+		if (userAccount == null) {
+			throw new NotFoundException("Given user account not found");
+		}
+
+		// TODO - put this password as a constant somewhere
+		String newPassword = "harekrishna";
+		userAccount.setPassword(newPassword);
+		userService.update(userAccount);
+
+		Devotee devotee = userAccount.getProfile();
 		UserLoginResponseEntity responseData = UserAccountMapper.convertToLoginUserResponseEntity(userAccount, devotee);
 		return new BaseDataResponse(responseData);
 	}
