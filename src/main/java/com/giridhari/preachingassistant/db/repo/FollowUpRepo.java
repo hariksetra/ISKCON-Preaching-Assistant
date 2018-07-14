@@ -17,4 +17,6 @@ public interface FollowUpRepo extends PagingAndSortingRepository<FollowUp, Long>
 	FollowUp findTop1ByProgramAndAttendeeAndVolunteerAndFollowupForSession(Program program, Devotee attendee, Devotee volunteer, ProgramSession programSession);
 	
 	List<FollowUp> findByProgram(Program program);
+	
+	FollowUp findByVolunteerAndAttendeeAndFollowupForSession(Devotee volunteer, Devotee attendee, ProgramSession programSession);
 }

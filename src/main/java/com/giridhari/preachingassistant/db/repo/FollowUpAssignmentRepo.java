@@ -19,10 +19,16 @@ public interface FollowUpAssignmentRepo extends PagingAndSortingRepository<Follo
 	
 	public Page<FollowUpAssignment> findByVolunteerAndProgram(Devotee volunteer, Program program, Pageable pageable);
 	
+	public List<FollowUpAssignment> findByVolunteerAndProgram(Devotee volunteer, Program program);
+	
 	public Page<FollowUpAssignment> findByProgram(Program program, Pageable pageable);
 	
 	public List<FollowUpAssignment> findByProgram(Program program);
 	
 	public Long deleteByProgram(Program program);
+	
+	public long countByProgram(Program program);
+	
+	public long countByProgramAndVolunteer(Program program, Devotee devotee);
 	
 }

@@ -57,4 +57,8 @@ public class FollowUpServiceImpl implements FollowUpService {
 		return followUpRepo.findByProgram(program);
 	}
 
+	@Override
+	public FollowUp findByVolunteerAndAttendeeAndSession(Devotee volunteer, Devotee attendee, ProgramSession programSession) {
+		return followUpRepo.findByVolunteerAndAttendeeAndFollowupForSession(volunteer, attendee, programSession);
+	}
 }

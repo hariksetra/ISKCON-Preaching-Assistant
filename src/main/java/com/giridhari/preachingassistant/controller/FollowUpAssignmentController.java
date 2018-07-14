@@ -21,11 +21,16 @@ import com.giridhari.preachingassistant.db.model.Devotee;
 import com.giridhari.preachingassistant.db.model.FollowUp;
 import com.giridhari.preachingassistant.db.model.FollowUpAssignment;
 import com.giridhari.preachingassistant.db.model.FollowUpVolunteer;
+import com.giridhari.preachingassistant.db.model.Program;
 import com.giridhari.preachingassistant.db.model.ProgramAssignment;
 import com.giridhari.preachingassistant.db.model.mapper.FollowUpAssignmentDetailMapper;
+import com.giridhari.preachingassistant.model.Response;
 import com.giridhari.preachingassistant.rest.model.Paging;
 import com.giridhari.preachingassistant.rest.model.followupassignment.FollowUpAssignmentDetailRequestEntity;
 import com.giridhari.preachingassistant.rest.model.followupassignment.FollowUpAssignmentDetailResponseEntity;
+import com.giridhari.preachingassistant.rest.model.followupassignment.FollowUpDashboardReportResponseEntity;
+import com.giridhari.preachingassistant.rest.model.followupassignment.FollowUpProgramReport;
+import com.giridhari.preachingassistant.rest.model.followupassignment.FollowUpVolunteerReport;
 import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
 import com.giridhari.preachingassistant.rest.model.response.BaseListResponse;
 import com.giridhari.preachingassistant.service.DevoteeService;
@@ -51,6 +56,10 @@ public class FollowUpAssignmentController {
 	
 	@Resource
 	FollowUpVolunteerService followUpVolunteerService;
+	
+	@Resource
+	FollowUpService followUpService;
+	
 
 	@RequestMapping(name="followUpAssignmentPage", value = "/followUpAssignmentPage", method = RequestMethod.GET)
 	public BaseListResponse list(Pageable pageable)
@@ -207,6 +216,79 @@ public class FollowUpAssignmentController {
 	public void deleteAssignmentsOfProgram(@PathVariable("programId") long programId)
 	{
 		followUpAssignmentService.deleteAssignmentsOfProgram(programService.get(programId));
+	}
+	
+	@Transactional
+	@RequestMapping(name="autoFollowUpAssignment", value="/followUpReport/{mentorId}/{programId}", method=RequestMethod.GET)
+	public BaseDataResponse report(@PathVariable("mentorId") long mentorId, @PathVariable("programId") long programId)
+	{
+		//if programId=0 then send report of all programs
+		FollowUpDashboardReportResponseEntity dashboardReport;
+		
+		dashboardReport = new FollowUpDashboardReportResponseEntity();
+		
+		//Get all the programs managed by the mentor
+		List<Program> mentoringProgramList = programService.findByMentorId(mentorId);
+		for(Program mentoringProgram: mentoringProgramList) {
+			if (programId == 0 || mentoringProgram.getId() ==  programId) {
+				//Set up the program report with basic details
+				FollowUpProgramReport followUpProgramReport = new FollowUpProgramReport();
+				followUpProgramReport.setProgramId(mentoringProgram.getId());
+				followUpProgramReport.setProgramName(mentoringProgram.getName());
+				followUpProgramReport.setTotalParticipants(programAssignmentService.countByProgram(mentoringProgram));
+				followUpProgramReport.setFollowUpAssignedParticipants(followUpAssignmentService.countByProgram(mentoringProgram));
+				if (mentoringProgram.getCurrentFollowupSession() == null) {
+					followUpProgramReport.setCurrentFollowUpSessionDate(null);
+					followUpProgramReport.setCurrentFollowUpSessionTopic(null);
+				} else {
+					followUpProgramReport.setCurrentFollowUpSessionDate(mentoringProgram.getCurrentFollowupSession().getSessionDate());
+					followUpProgramReport.setCurrentFollowUpSessionTopic(mentoringProgram.getCurrentFollowupSession().getTopic());
+				}
+				Long percentageCompletionOfFollowupProgramTotal = new Long(0);
+				
+				//Get all the volunteers for this program
+				List<FollowUpVolunteer> volunteerOfProgramList = followUpVolunteerService.findByProgram(mentoringProgram.getId());
+				for (FollowUpVolunteer volunteerOfProgram: volunteerOfProgramList) {
+					//Set up the volunteer report with basic details
+					FollowUpVolunteerReport followUpVolunteerReport = new FollowUpVolunteerReport();
+					followUpVolunteerReport.setFollowUpAssignedParticipants(followUpAssignmentService.countByProgramAndVolunteer(mentoringProgram, volunteerOfProgram.getDevotee()));
+					followUpVolunteerReport.setVolunteerId(volunteerOfProgram.getDevotee().getId());
+					if (volunteerOfProgram.getDevotee().getInitiatedName() == null || volunteerOfProgram.getDevotee().getInitiatedName() != "") {
+						followUpVolunteerReport.setVolunteerName(volunteerOfProgram.getDevotee().getLegalName());
+					}else {
+						followUpVolunteerReport.setVolunteerName(volunteerOfProgram.getDevotee().getInitiatedName());
+					}
+					followUpVolunteerReport.setVolunteerPhone(volunteerOfProgram.getDevotee().getSmsPhone());
+					
+					//Get all the assignments for this volunteer
+					Long percentageCompletionOfFollowupVolunteerTotal = new Long(0);
+					List<FollowUpAssignment> followUpAssignmentsList = followUpAssignmentService
+							.listByVolunteerAndProgram(volunteerOfProgram.getDevotee(), mentoringProgram);
+					for (FollowUpAssignment followUpAssignments: followUpAssignmentsList) {
+						//Get the follow up for this volunteer for current follow up session
+						FollowUp followUpRecord = followUpService
+								.findByVolunteerAndAttendeeAndSession(followUpAssignments.getVolunteer(), followUpAssignments.getAttendee(), mentoringProgram.getCurrentFollowupSession());
+						//Increment the response and %completion counts of the volunteer
+						if (followUpRecord != null) {
+							followUpVolunteerReport.incrementResponseCount(followUpRecord.getResponse().toString());
+							followUpVolunteerReport.incrementFollowUpCount(new Long(followUpRecord.getTaskStatus()));
+							//Increment the response and %completion counts for the program too
+							followUpProgramReport.incrementResponseCount(followUpRecord.getResponse().toString());
+							followUpProgramReport.incrementFollowUpCount(new Long(followUpRecord.getTaskStatus()));
+							percentageCompletionOfFollowupProgramTotal = percentageCompletionOfFollowupProgramTotal + followUpRecord.getTaskStatus();
+							percentageCompletionOfFollowupVolunteerTotal = percentageCompletionOfFollowupVolunteerTotal + followUpRecord.getTaskStatus();
+						}
+					}
+					followUpVolunteerReport.setPercentageCompletionOfFollowup(percentageCompletionOfFollowupVolunteerTotal/followUpVolunteerReport.getFollowUpAssignedParticipants());
+					followUpProgramReport.addVolunteerReport(followUpVolunteerReport);
+				}
+				followUpProgramReport.setPercentageCompletionOfFollowup(percentageCompletionOfFollowupProgramTotal/followUpProgramReport.getFollowUpAssignedParticipants());
+				dashboardReport.addProgramReport(followUpProgramReport);
+				//Set basic details of this program into the response
+			}
+		}
+		
+		return new BaseDataResponse(dashboardReport);
 	}
 	
 	@Transactional

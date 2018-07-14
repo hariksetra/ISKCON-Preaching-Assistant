@@ -19,6 +19,8 @@ public interface FollowUpAssignmentService {
 	
 	public Page<FollowUpAssignment> listByVolunteerAndProgram(Devotee volunteer, Program program, Pageable pageable);
 	
+	public List<FollowUpAssignment> listByVolunteerAndProgram(Devotee volunteer, Program program);
+	
 	public Page<FollowUpAssignment> listByProgram(Program program, Pageable pageable);
 	
 	public List<FollowUpAssignment> listOfProgramsForVolunteer(Devotee volunteer);
@@ -32,4 +34,8 @@ public interface FollowUpAssignmentService {
 	public void delete(long assignmentId);
 	
 	public Long deleteAssignmentsOfProgram(Program program);
+	
+	public long countByProgram(Program program);
+	
+	public long countByProgramAndVolunteer(Program program, Devotee devotee);
 }

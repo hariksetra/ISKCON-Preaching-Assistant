@@ -16,7 +16,11 @@ public interface FollowUpVolunteerService {
 	
 	public Page<FollowUpVolunteer> findByProgram(long programId, Pageable pageable);
 	
+	public List<FollowUpVolunteer> findByProgram(long programId);
+	
 	public Page<FollowUpVolunteer> findByVolunteer(long volunteerId, Pageable pageable);
+	
+	public List<FollowUpVolunteer> findByVolunteer(long volunteerId);
 	
 	public FollowUpVolunteer get(long id);
 	

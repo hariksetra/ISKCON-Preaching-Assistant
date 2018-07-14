@@ -14,5 +14,7 @@ import com.giridhari.preachingassistant.db.model.Program;;
 public interface FollowUpVolunteerRepo extends PagingAndSortingRepository<FollowUpVolunteer, Long>{
 	Page<FollowUpVolunteer> findByProgram_id(long programId, Pageable pageable);
 	Page<FollowUpVolunteer> findByDevotee_id(long volunteerId, Pageable pageable);
+	List<FollowUpVolunteer> findByDevotee_id(long volunteerId);
 	List<FollowUpVolunteer> findByProgram(Program program);
+	List<FollowUpVolunteer> findByProgram_id(long programId);
 }

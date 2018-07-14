@@ -40,6 +40,11 @@ public class FollowUpAssignmentServiceImpl implements FollowUpAssignmentService 
 	}
 	
 	@Override
+	public List<FollowUpAssignment> listByVolunteerAndProgram(Devotee volunteer, Program program) {
+		return followupAssignmentRepo.findByVolunteerAndProgram(volunteer, program);
+	}
+	
+	@Override
 	public Page<FollowUpAssignment> listByProgram(Program program, Pageable pageable) {
 		return followupAssignmentRepo.findByProgram(program, pageable);
 	}
@@ -94,4 +99,13 @@ public class FollowUpAssignmentServiceImpl implements FollowUpAssignmentService 
 		return followupAssignmentRepo.findByProgram(program);
 	}
 
+	@Override
+	public long countByProgram(Program program) {
+		return followupAssignmentRepo.countByProgram(program);
+	}
+	
+	@Override
+	public long countByProgramAndVolunteer(Program program, Devotee devotee) {
+		return followupAssignmentRepo.countByProgramAndVolunteer(program, devotee);
+	}
 }
