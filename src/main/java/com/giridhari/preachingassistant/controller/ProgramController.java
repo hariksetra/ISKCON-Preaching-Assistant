@@ -13,13 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.giridhari.preachingassistant.db.model.Devotee;
 import com.giridhari.preachingassistant.db.model.Program;
-import com.giridhari.preachingassistant.db.model.mapper.DevoteeMapper;
 import com.giridhari.preachingassistant.db.model.mapper.ProgramMapper;
 import com.giridhari.preachingassistant.rest.model.Paging;
-import com.giridhari.preachingassistant.rest.model.devotee.DevoteeDetailRequestEntity;
-import com.giridhari.preachingassistant.rest.model.devotee.DevoteeDetailResponseEntity;
 import com.giridhari.preachingassistant.rest.model.program.ProgramDetailRequestEntity;
 import com.giridhari.preachingassistant.rest.model.program.ProgramDetailResponseEntity;
 import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;

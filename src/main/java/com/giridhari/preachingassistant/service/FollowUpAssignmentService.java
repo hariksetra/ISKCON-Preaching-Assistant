@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.giridhari.preachingassistant.db.model.Devotee;
 import com.giridhari.preachingassistant.db.model.FollowUpAssignment;
 import com.giridhari.preachingassistant.db.model.Program;
+import com.giridhari.preachingassistant.exception.AssignerNotFoundException;
 
 @Service
 public interface FollowUpAssignmentService {
@@ -24,6 +25,8 @@ public interface FollowUpAssignmentService {
 	public List<FollowUpAssignment> listOfProgramsForVolunteer(Devotee volunteer);
 	
 	public List<FollowUpAssignment> listOfAssignmentsOfProgram(Program program);
+
+	public void autoAssign(Program program, String strategy) throws AssignerNotFoundException;
 	
 	public FollowUpAssignment get(long assignmentId);
 	
