@@ -15,6 +15,7 @@ public class UserAccountMapper {
 		responseData.setDevoteeId(devotee.getId());
 		responseData.setDevoteeName(devotee.getLegalName());
 		responseData.setRole(userAccount.getType().toString());
+		responseData.setUsername(userAccount.getUsername());
 		return responseData;
 	}
 	

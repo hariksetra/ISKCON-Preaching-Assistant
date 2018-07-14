@@ -13,9 +13,12 @@ import com.giridhari.preachingassistant.db.model.Devotee;
 import com.giridhari.preachingassistant.db.model.UserAccount;
 import com.giridhari.preachingassistant.db.model.mapper.UserAccountMapper;
 import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
+import com.giridhari.preachingassistant.rest.model.useraccount.CreateUserAccountRequestEntity;
 import com.giridhari.preachingassistant.rest.model.useraccount.UserAccountPasswordChangeRequestEntity;
 import com.giridhari.preachingassistant.rest.model.useraccount.UserLoginResponseEntity;
+import com.giridhari.preachingassistant.service.DevoteeService;
 import com.giridhari.preachingassistant.service.UserService;
+import com.giridhari.preachingassistant.util.BadRequestException;
 import com.giridhari.preachingassistant.util.ForbiddenException;
 
 @RestController
@@ -23,6 +26,9 @@ public class UserController {
 
 	@Resource
 	private UserService userService;
+
+	@Resource
+	private DevoteeService devoteeService;
 
 	@RequestMapping(name = "devoteeDetail", value="/login/{username}", method = RequestMethod.GET)
 	public BaseDataResponse get(@PathVariable("username") String username) {
@@ -58,5 +64,29 @@ public class UserController {
 		} else {
 			throw new ForbiddenException("wrong password enetered");
 		}
+	}
+
+	@RequestMapping(name = "createUserAccount", value="/userAccount/", method = RequestMethod.POST)
+	@ResponseBody
+	public BaseDataResponse create(@RequestBody CreateUserAccountRequestEntity requestData) {
+		// check that user account doesn't exist
+		long devoteeId = requestData.getDevoteeId();
+
+		if (userService.getByDevoteeId(devoteeId) != null) {
+			throw new BadRequestException("user account for devotee already exists");
+		}
+
+		Devotee devotee = devoteeService.get(devoteeId);
+		String email = requestData.getEmail();
+		String password = "harekrishna";
+		String type = requestData.getType();
+		UserAccount userAccount = userService.createForDevotee(devotee, email, password, type);
+
+		devotee.setUserAccount(userAccount);
+		devotee.setEmail(email);
+		devoteeService.update(devotee);
+
+		UserLoginResponseEntity responseData = UserAccountMapper.convertToLoginUserResponseEntity(userAccount, devotee);
+		return new BaseDataResponse(responseData);
 	}
 }
