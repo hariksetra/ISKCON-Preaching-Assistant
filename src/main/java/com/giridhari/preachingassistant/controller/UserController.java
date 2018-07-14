@@ -32,12 +32,40 @@ public class UserController {
 	@Resource
 	private DevoteeService devoteeService;
 
+	/**
+	 * Login api - currently only returns the user account data based on provided username
+	 * Would have to be changed in the future
+	 * @param username
+	 * @return
+	 */
 	@RequestMapping(name = "devoteeDetail", value="/login", method = RequestMethod.GET)
 	public BaseDataResponse get(@RequestParam("username") String username) {
 		UserAccount userAccount;
 		Devotee devotee;
 
 		userAccount = userService.get(username);
+		if (userAccount!=null) {
+			devotee = userAccount.getProfile();
+			UserLoginResponseEntity responseData = UserAccountMapper.convertToLoginUserResponseEntity(userAccount, devotee);
+			return new BaseDataResponse(responseData);
+		}
+
+		return null;
+	}
+
+	/**
+	 * This funciton is meant to return the details for a given user account
+	 * This is currently similar to the login api however the login api would be changed
+	 * in the future to do actual login stuff
+	 * @param userAccountId
+	 * @return
+	 */
+	@RequestMapping(name = "devoteeDetail", value="/userAccount/{userAccountId}", method = RequestMethod.GET)
+	public BaseDataResponse getByUserAccountId(@PathVariable("userAccountId") long userAccountId) {
+		UserAccount userAccount;
+		Devotee devotee;
+
+		userAccount = userService.getById(userAccountId);
 		if (userAccount!=null) {
 			devotee = userAccount.getProfile();
 			UserLoginResponseEntity responseData = UserAccountMapper.convertToLoginUserResponseEntity(userAccount, devotee);
