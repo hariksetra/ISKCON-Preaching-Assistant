@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
+import java.util.HashMap;
 import com.giridhari.preachingassistant.db.model.FollowUp;
 import com.giridhari.preachingassistant.db.model.FollowUpAssignment;
 
@@ -268,6 +268,8 @@ public class FollowUpAssignmentController {
 						followUpVolunteerReport.setVolunteerName(volunteerOfProgram.getDevotee().getInitiatedName());
 					}
 					followUpVolunteerReport.setVolunteerPhone(volunteerOfProgram.getDevotee().getSmsPhone());
+					followUpVolunteerReport.setFollowUpCounts(new HashMap<Long,Long>());
+					followUpVolunteerReport.setResponseCounts(new HashMap<String,Long>());
 					
 					//Get all the assignments for this volunteer
 					Long percentageCompletionOfFollowupVolunteerTotal = new Long(0);
@@ -288,10 +290,14 @@ public class FollowUpAssignmentController {
 							percentageCompletionOfFollowupVolunteerTotal = percentageCompletionOfFollowupVolunteerTotal + followUpRecord.getTaskStatus();
 						}
 					}
-					followUpVolunteerReport.setPercentageCompletionOfFollowup(percentageCompletionOfFollowupVolunteerTotal/followUpVolunteerReport.getFollowUpAssignedParticipants());
+					if(followUpVolunteerReport.getFollowUpAssignedParticipants() != 0) {
+						followUpVolunteerReport.setPercentageCompletionOfFollowup(percentageCompletionOfFollowupVolunteerTotal/followUpVolunteerReport.getFollowUpAssignedParticipants());
+					} else {followUpVolunteerReport.setPercentageCompletionOfFollowup(0);}
 					followUpProgramReport.addVolunteerReport(followUpVolunteerReport);
 				}
-				followUpProgramReport.setPercentageCompletionOfFollowup(percentageCompletionOfFollowupProgramTotal/followUpProgramReport.getFollowUpAssignedParticipants());
+				if (followUpProgramReport.getFollowUpAssignedParticipants() != 0) {
+					followUpProgramReport.setPercentageCompletionOfFollowup(percentageCompletionOfFollowupProgramTotal/followUpProgramReport.getFollowUpAssignedParticipants());
+				}else {followUpProgramReport.setPercentageCompletionOfFollowup(0);}
 				dashboardReport.addProgramReport(followUpProgramReport);
 				//Set basic details of this program into the response
 			}
