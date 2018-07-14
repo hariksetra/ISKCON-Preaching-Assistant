@@ -27,4 +27,6 @@ public interface FollowUpService {
 	public FollowUp getFollowUpRecord(Program program, Devotee attendee, Devotee volunteer, ProgramSession programSession);
 	
 	public List<FollowUp> findByProgram(Program program);
+	
+	public FollowUp findByVolunteerAndAttendeeAndSession(Devotee volunteer, Devotee attendee, ProgramSession programSession);
 }

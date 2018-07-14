@@ -67,5 +67,10 @@ public class ProgramAssignmentServiceImpl implements ProgramAssignmentService {
 			Pageable pageable) {
 		return programAssignmentRepo.findAllByAttendeeLegalNameContainingOrAttendeeInitiatedNameContainingOrAttendeeSmsPhoneContainingOrAttendeeEmailContainingAndProgramParentYatra(typeText, typeText, typeText, typeText, yatra, pageable);
 	}
+	
+	@Override
+	public long countByProgram(Program program) {
+		return programAssignmentRepo.countByProgram(program);
+	}
 
 }

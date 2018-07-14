@@ -34,4 +34,6 @@ public interface ProgramAssignmentService {
 	public Page<ProgramAssignment>
 	findProgramAssignmentTypeAheadByYatra
 	(String typeText, Yatra yatra, Pageable pageable);
+	
+	public long countByProgram(Program program);
 }

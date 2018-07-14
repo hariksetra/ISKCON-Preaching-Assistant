@@ -30,8 +30,18 @@ public class FollowUpVolunteerServiceImpl implements FollowUpVolunteerService {
 	}
 	
 	@Override
+	public List<FollowUpVolunteer> findByProgram(long programId) {
+		return followUpVolunteerRepo.findByProgram_id(programId);
+	}
+	
+	@Override
 	public Page<FollowUpVolunteer> findByVolunteer(long volunteerId, Pageable pageable) {
 		return followUpVolunteerRepo.findByDevotee_id(volunteerId, pageable);
+	}
+	
+	@Override
+	public List<FollowUpVolunteer> findByVolunteer(long volunteerId) {
+		return followUpVolunteerRepo.findByDevotee_id(volunteerId);
 	}
 	
 	@Override

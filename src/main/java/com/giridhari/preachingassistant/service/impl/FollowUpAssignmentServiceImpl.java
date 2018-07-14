@@ -16,13 +16,18 @@ import com.giridhari.preachingassistant.db.model.Devotee;
 import com.giridhari.preachingassistant.db.model.FollowUpAssignment;
 import com.giridhari.preachingassistant.db.model.Program;
 import com.giridhari.preachingassistant.db.repo.FollowUpAssignmentRepo;
+import com.giridhari.preachingassistant.exception.AssignerNotFoundException;
 import com.giridhari.preachingassistant.service.FollowUpAssignmentService;
+import com.giridhari.preachingassistant.service.FollowUpAutoAssigner;
 
 @Service
 public class FollowUpAssignmentServiceImpl implements FollowUpAssignmentService {
 
 	@Resource
 	FollowUpAssignmentRepo followupAssignmentRepo;
+
+	@Resource
+	private FollowUpAutoAssigner followUpAutoAssigner;
 	
 	@Override
 	public Page<FollowUpAssignment> list(Pageable pageable) {
@@ -37,6 +42,11 @@ public class FollowUpAssignmentServiceImpl implements FollowUpAssignmentService 
 	@Override
 	public Page<FollowUpAssignment> listByVolunteerAndProgram(Devotee volunteer, Program program, Pageable pageable) {
 		return followupAssignmentRepo.findByVolunteerAndProgram(volunteer, program, pageable);
+	}
+	
+	@Override
+	public List<FollowUpAssignment> listByVolunteerAndProgram(Devotee volunteer, Program program) {
+		return followupAssignmentRepo.findByVolunteerAndProgram(volunteer, program);
 	}
 	
 	@Override
@@ -74,6 +84,11 @@ public class FollowUpAssignmentServiceImpl implements FollowUpAssignmentService 
 	}
 
 	@Override
+	public void autoAssign(Program program, String strategy) throws AssignerNotFoundException {
+		followUpAutoAssigner.assign(program, strategy);
+	}
+
+	@Override
 	public void update(FollowUpAssignment followUpAssignment) {
 		followupAssignmentRepo.save(followUpAssignment);
 
@@ -94,4 +109,13 @@ public class FollowUpAssignmentServiceImpl implements FollowUpAssignmentService 
 		return followupAssignmentRepo.findByProgram(program);
 	}
 
+	@Override
+	public long countByProgram(Program program) {
+		return followupAssignmentRepo.countByProgram(program);
+	}
+	
+	@Override
+	public long countByProgramAndVolunteer(Program program, Devotee devotee) {
+		return followupAssignmentRepo.countByProgramAndVolunteer(program, devotee);
+	}
 }

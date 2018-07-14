@@ -1,5 +1,7 @@
 package com.giridhari.preachingassistant.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.data.domain.Page;
@@ -24,6 +26,11 @@ public class ProgramServiceImpl implements ProgramService{
 	@Override
 	public Page<Program> findByMentorId(long mentorId, Pageable pageable) {
 		return programRepo.findByMentor_id(mentorId, pageable);
+	}
+	
+	@Override
+	public List<Program> findByMentorId(long mentorId) {
+		return programRepo.findByMentor_id(mentorId);
 	}
 	
 	@Override
