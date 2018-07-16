@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.giridhari.preachingassistant.db.model.Program;
 import com.giridhari.preachingassistant.db.model.ProgramAttendance;
 import com.giridhari.preachingassistant.db.model.mapper.DevoteeMapper;
 import com.giridhari.preachingassistant.db.model.mapper.ProgramAttendanceDetailMapper;
@@ -21,6 +22,7 @@ import com.giridhari.preachingassistant.rest.model.Paging;
 import com.giridhari.preachingassistant.rest.model.devotee.DevoteeOverviewEntity;
 import com.giridhari.preachingassistant.rest.model.programattendance.ProgramAttendanceDetailRequestEntity;
 import com.giridhari.preachingassistant.rest.model.programattendance.ProgramAttendanceDetailResponseEntity;
+import com.giridhari.preachingassistant.rest.model.programattendance.ProgramAttendanceGeneralReport;
 import com.giridhari.preachingassistant.rest.model.programattendance.ProgramAttendanceId;
 import com.giridhari.preachingassistant.rest.model.programattendance.ProgramAttendanceSpecificDetailResponseEntity;
 import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
@@ -106,6 +108,13 @@ public class ProgramAttendanceController {
 		ProgramAttendance programAttendance = programAttendanceService.get(programAttendanceId);
 		ProgramAttendanceDetailResponseEntity responseData = ProgramAttendanceDetailMapper.convertToProgramAttendanceDetailResponseEntity(programAttendance);
 		return new BaseDataResponse(responseData);
+	}
+	
+	@RequestMapping(name = "programAttendanceGeneralReport", value="/programAttendanceGeneralReport/{programId}", method = RequestMethod.GET)
+	public BaseDataResponse programAttendanceGeneralReport(@PathVariable("programId") long programId) {
+		Program program = programService.get(programId);
+		ProgramAttendanceGeneralReport programAttendanceReport = programAttendanceService.getProgramAttendanceGeneralReport(program);
+		return new BaseDataResponse(programAttendanceReport);
 	}
 
 	@RequestMapping(name = "programAttendanceUpdate", value="/programAttendance/{id}", method = RequestMethod.PUT)
