@@ -1,6 +1,7 @@
 package com.giridhari.preachingassistant.db.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -30,6 +33,7 @@ public class ProgramAssignment implements Serializable {
 	private Long id;
 	private Program program;
 	private Devotee attendee;
+	private Date dateAdded;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -62,5 +66,15 @@ public class ProgramAssignment implements Serializable {
 
 	public void setAttendee(Devotee attendee) {
 		this.attendee = attendee;
+	}
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="date_added_time_stamp", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP ", nullable = false, insertable = false, updatable = false)
+	public Date getDateAdded() {
+		return dateAdded;
+	}
+
+	public void setDateAdded(Date dateAdded) {
+		this.dateAdded = dateAdded;
 	}
 }

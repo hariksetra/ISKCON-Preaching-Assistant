@@ -36,4 +36,6 @@ public interface ProgramAssignmentService {
 	(String typeText, Yatra yatra, Pageable pageable);
 	
 	public long countByProgram(Program program);
+	
+	public ProgramAssignment findByAttendeeAndProgram(long attendeeId, long programId);
 }

@@ -31,6 +31,7 @@ import com.giridhari.preachingassistant.service.DevoteeService;
 import com.giridhari.preachingassistant.service.ProgramAttendanceService;
 import com.giridhari.preachingassistant.service.ProgramService;
 import com.giridhari.preachingassistant.service.ProgramSessionService;
+import com.giridhari.preachingassistant.util.BadRequestException;
 
 @RestController
 public class ProgramAttendanceController {
@@ -129,6 +130,9 @@ public class ProgramAttendanceController {
 
 	@RequestMapping(name="programAttendanceCreate", value="/programAttendance", method=RequestMethod.POST)
 	public ProgramAttendanceDetailResponseEntity post(@RequestBody ProgramAttendanceDetailRequestEntity requestData) {
+		if (programAttendanceService.findByDevoteeAndSession(requestData.getDevoteeId(), requestData.getSessionId())!=null) {
+			throw new BadRequestException("Attendance for the devotee is already marked!");
+		}
 		ProgramAttendance programAttendance = new ProgramAttendance();
 		ProgramAttendanceDetailMapper.patchProgramAttendance(programAttendance, requestData);
 		if (requestData.getDevoteeId()!=null) programAttendance.setDevotee(devoteeService.get(requestData.getDevoteeId()));

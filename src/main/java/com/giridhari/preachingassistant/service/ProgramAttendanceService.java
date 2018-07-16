@@ -25,4 +25,6 @@ public interface ProgramAttendanceService {
 	public void delete(long attendanceId);
 	
 	public ProgramAttendanceGeneralReport getProgramAttendanceGeneralReport(Program program);
+	
+	public ProgramAttendance findByDevoteeAndSession(long attendeeId, long sessionId);
 }

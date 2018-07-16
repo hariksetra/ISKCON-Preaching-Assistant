@@ -12,6 +12,7 @@ import com.giridhari.preachingassistant.rest.model.programsession.ProgramSession
 public class ProgramSessionDetailMapper {
 	public static ProgramSessionDetailResponseEntity convertToProgramSessionDetailResponseEntity(ProgramSession programSession) {
 		ProgramSessionDetailResponseEntity responseData = new ProgramSessionDetailResponseEntity();
+		if (programSession == null) return null;
 		responseData.setId(programSession.getId());
 		if (programSession.getProgram() != null)
 			responseData.setProgramId(programSession.getProgram().getId());

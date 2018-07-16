@@ -30,4 +30,6 @@ public interface ProgramAssignmentRepo extends PagingAndSortingRepository<Progra
 	(String legalName, String initiatedName, String smsPhone, String email, Yatra yatra, Pageable pageable);
 
 	public long countByProgram(Program program);
+	
+	public ProgramAssignment findByAttendee_idAndProgram_id(long attendeeId, long programId);
 }

@@ -73,4 +73,8 @@ public class ProgramAssignmentServiceImpl implements ProgramAssignmentService {
 		return programAssignmentRepo.countByProgram(program);
 	}
 
+	@Override
+	public ProgramAssignment findByAttendeeAndProgram(long attendeeId, long programId) {
+		return programAssignmentRepo.findByAttendee_idAndProgram_id(attendeeId, programId);
+	}
 }

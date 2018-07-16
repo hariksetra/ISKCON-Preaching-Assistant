@@ -147,6 +147,11 @@ public class ProgramAttendanceServiceImpl implements ProgramAttendanceService {
 		return attendanceReport;
 	}
 	
+	@Override
+	public ProgramAttendance findByDevoteeAndSession(long attendeeId, long sessionId) {
+		return programAttendanceRepo.findByDevotee_idAndSession_id(attendeeId, sessionId);
+	}
+	
 	public static Comparator<HashMap<String, String>>
 			sortAttendanceReport = new Comparator<HashMap<String, String>>() {
 			@Override

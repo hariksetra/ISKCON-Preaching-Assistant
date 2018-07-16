@@ -23,6 +23,7 @@ public class ProgramAssignmentDetailMapper {
 		);
 		responseData.setAttendeePhone(programAssignment.getAttendee().getSmsPhone());
 		responseData.setAttendeeEmail(programAssignment.getAttendee().getEmail());
+		responseData.setDateAdded(programAssignment.getDateAdded());
 		return responseData;
 	}
 

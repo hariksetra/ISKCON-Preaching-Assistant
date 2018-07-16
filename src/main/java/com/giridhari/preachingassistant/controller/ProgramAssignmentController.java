@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.giridhari.preachingassistant.db.model.ProgramAssignment;
@@ -26,6 +27,8 @@ import com.giridhari.preachingassistant.service.DevoteeService;
 import com.giridhari.preachingassistant.service.ProgramAssignmentService;
 import com.giridhari.preachingassistant.service.ProgramService;
 import com.giridhari.preachingassistant.service.YatraService;
+import com.giridhari.preachingassistant.util.BadRequestException;
+import com.giridhari.preachingassistant.util.NotFoundException;
 
 @RestController
 public class ProgramAssignmentController {
@@ -155,8 +158,13 @@ public class ProgramAssignmentController {
 		return responseData;
 	}
 
+	@ResponseBody
 	@RequestMapping(name="programAssignmentCreate", value="/programAssignment", method=RequestMethod.POST)
-	public BaseListResponse post(@RequestBody ProgramAssignmentDetailRequestEntity requestData, Pageable pageable) {
+	public BaseListResponse post(@RequestBody ProgramAssignmentDetailRequestEntity requestData, Pageable pageable)  {
+		if (programAssignmentService.findByAttendeeAndProgram(requestData.getAttendeeId(), requestData.getProgramId()) != null) {
+			throw new BadRequestException("Participant already added to program");
+		}
+		
 		ProgramAssignment programAssignment = new ProgramAssignment();
 		ProgramAssignmentDetailMapper.patchProgramAssignment(programAssignment, requestData);
 		if (requestData.getAttendeeId()!=null) programAssignment.setAttendee(devoteeService.get(requestData.getAttendeeId()));

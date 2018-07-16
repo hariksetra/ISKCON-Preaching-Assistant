@@ -23,6 +23,7 @@ import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
 import com.giridhari.preachingassistant.rest.model.response.BaseListResponse;
 import com.giridhari.preachingassistant.service.ProgramService;
 import com.giridhari.preachingassistant.service.ProgramSessionService;
+import com.giridhari.preachingassistant.util.NotFoundException;
 
 @RestController
 public class ProgramSessionController {
@@ -76,6 +77,7 @@ public class ProgramSessionController {
 	public BaseDataResponse programSessionOfProgramByDate(@PathVariable("programId") long programId, @PathVariable("sessionDate") Date sessionDate) {
 		ProgramSession programSession = programSessionService.findSessionOfProgramByDate(programService.get(programId), sessionDate);
 		ProgramSessionDetailResponseEntity responseData = ProgramSessionDetailMapper.convertToProgramSessionDetailResponseEntity(programSession);
+		if (responseData==null) throw new NotFoundException("No Session exist for the requested date");
 		return new BaseDataResponse(responseData);
 	}
 
@@ -83,6 +85,7 @@ public class ProgramSessionController {
 	public BaseDataResponse get(@PathVariable("id") long programSessionId) {
 		ProgramSession programSession = programSessionService.get(programSessionId);
 		ProgramSessionDetailResponseEntity responseData = ProgramSessionDetailMapper.convertToProgramSessionDetailResponseEntity(programSession);
+		if (responseData==null) throw new NotFoundException("No Session such session exist");
 		return new BaseDataResponse(responseData);
 	}
 

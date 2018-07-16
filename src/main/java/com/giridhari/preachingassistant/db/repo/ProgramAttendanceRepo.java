@@ -18,4 +18,5 @@ public interface ProgramAttendanceRepo extends PagingAndSortingRepository<Progra
 	public List<ProgramAttendance> findBySession_program(Program program);
 	public long countByDevoteeAndSession_program(Devotee attendee, Program program);
 	public List<ProgramAttendance> findByDevoteeAndSession_program(Devotee attendee, Program program);
+	public ProgramAttendance findByDevotee_idAndSession_id(long attendeeId, long sessionId);
 }
