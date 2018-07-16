@@ -139,22 +139,32 @@ public class DevoteeServiceImpl implements DevoteeService {
 				searchYatraIds.add(program.getParentYatra().getId());
 			}
 		}
+		// System.out.println("Input search yatra ids");
+		// System.out.println(searchYatraIds);
 
+		// System.out.println("Associated yatra ids");
+		// System.out.println(associatedYatraIds);
 		// if no proper input search yatra then take the associated yatras
 		// (becomes sort of a global search within all yatras user is associated with)
 		searchYatraIds = searchYatraIds.isEmpty() ? associatedYatraIds : searchYatraIds;
 
+		// System.out.println("Final search yatra ids");
+		// System.out.println(searchYatraIds);
+
 		if (searchYatraIds.isEmpty()) {
 			// if role is super admin then we do a global search
 			if (role.equals(Type.ADMIN)) {
+				// System.out.println("Doing search for admin");
 				return devoteeRepo.findByQuery(q, pageable);
 			} else {
 				// else we do search only in captured list
+				// System.out.println("Searching in user captured list");
 				return devoteeRepo.findDevoteesInUserCapturedList(q, devoteeId, pageable);
 			}
 		}
 
                 // we do a normal search over yatra contacts and captured list
+		// System.out.println("Doing general search");
 		return devoteeRepo.findDevoteesForUserSearch(q, searchYatraIds, devoteeId, pageable);
 	}
 }

@@ -42,9 +42,10 @@ public interface DevoteeRepo
 			+ "left join d.attendingPrograms pa left join pa.program p1 left join p1.parentYatra y1 "
 			+ "left join d.followUps fv left join fv.program p2 left join p2.parentYatra y2 "
 			+ "left join d.mentoredPrograms p3 left join p3.parentYatra y3 "
+			+ "left join d.administeredYatras y4 "
 			+ "left join d.capturedBy cc left join cc.capturedBy cb "
 			+ "where d.legalName like concat('%', ?1, '%') and "
-			+ "(y1.id in ?2 or y2.id in ?2 or y3.id in ?2 or cb.id = ?3)")
+			+ "(y1.id in ?2 or y2.id in ?2 or y3.id in ?2 or y4.id in ?2 or cb.id = ?3)")
 	public Page<Devotee> findDevoteesForUserSearch(String q, List<Long> yatraIds, long devoteeId, Pageable pageable);
 
 	@Query("select distinct d from Devotee d "

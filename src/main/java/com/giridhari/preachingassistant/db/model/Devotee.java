@@ -69,7 +69,7 @@ public class Devotee implements Serializable {
 	private Set<DevoteeHistory> ratedDevoteeHistory;
 	private Set<DevoteeHistory> commentedByDevoteeHistory;
 	
-	private Set<Yatra> yatras;
+	private Set<Yatra> administeredYatras;
 	
 	private Set<Program> mentoredPrograms;
 	private Set<ProgramAssignment> attendingPrograms;
@@ -329,12 +329,12 @@ public class Devotee implements Serializable {
 	
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "yatraAdmin")
 	@JsonBackReference
-	public Set<Yatra> getYatras() {
-		return yatras;
+	public Set<Yatra> getAdministeredYatras() {
+		return administeredYatras;
 	}
 
-	public void setYatras(Set<Yatra> yatras) {
-		this.yatras = yatras;
+	public void setAdministeredYatras(Set<Yatra> administeredYatras) {
+		this.administeredYatras= administeredYatras;
 	}
 
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "mentor")
