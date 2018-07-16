@@ -29,4 +29,9 @@ public interface FollowUpVolunteerService {
 	public void delete(long id);
 	
 	public List<FollowUpVolunteer> findByProgram(Program program);
+	
+	public List<FollowUpVolunteer> findFollowupVolunteerOfProgram(Program program);
+	
+	public Page<FollowUpVolunteer> findFollowupVolunteerOfProgram(long programId, Pageable pageable);
+	public long countfindFollowupVolunteerOfProgram(long programId);
 }

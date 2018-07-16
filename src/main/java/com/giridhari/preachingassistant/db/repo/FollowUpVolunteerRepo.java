@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,4 +18,8 @@ public interface FollowUpVolunteerRepo extends PagingAndSortingRepository<Follow
 	List<FollowUpVolunteer> findByDevotee_id(long volunteerId);
 	List<FollowUpVolunteer> findByProgram(Program program);
 	List<FollowUpVolunteer> findByProgram_id(long programId);
+	
+	List<FollowUpVolunteer> findByProgramAndFollowupVolunteerTrue(Program program);
+	Page<FollowUpVolunteer> findByProgram_idAndFollowupVolunteerTrue(long programId, Pageable pageable);
+	long countByProgram_idAndFollowupVolunteerTrue(long programId);
 }

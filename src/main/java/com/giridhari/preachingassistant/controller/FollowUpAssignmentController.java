@@ -147,6 +147,22 @@ public class FollowUpAssignmentController {
 		return response;
 	}
 	
+	@RequestMapping(name="followUpAssignmentsByProgramList", value = "/followUpAssignmentsByProgramList/{programId}", method = RequestMethod.GET)
+	public BaseListResponse listOfFollowupAssignmentsByProgram(@PathVariable("programId") long programId)
+	{
+		List<FollowUpAssignment> followUpAssignmentList = followUpAssignmentService.listOfAssignmentsOfProgram(programService.get(programId));
+		BaseListResponse response = new BaseListResponse();
+		List<FollowUpAssignmentDetailResponseEntity> responseData = new ArrayList<>();
+		
+		for(FollowUpAssignment followUpAssignment : followUpAssignmentList)
+		{
+			FollowUpAssignmentDetailResponseEntity followUpAssignmentDetailResponseEntity = FollowUpAssignmentDetailMapper.convertToFollowUpAssignmentDetailResponseEntity(followUpAssignment);
+			responseData.add(followUpAssignmentDetailResponseEntity);
+		}
+		response.setData(responseData);
+		return response;
+	}
+	
 	@RequestMapping(name="followUpProgramsForVolunteerPage", value = "/followUpProgramsForVolunteerPage/{volunteerId}", method = RequestMethod.GET)
 	public BaseListResponse listOfProgramsForVolunteer(@PathVariable("volunteerId") long volunteerId, Pageable pageable)
 	{

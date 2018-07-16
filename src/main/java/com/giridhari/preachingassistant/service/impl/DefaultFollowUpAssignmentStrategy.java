@@ -48,7 +48,7 @@ public class DefaultFollowUpAssignmentStrategy implements FollowUpAssignmentStra
 		
 		followUpAssignments = (ArrayList<FollowUpAssignment>) followUpAssignmentService.listOfAssignmentsOfProgram(program);
 		programAssignments = (ArrayList<ProgramAssignment>) programAssignmentService.findByProgram(program);
-		followUpVolunteer = (ArrayList<FollowUpVolunteer>) followUpVolunteerService.findByProgram(program);
+		followUpVolunteer = (ArrayList<FollowUpVolunteer>) followUpVolunteerService.findFollowupVolunteerOfProgram(program);
 		
 		totalParticipants = programAssignments.size();
 		totalVolunteers = followUpVolunteer.size();

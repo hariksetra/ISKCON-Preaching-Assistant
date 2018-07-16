@@ -64,5 +64,19 @@ public class FollowUpVolunteerServiceImpl implements FollowUpVolunteerService {
 	public List<FollowUpVolunteer> findByProgram(Program program) {
 		return followUpVolunteerRepo.findByProgram(program);
 	}
+	
+	@Override
+	public List<FollowUpVolunteer> findFollowupVolunteerOfProgram(Program program) {
+		return followUpVolunteerRepo.findByProgramAndFollowupVolunteerTrue(program);
+	}
+	
+	@Override
+	public Page<FollowUpVolunteer> findFollowupVolunteerOfProgram(long programId, Pageable pageable) {
+		return followUpVolunteerRepo.findByProgram_idAndFollowupVolunteerTrue(programId, pageable);
+	}
+	
+	public long countfindFollowupVolunteerOfProgram(long programId) {
+		return followUpVolunteerRepo.countByProgram_idAndFollowupVolunteerTrue(programId);
+	}
 
 }

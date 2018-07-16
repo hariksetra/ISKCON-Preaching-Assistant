@@ -55,7 +55,7 @@ public class FollowUpVolunteerController {
 		return response;
 	}
 	
-	@RequestMapping(name="followUpVolunteerByProgramPage", value = "/followUpVolunteerByProgramPage/{programId}", method = RequestMethod.GET)
+	@RequestMapping(name="volunteerByProgramPage", value = "/volunteerByProgramPage/{programId}", method = RequestMethod.GET)
 	public BaseListResponse listByProgram(@PathVariable("programId") long programId, Pageable pageable)
 	{
 		Page<FollowUpVolunteer> followUpVolunteerPage = followUpVolunteerService.findByProgram(programId, pageable);
@@ -66,6 +66,22 @@ public class FollowUpVolunteerController {
 		response.setPaging(paging);
 		
 		List<FollowUpVolunteer> followUpVolunteerList = followUpVolunteerPage.getContent();
+		for(FollowUpVolunteer followUpVolunteer : followUpVolunteerList)
+		{
+			FollowUpVolunteerDetailResponseEntity followUpVolunteerDetailResponseEntity = FollowUpVolunteerDetailMapper.convertToFollowUpVolunteerDetailResponseEntity(followUpVolunteer);
+			responseData.add(followUpVolunteerDetailResponseEntity);
+		}
+		response.setData(responseData);
+		return response;
+	}
+	
+	@RequestMapping(name="followUpVolunteerByProgramList", value = "/followUpVolunteerByProgramList/{programId}", method = RequestMethod.GET)
+	public BaseListResponse listFollowupVolunteerByProgram(@PathVariable("programId") long programId)
+	{	
+		List<FollowUpVolunteer> followUpVolunteerList = followUpVolunteerService.findFollowupVolunteerOfProgram(programService.get(programId));
+		BaseListResponse response = new BaseListResponse();
+		List<FollowUpVolunteerDetailResponseEntity> responseData = new ArrayList<>();
+		
 		for(FollowUpVolunteer followUpVolunteer : followUpVolunteerList)
 		{
 			FollowUpVolunteerDetailResponseEntity followUpVolunteerDetailResponseEntity = FollowUpVolunteerDetailMapper.convertToFollowUpVolunteerDetailResponseEntity(followUpVolunteer);

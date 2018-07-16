@@ -81,6 +81,22 @@ public class ProgramAssignmentController {
 		return response;
 	}
 	
+	@RequestMapping(name="programAssignmentByProgramList", value = "/programAssignmentByProgramList/{programId}", method = RequestMethod.GET)
+	public BaseListResponse listByProgram(@PathVariable("programId") long programId)
+	{
+		List<ProgramAssignment> programAssignmentList = programAssignmentService.findByProgram(programService.get(programId));
+		BaseListResponse response = new BaseListResponse();
+		List<ProgramAssignmentDetailResponseEntity> responseData = new ArrayList<>();
+				
+		for(ProgramAssignment programAssignment : programAssignmentList)
+		{
+			ProgramAssignmentDetailResponseEntity programAssignmentDetailResponseEntity = ProgramAssignmentDetailMapper.convertToProgramAssignmentDetailResponseEntity(programAssignment);
+			responseData.add(programAssignmentDetailResponseEntity);
+		}
+		response.setData(responseData);
+		return response;
+	}
+	
 	@RequestMapping(name="devoteeSearchTypeAheadByProgramPage", value = "/devoteeSearchTypeAheadByProgramPage/{typeText}/{programId}", method = RequestMethod.GET)
 	public BaseListResponse typeAheadByProgram(@PathVariable("typeText") String typeText, @PathVariable("programId") long programId, Pageable pageable)
 	{
