@@ -161,6 +161,11 @@ public class ProgramAssignmentController {
 	@ResponseBody
 	@RequestMapping(name="programAssignmentCreate", value="/programAssignment", method=RequestMethod.POST)
 	public BaseListResponse post(@RequestBody ProgramAssignmentDetailRequestEntity requestData, Pageable pageable)  {
+		if (requestData.getAttendeeId()==null || requestData.getProgramId()==null) {
+			
+			throw new BadRequestException("Participant/Program details not mentioned");
+		}
+		
 		if (programAssignmentService.findByAttendeeAndProgram(requestData.getAttendeeId(), requestData.getProgramId()) != null) {
 			throw new BadRequestException("Participant already added to program");
 		}

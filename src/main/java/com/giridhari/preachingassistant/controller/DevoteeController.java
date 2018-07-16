@@ -31,6 +31,7 @@ import com.giridhari.preachingassistant.rest.model.Paging;
 import com.giridhari.preachingassistant.service.CaptureContactService;
 import com.giridhari.preachingassistant.service.DevoteeService;
 import com.giridhari.preachingassistant.service.UserService;
+import com.giridhari.preachingassistant.util.NotFoundException;
 
 @RestController
 public class DevoteeController {
@@ -138,7 +139,7 @@ public class DevoteeController {
 		if (devotee !=null) {
 			DevoteeDetailResponseEntity responseData = DevoteeMapper.convertToDevoteeDetailResponseEntity(devotee);
 			return new BaseDataResponse(responseData);
-		} else return null;
+		} else throw new NotFoundException("contact not found");
 	}
 
 	@RequestMapping(name = "devoteeUpdate", value="/devotees/{id}", method = RequestMethod.PUT)
