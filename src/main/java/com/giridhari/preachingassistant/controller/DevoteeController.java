@@ -8,6 +8,8 @@ import javax.annotation.Resource;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.giridhari.preachingassistant.db.model.CaptureContact;
 import com.giridhari.preachingassistant.db.model.Devotee;
+import com.giridhari.preachingassistant.db.model.Type;
+import com.giridhari.preachingassistant.db.model.UserAccount;
 import com.giridhari.preachingassistant.db.model.mapper.DevoteeMapper;
 import com.giridhari.preachingassistant.rest.model.devotee.DevoteeDetailRequestEntity;
 import com.giridhari.preachingassistant.rest.model.devotee.DevoteeDetailResponseEntity;
@@ -26,6 +30,7 @@ import com.giridhari.preachingassistant.rest.model.response.BaseListResponse;
 import com.giridhari.preachingassistant.rest.model.Paging;
 import com.giridhari.preachingassistant.service.CaptureContactService;
 import com.giridhari.preachingassistant.service.DevoteeService;
+import com.giridhari.preachingassistant.service.UserService;
 
 @RestController
 public class DevoteeController {
@@ -33,6 +38,9 @@ public class DevoteeController {
 	@Resource
 	private DevoteeService devoteeService;
 	
+	@Resource
+	private UserService userService;
+
 	@Resource
 	private CaptureContactService captureContactService;
 
@@ -48,7 +56,7 @@ public class DevoteeController {
 		response.setData(responseData);
 		return response;
 	}
-	
+
 	@RequestMapping(name = "/devoteesPage", value="/devoteesPage", method = RequestMethod.GET)
 	public BaseListResponse list(Pageable pageable) {
 		Page<Devotee> devoteePage = devoteeService.list(pageable);
@@ -78,6 +86,28 @@ public class DevoteeController {
 		
 		List<Devotee> devoteeList = devoteePage.getContent();
 		for(Devotee devotee: devoteeList) {
+			DevoteeOverviewEntity devoteeOverviewEntity = DevoteeMapper.convertToDevoteeOverviewEntity(devotee);
+			responseData.add(devoteeOverviewEntity);
+		}
+		response.setData(responseData);
+		return response;
+	}
+
+	@RequestMapping(name = "/devoteeSearch", value="/devoteeSearch", method = RequestMethod.GET)
+	public BaseListResponse devoteeSearch(@RequestParam("q") String q, @RequestParam(value="programId", defaultValue="0") long programId, @RequestParam(value="yatraId", defaultValue="0") long yatraId, Pageable pageable, @AuthenticationPrincipal final User user) {
+		UserAccount userAccount = userService.get(user.getUsername());
+
+		long userDevoteeId = userAccount.getProfile().getId();
+		Type role = userAccount.getType();
+		Page<Devotee> devoteesPage = devoteeService.devoteeSearch(q, programId, yatraId, userDevoteeId, role, pageable);
+		BaseListResponse response = new BaseListResponse();
+		List<DevoteeOverviewEntity> responseData = new ArrayList<>();
+
+		Paging paging = DevoteeMapper.setPagingParameters(devoteesPage);
+		response.setPaging(paging);
+
+		List<Devotee> devoteeList = devoteesPage.getContent();
+		for (Devotee devotee: devoteeList) {
 			DevoteeOverviewEntity devoteeOverviewEntity = DevoteeMapper.convertToDevoteeOverviewEntity(devotee);
 			responseData.add(devoteeOverviewEntity);
 		}

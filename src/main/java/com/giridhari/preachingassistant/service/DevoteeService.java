@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.giridhari.preachingassistant.db.model.Devotee;
+import com.giridhari.preachingassistant.db.model.Type;
+import com.giridhari.preachingassistant.db.model.UserAccount;
 
 @Service
 public interface DevoteeService {
@@ -32,4 +34,6 @@ public interface DevoteeService {
 	public Devotee findBySmsPhone(String smsPhone);
 	
 	public Page<Devotee> globalDevoteeSearchTypeAhead(String typeText, Pageable pageable);
+
+	public Page<Devotee> devoteeSearch(String q, long programId, long yatraId, long devoteeId, Type role, Pageable pageable);
 }

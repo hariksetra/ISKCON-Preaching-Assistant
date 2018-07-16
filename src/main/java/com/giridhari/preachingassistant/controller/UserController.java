@@ -2,6 +2,8 @@ package com.giridhari.preachingassistant.controller;
 
 import javax.annotation.Resource;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,7 +63,7 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(name = "devoteeDetail", value="/userAccount/{userAccountId}", method = RequestMethod.GET)
-	public BaseDataResponse getByUserAccountId(@PathVariable("userAccountId") long userAccountId) {
+	public BaseDataResponse getByUserAccountId(@PathVariable("userAccountId") long userAccountId, @AuthenticationPrincipal User user) {
 		UserAccount userAccount;
 		Devotee devotee;
 

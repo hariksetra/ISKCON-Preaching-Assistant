@@ -20,4 +20,5 @@ public interface ProgramRepo extends PagingAndSortingRepository<Program, Long> {
 	
 	public Program findByCurrentFollowupSession_id(long sessionId); 
 	
+	public Program findById(long programId);
 }

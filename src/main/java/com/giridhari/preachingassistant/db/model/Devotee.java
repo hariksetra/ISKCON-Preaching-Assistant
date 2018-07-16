@@ -71,7 +71,7 @@ public class Devotee implements Serializable {
 	
 	private Set<Yatra> yatras;
 	
-	private Set<Program> programs;
+	private Set<Program> mentoredPrograms;
 	private Set<ProgramAssignment> attendingPrograms;
 	private Set<ProgramAttendance> myAttendanceRecords;
 	
@@ -339,12 +339,12 @@ public class Devotee implements Serializable {
 
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "mentor")
 	@JsonBackReference
-	public Set<Program> getPrograms() {
-		return programs;
+	public Set<Program> getMentoredPrograms() {
+		return mentoredPrograms;
 	}
 	
-	public void setPrograms(Set<Program> programs) {
-		this.programs = programs;
+	public void setMentoredPrograms(Set<Program> mentoredPrograms) {
+		this.mentoredPrograms = mentoredPrograms;
 	}
 	
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "attendee")
@@ -460,22 +460,22 @@ public class Devotee implements Serializable {
 
 	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "capturedBy")
 	@JsonBackReference
-	public Set<CaptureContact> getCapturedBy() {
-		return capturedBy;
-	}
-
-	public void setCapturedBy(Set<CaptureContact> capturedBy) {
-		this.capturedBy = capturedBy;
-	}
-
-	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "capturedDevotee")
-	@JsonBackReference
 	public Set<CaptureContact> getCapturedDevotees() {
 		return capturedDevotees;
 	}
 
 	public void setCapturedDevotees(Set<CaptureContact> capturedDevotees) {
 		this.capturedDevotees = capturedDevotees;
+	}
+
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "capturedDevotee")
+	@JsonBackReference
+	public Set<CaptureContact> getCapturedBy() {
+		return capturedBy;
+	}
+
+	public void setCapturedBy(Set<CaptureContact> capturedBy) {
+		this.capturedBy = capturedBy;
 	}
 	
 	
