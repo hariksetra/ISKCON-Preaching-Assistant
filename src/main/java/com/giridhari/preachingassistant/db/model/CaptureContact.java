@@ -23,6 +23,7 @@ public class CaptureContact {
 	private Long id;
 	private Devotee capturedBy;
 	private Devotee capturedDevotee;
+	private String intoducedrAt;
 	private Date timestamp;
 	
 	@Id
@@ -67,6 +68,13 @@ public class CaptureContact {
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
-	
-	
+
+	@Column(name = "introduced_at", nullable = true)
+	public String getIntoducedrAt() {
+		return intoducedrAt;
+	}
+
+	public void setIntoducedrAt(String intoducedrAt) {
+		this.intoducedrAt = intoducedrAt;
+	}
 }

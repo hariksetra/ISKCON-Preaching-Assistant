@@ -152,10 +152,17 @@ public class DevoteeController {
 		return responseData;
 	}
 
+	//This is end point is obsolete DO NOT USE THIS: use /capture end point from capture contact controller
 	@RequestMapping(name="devoteeCreate", value="/devotees", method=RequestMethod.POST)
 	public BaseDataResponse post(@RequestBody DevoteeDetailRequestEntity requestData) {
 		Devotee devotee = new Devotee();
 		
+		String introducedAt;
+		if (requestData.getDescription() != null) {
+			introducedAt = requestData.getDescription();
+		} else {
+			introducedAt = "";
+		}
 		//Find if devotee already exist (SMS Phone Matching)
 		//TODO: Later we may have to match email too
 		Devotee existingDevotee = devoteeService.findBySmsPhone(requestData.getSmsPhone());
@@ -176,6 +183,7 @@ public class DevoteeController {
 			captureContact.setCapturedBy(capturedByDevotee);
 			captureContact.setCapturedDevotee(devotee);
 			captureContact.setTimestamp(new Date());
+			captureContact.setIntoducedrAt(introducedAt);
 			captureContactService.update(captureContact);
 		}
 		

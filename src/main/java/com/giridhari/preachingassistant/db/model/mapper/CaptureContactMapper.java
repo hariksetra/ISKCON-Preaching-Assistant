@@ -28,28 +28,25 @@ public class CaptureContactMapper {
 				responseData.setCapturedDevoteeName(captureContact.getCapturedDevotee().getLegalName());
 			}
 		}
+		
+		if (captureContact.getIntoducedrAt()  !=null) {
+			responseData.setIntroducedAt(captureContact.getIntoducedrAt());
+		}
 		responseData.setTimestamp(captureContact.getTimestamp());
 		return responseData;
 	}
 
+	//Currently this function is not used. Patch task is done in controller/service itself
 	public static void patchCaptureContact(CaptureContact captureContact, CaptureContactDetailRequestEntity requestData) {
 		if (requestData.getId() != null)
 			captureContact.setId(requestData.getId());
-
-		if (requestData.getCapturedById() != null) {
-			Devotee devotee = new Devotee();
-			devotee.setId(requestData.getCapturedById());
-			captureContact.setCapturedBy(devotee);
-		}
-		
-		if (requestData.getCapturedDevoteeId() != null) {
-			Devotee devotee = new Devotee();
-			devotee.setId(requestData.getCapturedDevoteeId());
-			captureContact.setCapturedDevotee(devotee);
-		}
 		
 		if (requestData.getTimestamp() != null) {
 			captureContact.setTimestamp(requestData.getTimestamp());
+		}
+		
+		if (requestData.getIntroducedAt() != null) {
+			captureContact.setIntoducedrAt(requestData.getIntroducedAt());
 		}
 	}
 
