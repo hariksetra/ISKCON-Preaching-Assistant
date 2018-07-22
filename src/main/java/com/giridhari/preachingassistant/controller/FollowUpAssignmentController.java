@@ -296,7 +296,7 @@ public class FollowUpAssignmentController {
 						FollowUp followUpRecord = followUpService
 								.findByVolunteerAndAttendeeAndSession(followUpAssignments.getVolunteer(), followUpAssignments.getAttendee(), mentoringProgram.getCurrentFollowupSession());
 						//Increment the response and %completion counts of the volunteer
-						if (followUpRecord != null) {
+						if (followUpRecord != null && followUpRecord.getTaskStatus() != null) {
 							followUpVolunteerReport.incrementResponseCount(followUpRecord.getResponse().toString());
 							followUpVolunteerReport.incrementFollowUpCount(new Long(followUpRecord.getTaskStatus()));
 							//Increment the response and %completion counts for the program too

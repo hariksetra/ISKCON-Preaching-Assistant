@@ -88,7 +88,7 @@ public class DevoteeHistory {
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="time_stamp", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP ", nullable = false, insertable = false, updatable = false)
+	@Column(name="time_stamp", columnDefinition="date ", nullable = false)
 	public Date getTimeStamp() {
 		return timeStamp;
 	}

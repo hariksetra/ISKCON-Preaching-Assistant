@@ -1,5 +1,7 @@
 package com.giridhari.preachingassistant.db.model.mapper;
 
+import java.util.Date;
+
 import org.springframework.data.domain.Page;
 
 import com.giridhari.preachingassistant.db.model.Devotee;
@@ -59,7 +61,7 @@ public class FollowUpDetailMapper {
 		if (requestData.getRating() != null)
 			followUp.setRating(requestData.getRating());
 		if (requestData.getTimestamp() != null)
-			followUp.setTimestamp(requestData.getTimestamp());
+			followUp.setTimestamp(requestData.getTimestamp()); else followUp.setTimestamp(new Date());
 		if (requestData.getTaskStatus() != null)
 			followUp.setTaskStatus(requestData.getTaskStatus());
 	}

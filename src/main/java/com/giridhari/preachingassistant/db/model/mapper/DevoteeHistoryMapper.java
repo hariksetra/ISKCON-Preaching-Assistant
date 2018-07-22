@@ -1,5 +1,7 @@
 package com.giridhari.preachingassistant.db.model.mapper;
 
+import java.util.Date;
+
 import org.springframework.data.domain.Page;
 
 import com.giridhari.preachingassistant.db.model.Devotee;
@@ -44,8 +46,11 @@ public class DevoteeHistoryMapper {
 		{
 			devoteeHistory.setResponse(requestData.getResponse());
 		}
-		if(requestData.getTimeStamp()!=null)
+		if(requestData.getTimeStamp()!=null) {
 			devoteeHistory.setTimeStamp(devoteeHistory.getTimeStamp());
+		} else {
+			devoteeHistory.setTimeStamp(new Date());
+		}
 		if(requestData.getRatedDevoteeId()!=null)
 		{
 			Devotee devotee = new Devotee();
