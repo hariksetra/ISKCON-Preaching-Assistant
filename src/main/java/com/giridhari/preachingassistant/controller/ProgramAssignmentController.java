@@ -20,6 +20,7 @@ import com.giridhari.preachingassistant.db.model.mapper.DevoteeMapper;
 import com.giridhari.preachingassistant.rest.model.Paging;
 import com.giridhari.preachingassistant.rest.model.devotee.DevoteeOverviewEntity;
 import com.giridhari.preachingassistant.rest.model.programassignment.ProgramAssignmentDetailRequestEntity;
+import com.giridhari.preachingassistant.rest.model.programassignment.ProgramAssignmentDetailResponse;
 import com.giridhari.preachingassistant.rest.model.programassignment.ProgramAssignmentDetailResponseEntity;
 import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
 import com.giridhari.preachingassistant.rest.model.response.BaseListResponse;
@@ -141,10 +142,10 @@ public class ProgramAssignmentController {
 	}
 
 	@RequestMapping(name = "programAssignmentDetail", value="/programAssignment/{id}", method = RequestMethod.GET)
-	public BaseDataResponse get(@PathVariable("id") long programAssignmentId) {
+	public ProgramAssignmentDetailResponse get(@PathVariable("id") long programAssignmentId) {
 		ProgramAssignment programAssignment = programAssignmentService.get(programAssignmentId);
 		ProgramAssignmentDetailResponseEntity responseData = ProgramAssignmentDetailMapper.convertToProgramAssignmentDetailResponseEntity(programAssignment);
-		return new BaseDataResponse(responseData);
+		return new ProgramAssignmentDetailResponse(responseData);
 	}
 
 	@RequestMapping(name = "programAssignmentUpdate", value="/programAssignment/{id}", method = RequestMethod.PUT)

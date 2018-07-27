@@ -17,6 +17,7 @@ import com.giridhari.preachingassistant.db.model.ProgramAreaSubscription;
 import com.giridhari.preachingassistant.db.model.mapper.ProgramAreaSubscriptionDetailMapper;
 import com.giridhari.preachingassistant.rest.model.Paging;
 import com.giridhari.preachingassistant.rest.model.programareasubscription.ProgramAreaSubscriptionDetailRequestEntity;
+import com.giridhari.preachingassistant.rest.model.programareasubscription.ProgramAreaSubscriptionDetailResponse;
 import com.giridhari.preachingassistant.rest.model.programareasubscription.ProgramAreaSubscriptionDetailResponseEntity;
 import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
 import com.giridhari.preachingassistant.rest.model.response.BaseListResponse;
@@ -72,10 +73,10 @@ public class ProgramAreaSubscriptionController {
 	}
 
 	@RequestMapping(name = "programAreaSubscriptionDetail", value="/programAreaSubscription/{id}", method = RequestMethod.GET)
-	public BaseDataResponse get(@PathVariable("id") long programAreaSubscriptionId) {
+	public ProgramAreaSubscriptionDetailResponse get(@PathVariable("id") long programAreaSubscriptionId) {
 		ProgramAreaSubscription programAreaSubscription = programAreaSubscriptionService.get(programAreaSubscriptionId);
 		ProgramAreaSubscriptionDetailResponseEntity responseData = ProgramAreaSubscriptionDetailMapper.convertToProgramAreaSubscriptionDetailResponseEntity(programAreaSubscription);
-		return new BaseDataResponse(responseData);
+		return new ProgramAreaSubscriptionDetailResponse(responseData);
 	}
 
 	@RequestMapping(name = "programAreaSubscriptionUpdate", value="/programAreaSubscription/{id}", method = RequestMethod.PUT)

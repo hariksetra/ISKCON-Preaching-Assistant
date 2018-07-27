@@ -18,6 +18,7 @@ import com.giridhari.preachingassistant.db.model.mapper.FollowUpVolunteerDetailM
 import com.giridhari.preachingassistant.rest.model.Paging;
 import com.giridhari.preachingassistant.rest.model.followupvolunteer.FollowUpVolunteerDetailRequestEntity;
 import com.giridhari.preachingassistant.rest.model.followupvolunteer.FollowUpVolunteerDetailResponseEntity;
+import com.giridhari.preachingassistant.rest.model.followupvolunteer.FollowupVolunteerDetailResponse;
 import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
 import com.giridhari.preachingassistant.rest.model.response.BaseListResponse;
 import com.giridhari.preachingassistant.service.DevoteeService;
@@ -113,22 +114,22 @@ public class FollowUpVolunteerController {
 
 	//This end point may not be used
 	@RequestMapping(name = "followUpVolunteerDetail", value="/followUpVolunteer/{id}", method = RequestMethod.GET)
-	public BaseDataResponse get(@PathVariable("id") long followUpVolunteerId) {
+	public FollowupVolunteerDetailResponse get(@PathVariable("id") long followUpVolunteerId) {
 		FollowUpVolunteer followUpVolunteer = followUpVolunteerService.get(followUpVolunteerId);
 		FollowUpVolunteerDetailResponseEntity responseData = FollowUpVolunteerDetailMapper.convertToFollowUpVolunteerDetailResponseEntity(followUpVolunteer);
-		return new BaseDataResponse(responseData);
+		return new FollowupVolunteerDetailResponse(responseData);
 	}
 
 	//This end point may not be used
 	@RequestMapping(name = "followUpVolunteerUpdate", value="/followUpVolunteer/{id}", method = RequestMethod.PUT)
-	public BaseDataResponse put(@PathVariable("id") long followUpVolunteerId, @RequestBody FollowUpVolunteerDetailRequestEntity requestData) {
+	public FollowupVolunteerDetailResponse put(@PathVariable("id") long followUpVolunteerId, @RequestBody FollowUpVolunteerDetailRequestEntity requestData) {
 		FollowUpVolunteer followUpVolunteer = followUpVolunteerService.get(followUpVolunteerId);
 		FollowUpVolunteerDetailMapper.patchFollowUpVolunteer(followUpVolunteer, requestData);
 		if (requestData.getDevoteeId()!=null) followUpVolunteer.setDevotee(devoteeService.get(requestData.getDevoteeId()));
 		if (requestData.getProgramId()!=null) followUpVolunteer.setProgram(programService.get(requestData.getProgramId()));
 		followUpVolunteerService.update(followUpVolunteer);
 		FollowUpVolunteerDetailResponseEntity responseData = FollowUpVolunteerDetailMapper.convertToFollowUpVolunteerDetailResponseEntity(followUpVolunteer);
-		return new BaseDataResponse(responseData);
+		return new FollowupVolunteerDetailResponse(responseData);
 	}
 
 	@RequestMapping(name="followUpVolunteerCreate", value="/followUpVolunteer", method=RequestMethod.POST)

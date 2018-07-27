@@ -17,7 +17,9 @@ import com.giridhari.preachingassistant.db.model.UserAccount;
 import com.giridhari.preachingassistant.db.model.mapper.UserAccountMapper;
 import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
 import com.giridhari.preachingassistant.rest.model.useraccount.CreateUserAccountRequestEntity;
+import com.giridhari.preachingassistant.rest.model.useraccount.UserAccountDetailResponse;
 import com.giridhari.preachingassistant.rest.model.useraccount.UserAccountPasswordChangeRequestEntity;
+import com.giridhari.preachingassistant.rest.model.useraccount.UserLoginResponse;
 import com.giridhari.preachingassistant.rest.model.useraccount.UserLoginResponseEntity;
 import com.giridhari.preachingassistant.service.DevoteeService;
 import com.giridhari.preachingassistant.service.UserService;
@@ -41,7 +43,7 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(name = "devoteeDetail", value="/login", method = RequestMethod.GET)
-	public BaseDataResponse get(@RequestParam("username") String username) {
+	public UserLoginResponse get(@RequestParam("username") String username) {
 		UserAccount userAccount;
 		Devotee devotee;
 
@@ -49,7 +51,7 @@ public class UserController {
 		if (userAccount!=null) {
 			devotee = userAccount.getProfile();
 			UserLoginResponseEntity responseData = UserAccountMapper.convertToLoginUserResponseEntity(userAccount, devotee);
-			return new BaseDataResponse(responseData);
+			return new UserLoginResponse(responseData);
 		}
 
 		return null;
@@ -63,7 +65,7 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(name = "devoteeDetail", value="/userAccount/{userAccountId}", method = RequestMethod.GET)
-	public BaseDataResponse getByUserAccountId(@PathVariable("userAccountId") long userAccountId, @AuthenticationPrincipal User user) {
+	public UserLoginResponse getByUserAccountId(@PathVariable("userAccountId") long userAccountId, @AuthenticationPrincipal User user) {
 		UserAccount userAccount;
 		Devotee devotee;
 
@@ -71,7 +73,7 @@ public class UserController {
 		if (userAccount!=null) {
 			devotee = userAccount.getProfile();
 			UserLoginResponseEntity responseData = UserAccountMapper.convertToLoginUserResponseEntity(userAccount, devotee);
-			return new BaseDataResponse(responseData);
+			return new UserLoginResponse(responseData);
 		}
 
 		return null;
@@ -79,7 +81,7 @@ public class UserController {
 
 	@RequestMapping(name = "changePassword", value="/changePassword/{devoteeId}", method = RequestMethod.PUT)
 	@ResponseBody
-	public BaseDataResponse changePassword(@PathVariable("devoteeId") long devoteeId, @RequestBody UserAccountPasswordChangeRequestEntity requestData) {
+	public UserLoginResponse changePassword(@PathVariable("devoteeId") long devoteeId, @RequestBody UserAccountPasswordChangeRequestEntity requestData) {
 		UserAccount userAccount;
 		Devotee devotee;
 
@@ -92,7 +94,7 @@ public class UserController {
 			userService.update(userAccount);
 			devotee = userAccount.getProfile();
 			UserLoginResponseEntity responseData = UserAccountMapper.convertToLoginUserResponseEntity(userAccount, devotee);
-			return new BaseDataResponse(responseData);
+			return new UserLoginResponse(responseData);
 		} else {
 			throw new ForbiddenException("wrong password enetered");
 		}
@@ -100,7 +102,7 @@ public class UserController {
 
 	@RequestMapping(name = "createUserAccount", value="/userAccount/", method = RequestMethod.POST)
 	@ResponseBody
-	public BaseDataResponse create(@RequestBody CreateUserAccountRequestEntity requestData) {
+	public UserLoginResponse create(@RequestBody CreateUserAccountRequestEntity requestData) {
 		// check that user account doesn't exist
 		long devoteeId = requestData.getDevoteeId();
 
@@ -120,11 +122,11 @@ public class UserController {
 		devoteeService.update(devotee);
 
 		UserLoginResponseEntity responseData = UserAccountMapper.convertToLoginUserResponseEntity(userAccount, devotee);
-		return new BaseDataResponse(responseData);
+		return new UserLoginResponse(responseData);
 	}
 
 	@RequestMapping(name = "resetPassword", value="/resetPassword/{userAccountId}", method = RequestMethod.PUT)
-	public BaseDataResponse resetPassword(@PathVariable("userAccountId") long userAccountId) {
+	public UserLoginResponse resetPassword(@PathVariable("userAccountId") long userAccountId) {
 		UserAccount userAccount = userService.getById(userAccountId);
 
 		if (userAccount == null) {
@@ -138,6 +140,6 @@ public class UserController {
 
 		Devotee devotee = userAccount.getProfile();
 		UserLoginResponseEntity responseData = UserAccountMapper.convertToLoginUserResponseEntity(userAccount, devotee);
-		return new BaseDataResponse(responseData);
+		return new UserLoginResponse(responseData);
 	}
 }

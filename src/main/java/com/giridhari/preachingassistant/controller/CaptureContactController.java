@@ -25,8 +25,8 @@ import com.giridhari.preachingassistant.rest.model.Paging;
 import com.giridhari.preachingassistant.rest.model.capturecontact.CaptureContactDetailRequestEntity;
 import com.giridhari.preachingassistant.rest.model.capturecontact.CaptureContactDetailResponseEntity;
 import com.giridhari.preachingassistant.rest.model.devotee.DevoteeDetailRequestEntity;
+import com.giridhari.preachingassistant.rest.model.devotee.DevoteeDetailResponse;
 import com.giridhari.preachingassistant.rest.model.devotee.DevoteeDetailResponseEntity;
-import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
 import com.giridhari.preachingassistant.rest.model.response.BaseListResponse;
 import com.giridhari.preachingassistant.service.CaptureContactService;
 import com.giridhari.preachingassistant.service.DevoteeHistoryService;
@@ -53,7 +53,7 @@ public class CaptureContactController {
 	DevoteeHistoryService devoteeHistoryService;
 	
 	@RequestMapping(name="captureContact", value="/capture", method=RequestMethod.POST)
-	public BaseDataResponse post(@RequestBody CaptureContactDetailRequestEntity requestData) {
+	public DevoteeDetailResponse post(@RequestBody CaptureContactDetailRequestEntity requestData) {
 		Devotee devotee = new Devotee();
 		
 		if (requestData == null) throw new BadRequestException("No data to enter into prayer book!");
@@ -128,7 +128,7 @@ public class CaptureContactController {
 		devoteeHistoryService.update(devoteeHistory);
 		
 		DevoteeDetailResponseEntity responseData = DevoteeMapper.convertToDevoteeDetailResponseEntity(devotee);
-		return new BaseDataResponse(responseData);
+		return new DevoteeDetailResponse(responseData);
 	}
 
 	

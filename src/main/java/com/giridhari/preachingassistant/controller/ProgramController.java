@@ -17,6 +17,7 @@ import com.giridhari.preachingassistant.db.model.Program;
 import com.giridhari.preachingassistant.db.model.mapper.ProgramMapper;
 import com.giridhari.preachingassistant.rest.model.Paging;
 import com.giridhari.preachingassistant.rest.model.program.ProgramDetailRequestEntity;
+import com.giridhari.preachingassistant.rest.model.program.ProgramDetailResponse;
 import com.giridhari.preachingassistant.rest.model.program.ProgramDetailResponseEntity;
 import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
 import com.giridhari.preachingassistant.rest.model.response.BaseListResponse;
@@ -97,10 +98,10 @@ public class ProgramController {
 	}
 	
 	@RequestMapping(name = "programDetail", value="/programs/{id}", method = RequestMethod.GET)
-	public BaseDataResponse get(@PathVariable("id") long programId) {
+	public ProgramDetailResponse get(@PathVariable("id") long programId) {
 		Program program = programService.get(programId);
 		ProgramDetailResponseEntity responseData = ProgramMapper.convertToProgramDetailResponseEntity(program);
-		return new BaseDataResponse(responseData);
+		return new ProgramDetailResponse(responseData);
 	}
 
 	@RequestMapping(name = "programUpdate", value="/programs/{id}", method = RequestMethod.PUT)

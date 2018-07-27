@@ -17,8 +17,8 @@ import com.giridhari.preachingassistant.db.model.ImportantDate;
 import com.giridhari.preachingassistant.db.model.mapper.ImportantDateDetailMapper;
 import com.giridhari.preachingassistant.rest.model.Paging;
 import com.giridhari.preachingassistant.rest.model.importantdate.ImportantDateDetailRequestEntity;
+import com.giridhari.preachingassistant.rest.model.importantdate.ImportantDateDetailResponse;
 import com.giridhari.preachingassistant.rest.model.importantdate.ImportantDateDetailResponseEntity;
-import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
 import com.giridhari.preachingassistant.rest.model.response.BaseListResponse;
 import com.giridhari.preachingassistant.service.DevoteeService;
 import com.giridhari.preachingassistant.service.ImportantDateService;
@@ -52,10 +52,10 @@ public class ImportantDateController {
 	}
 
 	@RequestMapping(name = "importantDateDetail", value="/importantDate/{id}", method = RequestMethod.GET)
-	public BaseDataResponse get(@PathVariable("id") long importantDateId) {
+	public ImportantDateDetailResponse get(@PathVariable("id") long importantDateId) {
 		ImportantDate importantDate = importantDateService.get(importantDateId);
 		ImportantDateDetailResponseEntity responseData = ImportantDateDetailMapper.convertToImportantDateDetailResponseEntity(importantDate);
-		return new BaseDataResponse(responseData);
+		return new ImportantDateDetailResponse(responseData);
 	}
 
 	@RequestMapping(name = "importantDateUpdate", value="/importantDate/{id}", method = RequestMethod.PUT)

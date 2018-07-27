@@ -18,8 +18,8 @@ import com.giridhari.preachingassistant.db.model.ProgramSession;
 import com.giridhari.preachingassistant.db.model.mapper.ProgramSessionDetailMapper;
 import com.giridhari.preachingassistant.rest.model.Paging;
 import com.giridhari.preachingassistant.rest.model.programsession.ProgramSessionDetailRequestEntity;
+import com.giridhari.preachingassistant.rest.model.programsession.ProgramSessionDetailResponse;
 import com.giridhari.preachingassistant.rest.model.programsession.ProgramSessionDetailResponseEntity;
-import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
 import com.giridhari.preachingassistant.rest.model.response.BaseListResponse;
 import com.giridhari.preachingassistant.service.ProgramService;
 import com.giridhari.preachingassistant.service.ProgramSessionService;
@@ -74,19 +74,19 @@ public class ProgramSessionController {
 	}
 	
 	@RequestMapping(name = "programSessionOfProgramByDate", value="/programSessionOfProgramByDate/{programId}/{sessionDate}", method = RequestMethod.GET)
-	public BaseDataResponse programSessionOfProgramByDate(@PathVariable("programId") long programId, @PathVariable("sessionDate") Date sessionDate) {
+	public ProgramSessionDetailResponse programSessionOfProgramByDate(@PathVariable("programId") long programId, @PathVariable("sessionDate") Date sessionDate) {
 		ProgramSession programSession = programSessionService.findSessionOfProgramByDate(programService.get(programId), sessionDate);
 		ProgramSessionDetailResponseEntity responseData = ProgramSessionDetailMapper.convertToProgramSessionDetailResponseEntity(programSession);
 		if (responseData==null) throw new NotFoundException("No Session exist for the requested date");
-		return new BaseDataResponse(responseData);
+		return new ProgramSessionDetailResponse(responseData);
 	}
 
 	@RequestMapping(name = "programSessionDetail", value="/programSession/{id}", method = RequestMethod.GET)
-	public BaseDataResponse get(@PathVariable("id") long programSessionId) {
+	public ProgramSessionDetailResponse get(@PathVariable("id") long programSessionId) {
 		ProgramSession programSession = programSessionService.get(programSessionId);
 		ProgramSessionDetailResponseEntity responseData = ProgramSessionDetailMapper.convertToProgramSessionDetailResponseEntity(programSession);
 		if (responseData==null) throw new NotFoundException("No Session such session exist");
-		return new BaseDataResponse(responseData);
+		return new ProgramSessionDetailResponse(responseData);
 	}
 
 	@RequestMapping(name = "programSessionUpdate", value="/programSession/{id}", method = RequestMethod.PUT)

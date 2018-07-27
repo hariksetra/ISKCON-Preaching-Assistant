@@ -19,6 +19,7 @@ import com.giridhari.preachingassistant.rest.model.Paging;
 import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
 import com.giridhari.preachingassistant.rest.model.response.BaseListResponse;
 import com.giridhari.preachingassistant.rest.model.yatra.YatraDetailRequestEntity;
+import com.giridhari.preachingassistant.rest.model.yatra.YatraDetailResponse;
 import com.giridhari.preachingassistant.rest.model.yatra.YatraDetailResponseEntity;
 import com.giridhari.preachingassistant.service.DevoteeService;
 import com.giridhari.preachingassistant.service.YatraService;
@@ -87,30 +88,30 @@ public class YatraController {
 	}
 	
 	@RequestMapping(name = "yatraDetail", value="/yatra/{id}", method = RequestMethod.GET)
-	public BaseDataResponse getByYatraId(@PathVariable("id") long yatraId) {
+	public YatraDetailResponse getByYatraId(@PathVariable("id") long yatraId) {
 		Yatra yatra = yatraService.getById(yatraId);
 		YatraDetailResponseEntity responseData = YatraMapper.convertYatraToDetailedResponseEntity(yatra);
-		return new BaseDataResponse(responseData);
+		return new YatraDetailResponse(responseData);
 	}
 	
 	@RequestMapping(name = "updateYatra", value="/yatra/{id}", method = RequestMethod.PUT)
-	public BaseDataResponse updateYatra(@PathVariable("id") long yatraId, @RequestBody YatraDetailRequestEntity requestData) {
+	public YatraDetailResponse updateYatra(@PathVariable("id") long yatraId, @RequestBody YatraDetailRequestEntity requestData) {
 		Yatra yatra = yatraService.getById(yatraId);
 		YatraMapper.patchYatra(yatra, requestData);
 		if (requestData.getYatraAdmin() != null)
 			yatra.setYatraAdmin(devoteeService.get(requestData.getYatraAdmin()));
 		yatraService.update(yatra);
 		YatraDetailResponseEntity responseData = YatraMapper.convertYatraToDetailedResponseEntity(yatra);
-		return new BaseDataResponse(responseData);
+		return new YatraDetailResponse(responseData);
 	}
 	
 	@RequestMapping(name = "createYatra", value="/yatra", method = RequestMethod.POST)
-	public BaseDataResponse post(@RequestBody YatraDetailRequestEntity requestData) {
+	public YatraDetailResponse post(@RequestBody YatraDetailRequestEntity requestData) {
 		Yatra yatra = new Yatra();
 		YatraMapper.patchYatra(yatra, requestData);
 		yatraService.create(yatra);
 		YatraDetailResponseEntity responseData = YatraMapper.convertYatraToDetailedResponseEntity(yatra);
-		return new BaseDataResponse(responseData);
+		return new YatraDetailResponse(responseData);
 	}
 	
 	@RequestMapping(name = "deleteYatra", value="/yatra/{id}", method = RequestMethod.DELETE)

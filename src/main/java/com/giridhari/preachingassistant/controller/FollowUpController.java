@@ -24,6 +24,8 @@ import com.giridhari.preachingassistant.model.Response;
 import com.giridhari.preachingassistant.rest.model.Paging;
 import com.giridhari.preachingassistant.rest.model.followup.FollowUpDetailRequestEntity;
 import com.giridhari.preachingassistant.rest.model.followup.FollowUpDetailResponseEntity;
+import com.giridhari.preachingassistant.rest.model.followup.FollowupDetailResponse;
+import com.giridhari.preachingassistant.rest.model.programsession.ProgramSessionDetailResponse;
 import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
 import com.giridhari.preachingassistant.rest.model.response.BaseListResponse;
 import com.giridhari.preachingassistant.service.DevoteeHistoryService;
@@ -71,18 +73,18 @@ public class FollowUpController {
 	}
 
 	@RequestMapping(name = "followUpDetail", value="/followUp/{id}", method = RequestMethod.GET)
-	public BaseDataResponse get(@PathVariable("id") long followUpId) {
+	public FollowupDetailResponse get(@PathVariable("id") long followUpId) {
 		FollowUp followUp = followUpService.get(followUpId);
 		FollowUpDetailResponseEntity responseData = FollowUpDetailMapper.convertToFollowUpDetailResponseEntity(followUp);
 		ProgramSession programSession = programSessionService.get(followUp.getFollowupForSession().getId());
 		responseData.setFollowupForSessionId(programSession.getId());
 		responseData.setFollowupForSessionDate(programSession.getSessionDate());
 		responseData.setFollowupForSessionTopic(programSession.getTopic());
-		return new BaseDataResponse(responseData);
+		return new FollowupDetailResponse(responseData);
 	}
 	
 	@RequestMapping(name = "followUpDetailSpecific", value="/specificFollowUpRecord/{programId}/{attendeeId}/{volunteerId}", method = RequestMethod.GET)
-	public BaseDataResponse getFollowUpRecord(@PathVariable("programId") long programId, @PathVariable("attendeeId") long attendeeId, @PathVariable("volunteerId") long volunteerId) {
+	public FollowupDetailResponse getFollowUpRecord(@PathVariable("programId") long programId, @PathVariable("attendeeId") long attendeeId, @PathVariable("volunteerId") long volunteerId) {
 		Program program = programService.get(programId);
 		//If there is no followup session is been assigned return error 
 		if (program.getCurrentFollowupSession() == null) throw new BadRequestException("No such followup record");
@@ -107,7 +109,7 @@ public class FollowUpController {
 		responseData.setFollowupForSessionId(programSession.getId());
 		responseData.setFollowupForSessionDate(programSession.getSessionDate());
 		responseData.setFollowupForSessionTopic(programSession.getTopic());
-		return new BaseDataResponse(responseData);
+		return new FollowupDetailResponse(responseData);
 	}
 
 	@RequestMapping(name = "followUpUpdate", value="/followUp/{id}", method = RequestMethod.PUT)
@@ -124,7 +126,7 @@ public class FollowUpController {
 	
 	@RequestMapping(name = "followUpOffilneUpdate", value="/followUpOffilneUpdate", 
 			method = RequestMethod.PUT)
-	public BaseDataResponse followUpOffilneUpdate(@RequestBody FollowUpDetailRequestEntity requestData) {
+	public FollowupDetailResponse followUpOffilneUpdate(@RequestBody FollowUpDetailRequestEntity requestData) {
 		
 		if (requestData == null) throw new BadRequestException("No followup details received for update");
 		if (requestData.getAttendeeId() == null || requestData.getProgramId() == null || 
@@ -180,7 +182,7 @@ public class FollowUpController {
 		responseData.setFollowupForSessionId(programSession.getId());
 		responseData.setFollowupForSessionDate(programSession.getSessionDate());
 		responseData.setFollowupForSessionTopic(programSession.getTopic());
-		return new BaseDataResponse(responseData);
+		return new FollowupDetailResponse(responseData);
 	}
 
 	@RequestMapping(name="followUpCreate", value="/followUp", method=RequestMethod.POST)

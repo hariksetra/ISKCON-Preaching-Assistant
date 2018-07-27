@@ -1,7 +1,6 @@
 package com.giridhari.preachingassistant.controller;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -21,8 +20,10 @@ import com.giridhari.preachingassistant.db.model.mapper.ProgramAttendanceDetailM
 import com.giridhari.preachingassistant.rest.model.Paging;
 import com.giridhari.preachingassistant.rest.model.devotee.DevoteeOverviewEntity;
 import com.giridhari.preachingassistant.rest.model.programattendance.ProgramAttendanceDetailRequestEntity;
+import com.giridhari.preachingassistant.rest.model.programattendance.ProgramAttendanceDetailResponse;
 import com.giridhari.preachingassistant.rest.model.programattendance.ProgramAttendanceDetailResponseEntity;
 import com.giridhari.preachingassistant.rest.model.programattendance.ProgramAttendanceGeneralReport;
+import com.giridhari.preachingassistant.rest.model.programattendance.ProgramAttendanceGeneralReportResponse;
 import com.giridhari.preachingassistant.rest.model.programattendance.ProgramAttendanceId;
 import com.giridhari.preachingassistant.rest.model.programattendance.ProgramAttendanceSpecificDetailResponseEntity;
 import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
@@ -105,17 +106,17 @@ public class ProgramAttendanceController {
 	}
 
 	@RequestMapping(name = "programAttendanceDetail", value="/programAttendance/{id}", method = RequestMethod.GET)
-	public BaseDataResponse get(@PathVariable("id") long programAttendanceId) {
+	public ProgramAttendanceDetailResponse get(@PathVariable("id") long programAttendanceId) {
 		ProgramAttendance programAttendance = programAttendanceService.get(programAttendanceId);
 		ProgramAttendanceDetailResponseEntity responseData = ProgramAttendanceDetailMapper.convertToProgramAttendanceDetailResponseEntity(programAttendance);
-		return new BaseDataResponse(responseData);
+		return new ProgramAttendanceDetailResponse(responseData);
 	}
 	
 	@RequestMapping(name = "programAttendanceGeneralReport", value="/programAttendanceGeneralReport/{programId}", method = RequestMethod.GET)
-	public BaseDataResponse programAttendanceGeneralReport(@PathVariable("programId") long programId) {
+	public ProgramAttendanceGeneralReportResponse programAttendanceGeneralReport(@PathVariable("programId") long programId) {
 		Program program = programService.get(programId);
 		ProgramAttendanceGeneralReport programAttendanceReport = programAttendanceService.getProgramAttendanceGeneralReport(program);
-		return new BaseDataResponse(programAttendanceReport);
+		return new ProgramAttendanceGeneralReportResponse(programAttendanceReport);
 	}
 
 	@RequestMapping(name = "programAttendanceUpdate", value="/programAttendance/{id}", method = RequestMethod.PUT)

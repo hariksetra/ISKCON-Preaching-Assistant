@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.giridhari.preachingassistant.db.model.DevoteeHistory;
 import com.giridhari.preachingassistant.db.model.mapper.DevoteeHistoryMapper;
 import com.giridhari.preachingassistant.rest.model.devoteehistory.DevoteeHistoryDetailRequestEntity;
+import com.giridhari.preachingassistant.rest.model.devoteehistory.DevoteeHistoryDetailResponse;
 import com.giridhari.preachingassistant.rest.model.devoteehistory.DevoteeHistoryDetailResponseEntity;
 import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
 import com.giridhari.preachingassistant.rest.model.response.BaseListResponse;
@@ -72,7 +72,7 @@ public class DevoteeHistoryController {
 	}
 	
 	@RequestMapping(name = "devoteeHistoryDetail", value="/devoteeHistory/{id}", method = RequestMethod.GET)
-	public BaseDataResponse getById(@PathVariable("id") long devoteeHistoryId) {
+	public DevoteeHistoryDetailResponse getById(@PathVariable("id") long devoteeHistoryId) {
 		DevoteeHistory devoteeHistory = devoteeHistoryService.getById(devoteeHistoryId);
 		DevoteeHistoryDetailResponseEntity responseData = 
 				DevoteeHistoryMapper.convertToDevoteeHistoryDetailResponseEntity(
@@ -80,7 +80,7 @@ public class DevoteeHistoryController {
 						devoteeHistoryService.getCommentedByDevoteeName(devoteeHistory),
 						devoteeHistoryService.getRatedByDevoteeName(devoteeHistory)
 					);
-		return new BaseDataResponse(responseData);
+		return new DevoteeHistoryDetailResponse(responseData);
 	}
 	
 	@RequestMapping(name = "devoteeHistoryDetailByRatedDevotee", value="/devoteeHistoryByRatedDevotee/{id}", method = RequestMethod.GET)

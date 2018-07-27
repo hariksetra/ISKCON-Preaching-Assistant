@@ -23,6 +23,7 @@ import com.giridhari.preachingassistant.db.model.Type;
 import com.giridhari.preachingassistant.db.model.UserAccount;
 import com.giridhari.preachingassistant.db.model.mapper.DevoteeMapper;
 import com.giridhari.preachingassistant.rest.model.devotee.DevoteeDetailRequestEntity;
+import com.giridhari.preachingassistant.rest.model.devotee.DevoteeDetailResponse;
 import com.giridhari.preachingassistant.rest.model.devotee.DevoteeDetailResponseEntity;
 import com.giridhari.preachingassistant.rest.model.devotee.DevoteeOverviewEntity;
 import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
@@ -117,28 +118,28 @@ public class DevoteeController {
 	}
 
 	@RequestMapping(name = "devoteeDetail", value="/devotees/{id}", method = RequestMethod.GET)
-	public BaseDataResponse get(@PathVariable("id") long devoteeId) {
+	public DevoteeDetailResponse get(@PathVariable("id") long devoteeId) {
 		Devotee devotee = devoteeService.get(devoteeId);
 		DevoteeDetailResponseEntity responseData = DevoteeMapper.convertToDevoteeDetailResponseEntity(devotee);
-		return new BaseDataResponse(responseData);
+		return new DevoteeDetailResponse(responseData);
 	}
 	
 	@RequestMapping(name = "devoteeDetailByEmail", value="/devoteeByEmail", method = RequestMethod.GET)
-	public BaseDataResponse getByEmail(@RequestParam("email") String email) {
+	public DevoteeDetailResponse getByEmail(@RequestParam("email") String email) {
 		Devotee devotee = devoteeService.findByEmail(email);
 		if (devotee !=null) {
 		DevoteeDetailResponseEntity responseData = DevoteeMapper.convertToDevoteeDetailResponseEntity(devotee);
-		return new BaseDataResponse(responseData);
+		return new DevoteeDetailResponse(responseData);
 		} else return null;
 	}
 	
 	@RequestMapping(name = "devoteeDetailByPhone", value="/devoteeByPhone/{phone}", method = RequestMethod.GET)
-	public BaseDataResponse getByPhone(@PathVariable("phone") String phone) {
+	public DevoteeDetailResponse getByPhone(@PathVariable("phone") String phone) {
 		Devotee devotee = devoteeService.findBySmsPhone(phone);
 		
 		if (devotee !=null) {
 			DevoteeDetailResponseEntity responseData = DevoteeMapper.convertToDevoteeDetailResponseEntity(devotee);
-			return new BaseDataResponse(responseData);
+			return new DevoteeDetailResponse(responseData);
 		} else throw new NotFoundException("contact not found");
 	}
 
@@ -154,7 +155,7 @@ public class DevoteeController {
 
 	//This is end point is obsolete DO NOT USE THIS: use /capture end point from capture contact controller
 	@RequestMapping(name="devoteeCreate", value="/devotees", method=RequestMethod.POST)
-	public BaseDataResponse post(@RequestBody DevoteeDetailRequestEntity requestData) {
+	public DevoteeDetailResponse post(@RequestBody DevoteeDetailRequestEntity requestData) {
 		Devotee devotee = new Devotee();
 		
 		String introducedAt;
@@ -188,6 +189,6 @@ public class DevoteeController {
 		}
 		
 		DevoteeDetailResponseEntity responseData = DevoteeMapper.convertToDevoteeDetailResponseEntity(devotee);
-		return new BaseDataResponse(responseData);
+		return new DevoteeDetailResponse(responseData);
 	}
 }

@@ -31,6 +31,8 @@ import com.giridhari.preachingassistant.rest.model.followupassignment.FollowUpAs
 import com.giridhari.preachingassistant.rest.model.followupassignment.FollowUpDashboardReportResponseEntity;
 import com.giridhari.preachingassistant.rest.model.followupassignment.FollowUpProgramReport;
 import com.giridhari.preachingassistant.rest.model.followupassignment.FollowUpVolunteerReport;
+import com.giridhari.preachingassistant.rest.model.followupassignment.FollowupAssignmentDetailResponse;
+import com.giridhari.preachingassistant.rest.model.followupassignment.FollowupDashboardReportResponse;
 import com.giridhari.preachingassistant.rest.model.response.BaseDataResponse;
 import com.giridhari.preachingassistant.rest.model.response.BaseListResponse;
 import com.giridhari.preachingassistant.service.DevoteeService;
@@ -195,10 +197,10 @@ public class FollowUpAssignmentController {
 	}
 
 	@RequestMapping(name = "followUpAssignmentDetail", value="/followUpAssignment/{id}", method = RequestMethod.GET)
-	public BaseDataResponse get(@PathVariable("id") long followUpAssignmentId) {
+	public FollowupAssignmentDetailResponse get(@PathVariable("id") long followUpAssignmentId) {
 		FollowUpAssignment followUpAssignment = followUpAssignmentService.get(followUpAssignmentId);
 		FollowUpAssignmentDetailResponseEntity responseData = FollowUpAssignmentDetailMapper.convertToFollowUpAssignmentDetailResponseEntity(followUpAssignment);
-		return new BaseDataResponse(responseData);
+		return new FollowupAssignmentDetailResponse(responseData);
 	}
 
 	@RequestMapping(name = "followUpAssignmentUpdate", value="/followUpAssignment/{id}", method = RequestMethod.PUT)
@@ -245,7 +247,7 @@ public class FollowUpAssignmentController {
 	
 	@Transactional
 	@RequestMapping(name="autoFollowUpAssignment", value="/followUpReport/{mentorId}/{programId}", method=RequestMethod.GET)
-	public BaseDataResponse report(@PathVariable("mentorId") long mentorId, @PathVariable("programId") long programId)
+	public FollowupDashboardReportResponse report(@PathVariable("mentorId") long mentorId, @PathVariable("programId") long programId)
 	{
 		//if programId=0 then send report of all programs
 		FollowUpDashboardReportResponseEntity dashboardReport;
@@ -319,7 +321,7 @@ public class FollowUpAssignmentController {
 			}
 		}
 		
-		return new BaseDataResponse(dashboardReport);
+		return new FollowupDashboardReportResponse(dashboardReport);
 	}
 	
 	@Transactional
