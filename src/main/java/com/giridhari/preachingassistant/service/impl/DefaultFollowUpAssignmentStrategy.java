@@ -45,6 +45,8 @@ public class DefaultFollowUpAssignmentStrategy implements FollowUpAssignmentStra
 		int totalParticipants;
 		int totalVolunteers;
 		int noOfAssignmentsToVolunteer;
+		//Hard coding the value as of now, make it configurable later
+		int maxAssignments = 2;
 		
 		followUpAssignments = (ArrayList<FollowUpAssignment>) followUpAssignmentService.listOfAssignmentsOfProgram(program);
 		programAssignments = (ArrayList<ProgramAssignment>) programAssignmentService.findByProgram(program);
@@ -53,6 +55,11 @@ public class DefaultFollowUpAssignmentStrategy implements FollowUpAssignmentStra
 		totalParticipants = programAssignments.size();
 		totalVolunteers = followUpVolunteer.size();
 		noOfAssignmentsToVolunteer = (int) Math.ceil(totalParticipants/totalVolunteers);
+		
+		//Offer a cap/ceil of max how many participants to be assigned to a volunteer 
+		if (noOfAssignmentsToVolunteer > maxAssignments) {
+			noOfAssignmentsToVolunteer = maxAssignments;
+		}
 		
 		//Gather the unassigned participants
 		for (ProgramAssignment participant: programAssignments) {
@@ -72,7 +79,7 @@ public class DefaultFollowUpAssignmentStrategy implements FollowUpAssignmentStra
 		for (FollowUpAssignment assignedVolunteer: followUpAssignments) {
 			Long count =  assignmentCount.get(assignedVolunteer.getVolunteer().getId());
 			if (count != null) {
-				assignmentCount.put(assignedVolunteer.getVolunteer().getId(), count++);
+				assignmentCount.put(assignedVolunteer.getVolunteer().getId(), ++count);
 			} else assignmentCount.put(assignedVolunteer.getVolunteer().getId(), new Long(1));
 		}
 		
